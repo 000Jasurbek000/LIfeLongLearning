@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load site_i18n %}
+
+{% block title %}{% t 'submit.meta_title' %} — Muvaffaqiyat{% endblock %}
+
+{% block content %}
+<section class="page-hero" data-header-style="default">
+    <div class="container">
+        <h2 class="page-title">✅ Maqola muvaffaqiyatli yuborildi!</h2>
+        <p class="page-subtitle">Hurmatli {{ article.author_name }}, maqolangiz qabul qilindi.</p>
+    </div>
+</section>
+
+<section class="submit-section" data-header-style="accent">
+    <div class="container">
+        <div class="submit-wrapper">
+            <div class="submit-form-container" style="text-align:center;max-width:640px;margin:0 auto;">
+                <p style="font-size:1.1rem;margin-bottom:1.5rem;">
+                    "<strong>{{ article.title }}</strong>" nomli maqolangiz ko'rib chiqish uchun navbatga qo'yildi.
+                </p>
+                <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:1.5rem;text-align:left;margin-bottom:2rem;">
+                    <p><strong>ID:</strong> {{ article.id }}</p>
+                    <p><strong>Yo'nalish:</strong> {{ category_label }}</p>
+                    <p><strong>Holat:</strong> Ko'rib chiqilmoqda</p>
+                    <p><strong>To'lov:</strong> To'lanmagan</p>
+                </div>
+                <a href="{% url 'index' %}" class="btn btn-primary btn-large">Bosh sahifaga qaytish</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,329 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+    .reject-container {
+        max-width: 900px;
+        margin: 20px auto;
+        padding: 30px;
+    }
+    
+    .article-header {
+        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        padding: 30px;
+        border-radius: 10px 10px 0 0;
+        color: white;
+        margin-bottom: 0;
+    }
+    
+    .article-header h1 {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 600;
+    }
+    
+    .article-body {
+        background: white;
+        padding: 30px;
+        border: 1px solid #e0e0e0;
+        border-top: none;
+        border-radius: 0 0 10px 10px;
+    }
+    
+    .article-info {
+        background: #f8f9fa;
+        padding: 20px;
+        border-left: 4px solid #6c757d;
+        border-radius: 5px;
+        margin-bottom: 25px;
+    }
+    
+    .article-info h2 {
+        margin-top: 0;
+        color: #495057;
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+    
+    .info-item {
+        padding: 8px 0;
+        display: flex;
+        align-items: flex-start;
+    }
+    
+    .info-item strong {
+        min-width: 120px;
+        color: #495057;
+    }
+    
+    .info-item span {
+        color: #212529;
+    }
+    
+    .author-contact {
+        background: #e7f3ff;
+        padding: 20px;
+        border-left: 4px solid #007bff;
+        border-radius: 5px;
+        margin-bottom: 30px;
+    }
+    
+    .author-contact h2 {
+        margin-top: 0;
+        color: #007bff;
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+    
+    .contact-item {
+        padding: 10px 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .contact-item strong {
+        min-width: 100px;
+        color: #0056b3;
+    }
+    
+    .contact-item a {
+        color: #007bff;
+        text-decoration: none;
+    }
+    
+    .contact-item a:hover {
+        text-decoration: underline;
+    }
+    
+    .rejection-form {
+        background: #fff3cd;
+        padding: 25px;
+        border-left: 4px solid #ffc107;
+        border-radius: 5px;
+        margin-bottom: 25px;
+    }
+    
+    .rejection-form h2 {
+        margin-top: 0;
+        color: #856404;
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 8px;
+        font-size: 15px;
+    }
+    
+    .form-group .helptext {
+        display: block;
+        font-size: 13px;
+        color: #6c757d;
+        margin-top: 5px;
+        font-style: italic;
+    }
+    
+    .form-group textarea {
+        width: 100%;
+        min-height: 150px;
+        padding: 12px;
+        border: 2px solid #dee2e6;
+        border-radius: 5px;
+        font-size: 14px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        transition: border-color 0.3s;
+    }
+    
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #ffc107;
+    }
+    
+    .form-group input[type="file"] {
+        display: block;
+        padding: 10px;
+        border: 2px dashed #dee2e6;
+        border-radius: 5px;
+        width: 100%;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .form-group input[type="file"]:hover {
+        border-color: #ffc107;
+        background: #fffbf0;
+    }
+    
+    .errorlist {
+        list-style: none;
+        padding: 10px;
+        background: #f8d7da;
+        color: #721c24;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+    
+    .errorlist li {
+        margin: 0;
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        margin-top: 30px;
+        padding-top: 25px;
+        border-top: 2px solid #e0e0e0;
+    }
+    
+    .btn-reject {
+        padding: 15px 40px;
+        background: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 18px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .btn-reject:hover {
+        background: #c82333;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(220,53,69,0.4);
+    }
+    
+    .btn-cancel {
+        padding: 15px 40px;
+        background: #6c757d;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 18px;
+        font-weight: 600;
+        transition: all 0.3s;
+        display: inline-block;
+    }
+    
+    .btn-cancel:hover {
+        background: #5a6268;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(108,117,125,0.4);
+        color: white;
+    }
+    
+    .warning-box {
+        background: #fff3cd;
+        border: 1px solid #ffc107;
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
+    
+    .warning-box p {
+        margin: 0;
+        color: #856404;
+    }
+</style>
+{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+    &rsaquo; <a href="{% url 'admin:pages_article_changelist' %}">Maqolalar</a>
+    &rsaquo; Maqolani bekor qilish
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="reject-container">
+    <div class="article-header">
+        <h1>❌ Maqolani bekor qilish</h1>
+    </div>
+    
+    <div class="article-body">
+        <div class="article-info">
+            <h2>📄 Maqola ma'lumotlari</h2>
+            <div class="info-item">
+                <strong>Sarlavha:</strong>
+                <span>{{ article.title }}</span>
+            </div>
+            <div class="info-item">
+                <strong>Yuborilgan:</strong>
+                <span>{{ article.submitted_at|date:"d.m.Y H:i" }}</span>
+            </div>
+        </div>
+        
+        <div class="author-contact">
+            <h2>👤 Muallif aloqa ma'lumotlari</h2>
+            <div class="contact-item">
+                <strong>F.I.O:</strong>
+                <span style="font-size: 16px; font-weight: 600;">{{ article.author_name }}</span>
+            </div>
+            <div class="contact-item">
+                <strong>📧 Email:</strong>
+                <a href="mailto:{{ article.author_email }}">{{ article.author_email }}</a>
+            </div>
+            <div class="contact-item">
+                <strong>📱 Telefon:</strong>
+                <span>{{ article.author_phone }}</span>
+            </div>
+        </div>
+        
+        <div class="warning-box">
+            <p><strong>⚠️ Diqqat:</strong> Bekor qilish sababi va (ixtiyoriy) qo'shimcha fayl muallifga emailda yuboriladi.</p>
+        </div>
+        
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="rejection-form">
+                <h2>📝 Bekor qilish sababi</h2>
+                
+                <div class="form-group">
+                    {{ form.rejection_reason.errors }}
+                    <label for="{{ form.rejection_reason.id_for_label }}">
+                        {{ form.rejection_reason.label }} <span style="color: #dc3545;">*</span>
+                    </label>
+                    {{ form.rejection_reason }}
+                    {% if form.rejection_reason.help_text %}
+                        <span class="helptext">{{ form.rejection_reason.help_text }}</span>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    {{ form.rejection_file.errors }}
+                    <label for="{{ form.rejection_file.id_for_label }}">
+                        {{ form.rejection_file.label }}
+                    </label>
+                    {{ form.rejection_file }}
+                    {% if form.rejection_file.help_text %}
+                        <span class="helptext">{{ form.rejection_file.help_text }}</span>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="action-buttons">
+                <button type="submit" class="btn-reject" onclick="return confirm('Maqolani bekor qilishga ishonchingiz komilmi? Muallif emaili yuboriladi.')">
+                    ❌ Bekor qilish va email yuborish
+                </button>
+                <a href="{% url 'admin:pages_article_changelist' %}" class="btn-cancel">
+                    ← Ortga qaytish
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

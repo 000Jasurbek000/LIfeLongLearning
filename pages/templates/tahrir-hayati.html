@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static site_i18n %}
+
+{% block title %}{% t 'editorial.meta_title' %}{% endblock %}
+
+{% block content %}
+    <section class="page-hero" data-header-style="default">
+        <div class="container">
+            <h2 class="page-title">{% t 'editorial.hero.title' %}</h2>
+            <p class="page-subtitle">{% t 'editorial.hero.subtitle' %}</p>
+        </div>
+    </section>
+
+    <section class="editorial-board-section" data-header-style="accent">
+        <div class="container">
+            <div class="section-header">
+                <p class="section-description">{% t 'editorial.intro' %}</p>
+            </div>
+
+            <div class="editorial-grid">
+                {% for member in members %}
+                <div class="editorial-member">
+                    <div class="member-image">
+                        {% if member.photo %}
+                        <img src="{{ member.photo.url }}" alt="{{ member.full_name }}">
+                        {% else %}
+                        <img src="{% static 'image/LOGO.png' %}" alt="{{ member.full_name }}">
+                        {% endif %}
+                    </div>
+                    <div class="member-info">
+                        <h3 class="member-name">{{ member.full_name }}</h3>
+                        <p class="member-position">{{ member.get_position_display }}</p>
+                        {% if member.academic_degree %}
+                        <p class="member-workplace">{{ member.academic_degree }}</p>
+                        {% endif %}
+                        <p class="member-workplace">{{ member.workplace }}</p>
+                    </div>
+                </div>
+                {% empty %}
+                <p>{% t 'editorial.intro' %}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

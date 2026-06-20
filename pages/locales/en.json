@@ -1,0 +1,309 @@
+{
+  "base": {
+    "brand": {
+      "title": "Scientific Journal",
+      "tagline": "Science and research platform"
+    },
+    "nav": {
+      "home": "Home",
+      "about": "About the journal",
+      "about_overview": "Overview",
+      "editorial_board": "Editorial board",
+      "journal_requirements": "Journal requirements",
+      "regulatory_docs": "Regulatory documents",
+      "archive": "Archive",
+      "news": "News",
+      "all_news": "All news",
+      "announcements": "Announcements",
+      "contact": "Contact",
+      "submit_article": "Submit article"
+    },
+    "search": {
+      "open_aria": "Search",
+      "title": "Search",
+      "close_aria": "Close",
+      "filter": {
+        "title": "Article title",
+        "author": "Author name",
+        "keywords": "Keywords",
+        "all": "All"
+      },
+      "placeholder": "Search...",
+      "clear": "Clear",
+      "submit": "Search",
+      "popular_title": "Popular searches:",
+      "suggestions": {
+        "quantum": "Quantum physics",
+        "ai": "Artificial intelligence",
+        "chemistry": "Chemical synthesis",
+        "biology": "Biology"
+      }
+    },
+    "language": {
+      "aria": "Language",
+      "uz": "O'zbekcha",
+      "ru": "Русский",
+      "en": "English"
+    },
+    "footer": {
+      "description": "One of the leading scientific journals in Uzbekistan. We publish research in various fields.",
+      "quick_links_title": "Quick links",
+      "for_authors_title": "For authors",
+      "contact_title": "Contact",
+      "address": "28/2 Academician Ibrahim Muminov St., Bukhara",
+      "copyright": "© 2026 Scientific Journal. All rights reserved.",
+      "social": {
+        "facebook": "Facebook",
+        "twitter": "Twitter",
+        "linkedin": "LinkedIn",
+        "telegram": "Telegram"
+      }
+    }
+  },
+  "common": {
+    "actions": {
+      "view_all": "View all →",
+      "read_more": "Read more",
+      "details": "Details",
+      "more_info": "More information",
+      "subscribe": "Subscribe",
+      "view": "View",
+      "download": "Download",
+      "read_full": "Read full text",
+      "go_to_archive": "Go to archive",
+      "send_message": "Send message",
+      "send_article": "Submit article",
+      "view_full": "View full",
+      "view_all_announcements": "All announcements",
+      "view_all_members": "View all members"
+    },
+    "newsletter": {
+      "title": "Stay updated",
+      "description": "Receive the latest news and announcements by email",
+      "announcement_title": "Stay informed about announcements",
+      "announcement_description": "Be among the first to know about important announcements",
+      "homepage_title": "Subscribe to updates",
+      "homepage_description": "Get journal news and latest articles before anyone else"
+    },
+    "placeholders": {
+      "email": "Your email address",
+      "email_full": "Enter your email address",
+      "full_name": "Your full name",
+      "phone": "+998 90 123 45 67",
+      "message": "Write your message here...",
+      "organization": "University or institute name",
+      "position": "Professor, associate professor, doctoral student...",
+      "article_title": "Full article title",
+      "keywords": "Separated by commas (e.g. physics, quantum, energy)",
+      "abstract": "Brief article summary (150-250 words)",
+      "coauthors": "Co-authors' full names and organizations (one per line)",
+      "search": "Search..."
+    },
+    "breadcrumb": {
+      "home": "Home",
+      "news": "News",
+      "announcements": "Announcements"
+    },
+    "labels": {
+      "categories": "Categories",
+      "popular_articles": "Popular articles",
+      "useful_links": "Useful links",
+      "contact": "Contact",
+      "email": "Email",
+      "phone": "Phone",
+      "address": "Address",
+      "working_hours": "Working hours",
+      "social_networks": "Social networks",
+      "published": "Published",
+      "journal": "Journal",
+      "publication": "Publication",
+      "issue_volume": "Issue and volume",
+      "date": "Date",
+      "annotation": "Abstract",
+      "references": "References",
+      "keywords": "Keywords",
+      "citation": "Cite this",
+      "navigation": "Navigation",
+      "article_info": "Article information",
+      "reviews": "Reviews"
+    },
+    "links": {
+      "latest_issue": "Latest issue",
+      "help": "Help",
+      "scientific_articles": "Scientific articles",
+      "archive_description": "Explore articles published in our journal"
+    },
+    "form": {
+      "select": "Select",
+      "required_fields": "Please fill in all required fields"
+    }
+  },
+  "home": {
+    "meta_title": "Scientific Journal - Home",
+    "hero": {
+      "badge": "Scientific research platform",
+      "title": "A source of science and knowledge",
+      "description": "Explore scientific articles, research, and modern knowledge. Present your research to the world.",
+      "archive_cta": "View archive",
+      "published_articles": "Published articles",
+      "authors": "Authors",
+      "issues": "Issues"
+    },
+    "features": {
+      "title": "What our journal offers",
+      "description": "Everything you need to publish your research",
+      "items": {
+        "fast_publish": { "title": "Fast publication", "description": "Your articles are reviewed and published quickly. Average turnaround is 2-3 weeks." },
+        "open_access": { "title": "Open access", "description": "All articles are freely available for reading under open access." },
+        "editorial": { "title": "Experienced editorial board", "description": "Reviewed by highly qualified experts and professors." },
+        "standards": { "title": "International standards", "description": "A journal that meets international academic standards and requirements." },
+        "digital_archive": { "title": "Digital archive", "description": "All issues are preserved digitally and available through search." },
+        "quality_control": { "title": "Quality control", "description": "Each article is evaluated by multiple reviewers." }
+      }
+    },
+    "latest_articles": {
+      "title": "Latest articles",
+      "cards": {
+        "physics": { "badge": "Physics", "title": "Modern directions in quantum mechanics", "excerpt": "A detailed analysis of recent research in quantum physics and its practical applications...", "author": "Prof. A. Karimov", "date": "15 April 2026" },
+        "chemistry": { "badge": "Chemistry", "title": "New catalysts in organic synthesis", "excerpt": "New types of catalysts used in modern organic synthesis processes and their efficiency...", "author": "Dr. M. Toshmatova", "date": "12 April 2026" },
+        "biology": { "badge": "Biology", "title": "New approaches in plant physiology", "excerpt": "A scientific study on plant metabolism and mechanisms of adaptation to the environment...", "author": "Prof. S. Rahmonov", "date": "8 April 2026" }
+      }
+    },
+    "news": { "title": "Latest news" },
+    "announcement": { "title": "Important announcement" },
+    "editorial": {
+      "title": "Editorial board",
+      "description": "Experienced specialists of our journal",
+      "review_suffix": "reviews",
+      "members": {
+        "member1": { "position": "Editor-in-chief", "workplace": "National University of Uzbekistan, Dean of the Faculty of Physics, Professor." },
+        "member2": { "position": "Deputy editor-in-chief", "workplace": "Tashkent State Technical University, Head of the Chemistry Department, Associate Professor." },
+        "member3": { "position": "Executive secretary", "workplace": "Samarkand State University, Professor of the Biology Department." }
+      }
+    },
+    "achievements": {
+      "title": "Our achievements",
+      "description": "Our success in numbers",
+      "published_articles": "Published articles",
+      "active_authors": "Active authors",
+      "international_cooperation": "International cooperation",
+      "satisfaction": "Satisfaction rate"
+    }
+  },
+  "about": {
+    "meta_title": "About the Journal - Scientific Journal",
+    "hero": { "title": "About the journal", "subtitle": "A platform for scientific research and innovation" },
+    "sections": {
+      "general": { "title": "Overview", "text": "\"Scientific Journal\" is a leading scientific and theoretical journal in Uzbekistan that publishes research findings. Founded in 2010, the journal regularly publishes studies in natural sciences, social sciences, humanities, and technology." },
+      "goals": { "title": "Goals and objectives", "lead": "The main goals of our journal are:", "item1": "To publish and promote high-quality scientific research", "item2": "To support young scientists and researchers", "item3": "To develop cooperation with the international scientific community", "item4": "To contribute to the dissemination of scientific knowledge", "item5": "To encourage innovative ideas and research" },
+      "policy": { "title": "Publishing policy", "text": "The journal follows an Open Access policy. This means all articles are freely available for reading and downloading. We believe scientific knowledge should be open to all interested readers." },
+      "review": { "title": "Review process", "lead": "All submitted articles go through a two-stage review process:", "step1_title": "Initial review:", "step1_text": "The editorial board checks whether the article matches the journal's aims", "step2_title": "Peer review:", "step2_text": "The article is thoroughly evaluated by at least two independent specialists" },
+      "indexing": { "title": "Indexing", "lead": "Our journal is indexed in the following international databases:", "item1": "Google Scholar", "item2": "Research Gate", "item3": "Academia.edu", "item4": "Electronic catalog of the National Library of Uzbekistan" },
+      "ethics": { "title": "Ethics and quality standards", "text": "We support the principles of COPE (Committee on Publication Ethics) and require authors, reviewers, and editorial members to observe high ethical standards. Plagiarism, data falsification, and other forms of academic misconduct are not permitted." }
+    },
+    "info": {
+      "issn_title": "ISSN",
+      "issn_value": "2181-9580 (Print)<br>2181-9599 (Online)",
+      "frequency_title": "Publication frequency",
+      "frequency_value": "4 times a year<br>(March, June, September, December)",
+      "language_title": "Language",
+      "language_value": "Uzbek, Russian,<br>English"
+    },
+    "sidebar": { "quick_links_title": "Quick links", "latest_issue_title": "Latest issue", "latest_issue_month": "March 2026" }
+  },
+  "contact": {
+    "meta_title": "Contact - Scientific Journal",
+    "hero": { "title": "Get in touch", "subtitle": "If you have questions, contact us" },
+    "panel_title": "Contact information",
+    "cards": {
+      "address_title": "Address",
+      "address_value": "Bukhara city,<br>28/2 Academician Ibrahim Muminov Street",
+      "phone_title": "Phone",
+      "email_title": "Email",
+      "hours_title": "Working hours",
+      "hours_value": "Monday - Friday:<br>9:00 - 18:00<br>Saturday - Sunday: Closed"
+    },
+    "social_title": "Social media",
+    "form": {
+      "title": "Send a message",
+      "name": "Full name *",
+      "email": "Email *",
+      "phone": "Phone number",
+      "subject": "Subject *",
+      "message": "Message *",
+      "subject_options": { "general": "General question", "submission": "Article submission", "review": "Review process", "technical": "Technical support", "cooperation": "Cooperation", "other": "Other" }
+    },
+    "map": { "title": "Our location", "address": "Bukhara city, 28/2 Academician Ibrahim Muminov Street", "hint": "Click here to open the map" }
+  },
+  "submit": {
+    "meta_title": "Submit Article - Scientific Journal",
+    "hero": { "title": "Submit article", "subtitle": "Publish your research in our journal" },
+    "header": { "title": "Upload article", "description": "Submit your article using the form below" },
+    "form": {
+      "author_name": "Author full name",
+      "email": "Email",
+      "phone": "Phone number",
+      "organization": "Organization name",
+      "position": "Position",
+      "degree": "Academic degree",
+      "article_title": "Article title",
+      "category": "Field",
+      "keywords": "Keywords",
+      "keywords_help": "Enter 5-7 keywords",
+      "abstract": "Abstract",
+      "coauthors": "Co-authors",
+      "file": "Article file",
+      "file_cta": "Choose a file or drag it here",
+      "file_hint": "DOC, DOCX or PDF (Max: 10MB)",
+      "agreement": "I have read and agree to the article requirements",
+      "originality": "The article is my original research and has not been published elsewhere",
+      "degrees": { "phd": "PhD", "dsc": "DSc", "candidate": "Candidate of Sciences", "doctor": "Doctor of Sciences", "none": "None" },
+      "categories": {
+        "chemistry": "Chemical Sciences (inorganic, organic, analytical, physical chemistry)",
+        "technology": "Technology Sciences (food, chemical, oil and gas technology)",
+        "materials": "Materials Science and Nanotechnology",
+        "ecology": "Environmental Protection and Ecology",
+        "biotechnology": "Biotechnology and Biochemistry"
+      }
+    },
+    "sidebar": {
+      "review_title": "Review process",
+      "step1_title": "Stage 1:", "step1_text": "Initial review (1-3 days)",
+      "step2_title": "Stage 2:", "step2_text": "Peer review (10-15 days)",
+      "step3_title": "Stage 3:", "step3_text": "Editing and revisions (5-7 days)",
+      "step4_title": "Stage 4:", "step4_text": "Acceptance and publication (2-3 days)",
+      "notes_title": "Important notes",
+      "note1": "Article length: 8-15 pages", "note2": "Font: Times New Roman, 14pt", "note3": "Spacing: 1.5", "note4": "Page format: A4", "note5": "Margins: 2 cm on all sides",
+      "help_title": "Need help?", "help_text": "If you have questions, contact us:"
+    }
+  },
+  "requirements": {
+    "meta_title": "Journal Requirements",
+    "hero": { "title": "Journal requirements", "subtitle": "Requirements for submitted articles" },
+    "sections": {
+      "fields": { "title": "Accepted fields", "item1": "Chemical sciences (inorganic, organic, analytical, physical chemistry)", "item2": "Technological sciences (food, chemical, oil and gas technology)", "item3": "Materials science and nanotechnology", "item4": "Environmental protection and ecology", "item5": "Biotechnology and biochemistry" },
+      "page": { "title": "Page parameters", "item1": "Format: A4 (210 × 297 mm)", "item2": "Margins: top and bottom – 2 cm; left – 3 cm; right – 1.5 cm", "item3": "All article text must be in Times New Roman, size 14", "item4": "Line spacing – 1.15", "item5": "Paragraph indent – 1.25", "item6": "Justified alignment" },
+      "structure": { "title": "Article structure and formatting", "label1": "Article title — Times New Roman 14, bold, uppercase, centered", "sample_title": "ARTICLE TITLE (UPPERCASE, BOLD, CENTERED)", "label2": "Author's full name — Times New Roman 14, bold, centered", "sample_author": "Surname Name Patronymic", "label3": "Affiliation and position — Times New Roman 14, italic, centered", "sample_workplace": "Tashkent Institute of Chemical Technology, Associate Professor of the Department of Technology", "label4": "Email address — Times New Roman 14, underlined, centered", "label5": "Abstract title — Times New Roman 14, bold, centered", "sample_annotation": "Abstract", "label6": "Abstract text — Times New Roman 14, italic, justified (150–250 words)", "sample_annotation_text": "The abstract should be written in Times New Roman 14 italic and justified. It should briefly present the purpose of the research, methods, key results, and conclusions...", "label7": "Keywords — Times New Roman 14, 5–7 words", "sample_keywords": "Keywords:", "sample_keywords_text": "chemistry, technology, synthesis, reaction, catalyst" },
+      "article_sections": { "title": "Article sections", "label1": "Section title — Times New Roman 14, bold, UPPERCASE, centered", "sample_section": "INTRODUCTION", "label2": "Main text — Times New Roman 14, justified, first-line indent 1.25 cm", "sample_text": "The main text should be written in Times New Roman 14, justified, and each paragraph should begin with a 1.25 cm indent. Line spacing should be 1.15.", "lead": "The article should consist of the following sections:", "item1": "INTRODUCTION", "item2": "LITERATURE REVIEW", "item3": "RESEARCH METHODOLOGY", "item4": "RESULTS AND DISCUSSION", "item5": "CONCLUSION", "item6": "REFERENCES" },
+      "tables_figures": { "title": "Tables and figures", "intro": "The table number should appear in the upper right corner, the title should be centered above the table in print letters, and the source must be clearly indicated.", "table_label": "Table title — Times New Roman 14, bold, centered (above the table)", "table_caption": "Table 1<br>Table title [1]", "th1": "No.", "th2": "Heading 1", "th3": "Heading 2", "th4": "Heading 3", "cell": "Text", "figure_label": "Figure — caption below the figure: Times New Roman 12, justified", "figure_alt": "Laboratory", "figure_caption": "Figure 1. Diagram of the chemical reaction mechanism [1]", "item1": "Image quality: at least 300 dpi", "item2": "All tables and figures must be referenced in the text" },
+      "references": { "title": "References", "label": "Reference — Times New Roman 12, justified, APA format", "sample": "1. Karimov, A. B., & Rahimov, S. T. (2022). Modern methods of modeling chemical processes. Journal of Chemistry and Technology, 5(2), 45–58.", "item1": "At least 15 sources", "item2": "APA (American Psychological Association) format", "item3": "Cited in text with numbers: [1], [2, 3], [4–6]" },
+      "additional": { "title": "Additional requirements", "item1": "Article length: 8–15 pages", "item2": "Plagiarism: similarity index must not exceed 25%", "item3": "The article must not have been published in other journals before", "item4": "The article may be submitted in Uzbek, Russian, or English", "item5": "The article title, author's full name, affiliation and position, abstract, and keywords must be provided in Uzbek, Russian, and English" }
+    }
+  },
+  "docs": { "meta_title": "Regulatory Documents", "hero": { "title": "Regulatory documents", "subtitle": "Official documents and certificates" }, "image1_alt": "Regulatory document 1", "image2_alt": "Regulatory document 2", "image3_alt": "Regulatory document 3" },
+  "editorial": {
+    "meta_title": "Editorial Board - Scientific Journal",
+    "hero": { "title": "Editorial board", "subtitle": "Experienced specialists of our journal" },
+    "intro": "Our editorial board consists of highly qualified professors and associate professors who professionally review all submitted articles.",
+    "roles": { "member": "Editorial board member", "editor_in_chief": "Editor-in-chief", "deputy_editor": "Deputy editor-in-chief", "executive_secretary": "Executive secretary" },
+    "members": { "member1_workplace": "Rector of Renaissance Education University, Professor.", "member2_workplace": "National University of Uzbekistan, Dean of the Faculty of Physics, Professor.", "member3_workplace": "Tashkent State Technical University, Head of the Chemistry Department, Associate Professor.", "member4_workplace": "Samarkand State University, Professor of the Biology Department.", "member5_workplace": "Bukhara State University, Dean of the Faculty of Mathematics, Professor.", "member6_workplace": "Andijan State University, Head of the Philology Department, Professor.", "member7_workplace": "Fergana Polytechnic Institute, Associate Professor of the Informatics Department.", "member8_workplace": "Urgench State University, Professor of the Faculty of Economics." },
+    "info": { "members_title": "Editorial board members", "members_text": "Professors and associate professors from prestigious higher education institutions of Uzbekistan serve on our journal's editorial board.", "quality_title": "Quality control", "quality_text": "Each article is professionally reviewed and evaluated by at least two independent reviewers.", "international_title": "International experience", "international_text": "Editorial board members actively participate in international scientific conferences and collaborate with foreign partners." }
+  },
+  "archive": { "meta_title": "Archive - Journal of Chemistry and Technology", "hero": { "title": "Archive", "subtitle": "Published journal issues" }, "volume_label": "Volume", "issue_label": "Issue", "year_suffix": "year", "cover_alt_suffix": "cover", "article_suffix": "articles", "views_suffix": "views", "full_view": "View full" },
+  "archive_issue": { "title_prefix": "Volume", "issue_label": "Issue", "year_suffix": "year", "cover_alt_suffix": "cover", "published_collection": "Published collection", "in_this_volume": "in this volume", "views_label": "views", "total_interest": "overall interest", "publish_date": "publication date", "articles_title": "Articles in this volume", "collection_title": "Collection", "collection_status": "Collection is being compiled", "collection_note": "New articles and materials are added regularly.", "categories_title": "Sections", "popular_articles_title": "Most read articles" },
+  "archive_article": { "hero_subtitle": "articles", "meta_line_prefix": "Development Of Science", "issue_label": "Issue", "volume_label": "Volume", "annotation_title": "Abstract", "references_title": "References", "keywords_title": "Keywords", "citation_title": "Cite this", "citation_style": "APA (American Psychological Association)", "navigation_title": "Navigation", "article_info_title": "Article information" },
+  "news": { "meta_title": "News - Scientific Journal", "hero": { "title": "News", "subtitle": "Latest updates from our journal and the scientific community" }, "count_suffix": "news items" },
+  "news_detail": { "title_suffix": "News", "views_suffix": "views", "share_title": "Share:", "share_telegram": "Share via Telegram", "share_facebook": "Share via Facebook", "share_twitter": "Share via Twitter", "share_copy": "Copy link", "other_news": "Other news" },
+  "announcements": { "meta_title": "Announcements - Scientific Journal", "hero": { "title": "Announcements", "subtitle": "Important notices and organizational announcements" }, "count_suffix": "announcements", "priority": { "high": "Important announcements", "medium": "General announcements", "low": "Archived announcements" }, "read": "Read" },
+  "announcement_detail": { "title_suffix": "Announcements", "priority": { "high": "Important", "medium": "Medium" }, "published_label": "Published:", "attachment_title": "Additional document", "questions_cta": "Do you have questions?", "other_announcements": "Other announcements" }
+}

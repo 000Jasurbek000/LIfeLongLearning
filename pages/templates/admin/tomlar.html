@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tomlar — Admin Panel</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Inter','Segoe UI',sans-serif; background:#f0f4f8; min-height:100vh; padding:24px; }
+.container { max-width:1200px; margin:0 auto; }
+
+.header {
+    background:linear-gradient(135deg,#7c3aed 0%,#2563eb 100%);
+    border-radius:16px; padding:24px 32px; margin-bottom:24px;
+    display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px;
+}
+.header h1 { color:white; font-size:22px; font-weight:800; }
+.header p  { color:rgba(255,255,255,.8); font-size:13px; margin-top:3px; }
+.back-btn {
+    background:rgba(255,255,255,.2); color:white;
+    border:1px solid rgba(255,255,255,.35);
+    padding:9px 18px; border-radius:10px;
+    text-decoration:none; font-size:13px; font-weight:600;
+}
+.back-btn:hover { background:rgba(255,255,255,.35); }
+
+.msg { padding:12px 16px; border-radius:10px; font-size:13px; font-weight:600; margin-bottom:16px; }
+.msg-success { background:#d1fae5; color:#065f46; border-left:4px solid #10b981; }
+.msg-error   { background:#fee2e2; color:#991b1b; border-left:4px solid #ef4444; }
+
+.layout { display:grid; grid-template-columns:1fr 380px; gap:20px; align-items:start; }
+
+/* Kartalar grid */
+.volumes-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:16px; }
+
+.vol-card {
+    background:white; border-radius:16px; border:1px solid #e2e8f0;
+    overflow:hidden; transition:box-shadow .2s;
+}
+.vol-card:hover { box-shadow:0 4px 20px rgba(0,0,0,.08); }
+
+.vol-status-bar { height:5px; }
+.s-draft     { background:#94a3b8; }
+.s-active    { background:linear-gradient(90deg,#10b981,#06b6d4); }
+.s-published { background:linear-gradient(90deg,#7c3aed,#2563eb); }
+
+.vol-body { padding:18px 20px; }
+.vol-title { font-size:15px; font-weight:800; color:#1e293b; margin-bottom:6px; }
+.vol-meta  { font-size:12px; color:#64748b; display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px; }
+
+.progress-wrap { margin-bottom:14px; }
+.progress-bar  { background:#f1f5f9; border-radius:20px; height:8px; overflow:hidden; }
+.progress-fill { height:100%; border-radius:20px; background:linear-gradient(90deg,#10b981,#06b6d4); transition:width .3s; }
+.progress-fill.full { background:linear-gradient(90deg,#f59e0b,#ef4444); }
+.progress-label { font-size:11px; color:#64748b; margin-top:4px; font-weight:600; }
+
+.badge-status {
+    display:inline-block; font-size:11px; padding:3px 10px;
+    border-radius:20px; font-weight:700;
+}
+.badge-draft     { background:#f1f5f9; color:#475569; }
+.badge-active    { background:#d1fae5; color:#065f46; }
+.badge-published { background:#ede9fe; color:#5b21b6; }
+
+.vol-actions { display:flex; gap:8px; padding:12px 20px; border-top:1px solid #f1f5f9; }
+.btn-view { flex:1; padding:8px; background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe; border-radius:8px; font-size:12px; font-weight:600; text-align:center; text-decoration:none; }
+.btn-view:hover { background:#1d4ed8; color:white; }
+.btn-edit-vol { flex:1; padding:8px; background:#f0fdf4; color:#065f46; border:1px solid #6ee7b7; border-radius:8px; font-size:12px; font-weight:600; cursor:pointer; }
+.btn-edit-vol:hover { background:#10b981; color:white; }
+.btn-del-vol  { padding:8px 12px; background:#fee2e2; color:#991b1b; border:1px solid #fecaca; border-radius:8px; font-size:12px; font-weight:600; cursor:pointer; }
+.btn-del-vol:hover  { background:#ef4444; color:white; }
+
+/* Forma */
+.form-card { background:white; border-radius:16px; padding:22px 24px; border:1px solid #e2e8f0; }
+.form-card h2 { font-size:15px; font-weight:700; color:#334155; margin-bottom:18px; }
+.form-group { margin-bottom:13px; }
+.form-group label { display:block; font-size:12px; font-weight:600; color:#475569; margin-bottom:5px; }
+.form-group input[type=text],
+.form-group input[type=number],
+.form-group select,
+.form-group textarea {
+    width:100%; padding:10px 12px; border-radius:9px;
+    border:1.5px solid #e2e8f0; font-size:13px; font-family:inherit; resize:vertical;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus { outline:none; border-color:#7c3aed; }
+.form-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+.form-row2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.btn-create {
+    width:100%; padding:11px; background:linear-gradient(135deg,#7c3aed,#2563eb);
+    color:white; border:none; border-radius:10px; font-size:14px; font-weight:700; cursor:pointer;
+}
+.btn-create:hover { opacity:.9; }
+
+.empty { text-align:center; padding:50px 20px; color:#94a3b8; grid-column:1/-1; }
+.empty .icon { font-size:48px; margin-bottom:10px; }
+
+/* Tahrirlash modali */
+.modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:999; align-items:center; justify-content:center; }
+.modal-overlay.open { display:flex; }
+.modal-box { background:white; border-radius:18px; padding:28px 30px; width:100%; max-width:520px; max-height:90vh; overflow-y:auto; }
+.modal-box h2 { font-size:17px; font-weight:800; color:#1e293b; margin-bottom:18px; }
+.modal-btns { display:flex; gap:10px; margin-top:18px; }
+.modal-btns .btn-cancel { flex:1; padding:10px; border:1.5px solid #e2e8f0; background:white; border-radius:10px; font-size:13px; font-weight:600; cursor:pointer; }
+.modal-btns .btn-save   { flex:1; padding:10px; background:linear-gradient(135deg,#7c3aed,#2563eb); color:white; border:none; border-radius:10px; font-size:14px; font-weight:700; cursor:pointer; }
+
+.pdf-link { display:inline-flex; align-items:center; gap:6px; font-size:12px; color:#7c3aed; text-decoration:none; font-weight:600; margin-top:4px; }
+
+@media(max-width:900px) { .layout { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+{% include 'admin/includes/admin_nav.html' %}
+
+<div class="header">
+    <div>
+        <h1>📚 Tomlar</h1>
+        <p>Jurnal tomlari va sonlarini boshqarish</p>
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <a href="/admin-panel/foydalanuvchilar/" class="back-btn">← Maqolalar</a>
+        <a href="/admin/" class="back-btn">⬅ Admin</a>
+    </div>
+</div>
+
+{% if msg %}
+<div class="msg {% if msg.0 == 'success' %}msg-success{% else %}msg-error{% endif %}">{{ msg.1 }}</div>
+{% endif %}
+
+<div class="layout">
+    <!-- Ro'yxat -->
+    <div>
+        {% if volumes %}
+        <div class="volumes-grid">
+        {% for vol in volumes %}
+        <div class="vol-card">
+            <div class="vol-status-bar s-{{ vol.status }}"></div>
+            <div class="vol-body">
+                <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px">
+                    <div class="vol-title">{{ vol.title }}</div>
+                    <span class="badge-status badge-{{ vol.status }}">
+                        {% if vol.status == 'draft' %}Tayyorlanmoqda
+                        {% elif vol.status == 'active' %}● Faol
+                        {% else %}✅ Nashr etilgan{% endif %}
+                    </span>
+                </div>
+                <div class="vol-meta">
+                    <span>📅 {{ vol.year }}-yil</span>
+                    <span>📖 {{ vol.volume_number }}-tom</span>
+                    <span>📄 {{ vol.issue_number }}-son</span>
+                    {% if vol.subject %}<span>🔬 {{ vol.get_subject_display }}</span>{% endif %}
+                    {% if vol.published_at %}<span>🗓 {{ vol.published_at|date:"d.m.Y" }}</span>{% endif %}
+                    <span title="Ko'rishlar">👁 {{ vol.views_count }}</span>
+                </div>
+                <div class="progress-wrap">
+                    <div class="progress-bar">
+                        <div class="progress-fill {% if vol.is_full %}full{% endif %}"
+                             style="width:{{ vol.fill_percent }}%"></div>
+                    </div>
+                    <div class="progress-label">
+                        {{ vol.articles_count }} / {{ vol.max_articles }} maqola
+                        {% if vol.is_full %}— <span style="color:#ef4444">TO'LA</span>
+                        {% else %}— {{ vol.remaining_slots }} ta joy qoldi{% endif %}
+                    </div>
+                </div>
+                {% if vol.pdf_file %}
+                <a href="{{ vol.pdf_file.url }}" target="_blank" class="pdf-link">📥 To'liq PDF yuklab olish</a>
+                {% endif %}
+            </div>
+            <div class="vol-actions">
+                <a href="{% url 'admin_tom_detail' vol.pk %}" class="btn-view">👁 Ko'rish</a>
+                <button class="btn-edit-vol"
+                    onclick="openEditModal({{ vol.pk }},'{{ vol.title|escapejs }}',{{ vol.year }},{{ vol.volume_number }},{{ vol.issue_number }},{{ vol.max_articles }},'{{ vol.status }}','{{ vol.description|escapejs }}','{{ vol.subject }}')">
+                    ✏️ Tahrirlash
+                </button>
+                <form method="POST" style="display:inline"
+                      onsubmit="return confirm('Tomni o\'chirish? Maqolalar tom bilan bog\'liqligi o\'chadi, lekin o\'zlari saqlanadi.')">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="delete">
+                    <input type="hidden" name="volume_id" value="{{ vol.pk }}">
+                    <button type="submit" class="btn-del-vol">🗑</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty">
+            <div class="icon">📚</div>
+            <p>Hali tom yaratilmagan</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Yangi tom yaratish -->
+    <div class="form-card">
+        <h2>➕ Yangi tom yaratish</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="create">
+            <div class="form-group">
+                <label>Tom nomi *</label>
+                <input type="text" name="title" placeholder="2026-yil, 6-tom, 1-son" required>
+            </div>
+            <div class="form-group">
+                <label>Fan yo'nalishi</label>
+                <select name="subject">
+                    <option value="mixed">Aralash yo'nalishlar</option>
+                    <option value="chemistry">Kimyo fanlari</option>
+                    <option value="technology">Texnologiya fanlari</option>
+                    <option value="materials">Materialshunoslik va nanotexnologiyalar</option>
+                    <option value="ecology">Atrof-muhit muhofazasi va ekologiya</option>
+                    <option value="biotechnology">Biotexnologiya va biokimyo</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Yil</label>
+                    <input type="number" name="year" value="2026" min="2000" max="2100">
+                </div>
+                <div class="form-group">
+                    <label>Tom №</label>
+                    <input type="number" name="volume_number" value="1" min="1">
+                </div>
+                <div class="form-group">
+                    <label>Son №</label>
+                    <input type="number" name="issue_number" value="1" min="1">
+                </div>
+            </div>
+            <div class="form-row2">
+                <div class="form-group">
+                    <label>Maqolalar soni *</label>
+                    <input type="number" name="max_articles" value="10" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label>Holat</label>
+                    <select name="status">
+                        <option value="draft">Tayyorlanmoqda</option>
+                        <option value="active" selected>Faol</option>
+                        <option value="published">Nashr etilgan</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Tavsif (ixtiyoriy)</label>
+                <textarea name="description" rows="2" placeholder="Tom haqida qisqacha..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Muqova rasmi (ixtiyoriy)</label>
+                <input type="file" name="cover_image" accept="image/*"
+                    style="width:100%;font-size:12px;padding:7px;border-radius:9px;border:1.5px dashed #e2e8f0;background:#fafbfc">
+            </div>
+            <button type="submit" class="btn-create">➕ Tom yaratish</button>
+        </form>
+    </div>
+</div>
+
+</div>
+
+<!-- TAHRIRLASH MODALI -->
+<div class="modal-overlay" id="editModal">
+    <div class="modal-box">
+        <h2>✏️ Tomni tahrirlash</h2>
+        <form method="POST" enctype="multipart/form-data" id="editForm">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="edit">
+            <input type="hidden" name="volume_id" id="editVolId">
+            <div class="form-group">
+                <label>Tom nomi *</label>
+                <input type="text" name="title" id="editTitle" required
+                    style="width:100%;padding:10px 12px;border-radius:9px;border:1.5px solid #e2e8f0;font-size:13px;font-family:inherit">
+            </div>
+            <div class="form-group">
+                <label>Fan yo'nalishi</label>
+                <select name="subject" id="editSubject"
+                    style="width:100%;padding:10px 12px;border-radius:9px;border:1.5px solid #e2e8f0;font-size:13px;font-family:inherit">
+                    <option value="mixed">Aralash yo'nalishlar</option>
+                    <option value="chemistry">Kimyo fanlari</option>
+                    <option value="technology">Texnologiya fanlari</option>
+                    <option value="materials">Materialshunoslik va nanotexnologiyalar</option>
+                    <option value="ecology">Atrof-muhit muhofazasi va ekologiya</option>
+                    <option value="biotechnology">Biotexnologiya va biokimyo</option>
+                </select>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+                <div class="form-group">
+                    <label>Yil</label>
+                    <input type="number" name="year" id="editYear" min="2000" max="2100"
+                        style="width:100%;padding:10px 12px;border-radius:9px;border:1.5px solid #e2e8f0;font-size:13px;font-family:inherit">
+                </div>
+                <div class="form-group">
+                    <label>Tom №</label>
+                    <input type="number" name="volume_number" id="editVol" min="1"
+                        style="width:100%;padding:10px 12px;border-radius:9px;border:1.5px solid #e2e8f0;font-size:13px;font-family:inherit">
+                </div>
+                <div class="form-group">
+                    <label>Son №</label>
+                    <input type="number" name="issue_number" id="editIssue" min="1"
+                        style="width:100%;padding:10px 12px;border-radius:9px;border:1.5px solid #e2e8f0;font-size:13px;font-family:inherit">
+                </div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                <div class="form-group">
+                    <label>Maqolalar soni *
+                        <span style="color:#94a3b8;font-weight:400;font-size:11px">(istisno tariqasida o'zgartirish mumkin)</span>
+                    </label>
+                    <input type="number" name="max_articles" id="editMax" min="1" required
+                        style="width:100%;padding:10px 12px;border-radius:9px;border:1.5px solid #e2e8f0;font-size:13px;font-family:inherit">
+                </div>
+                <div class="form-group">
+                    <label>Holat</label>
+                    <select name="status" id="editStatus"
+                        style="width:100%;padding:10px 12px;border-radius:9px;border:1.5px solid #e2e8f0;font-size:13px;font-family:inherit">
+                        <option value="draft">Tayyorlanmoqda</option>
+                        <option value="active">Faol</option>
+                        <option value="published">Nashr etilgan</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Tavsif</label>
+                <textarea name="description" id="editDesc" rows="2"
+                    style="width:100%;padding:10px 12px;border-radius:9px;border:1.5px solid #e2e8f0;font-size:13px;font-family:inherit;resize:vertical"></textarea>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                <div class="form-group">
+                    <label>Yangi muqova rasmi</label>
+                    <input type="file" name="cover_image" accept="image/*"
+                        style="width:100%;font-size:12px;padding:7px;border-radius:9px;border:1.5px dashed #e2e8f0;background:#fafbfc">
+                </div>
+                <div class="form-group">
+                    <label>To'liq tom PDF (qayta yuklash)</label>
+                    <input type="file" name="pdf_file" accept=".pdf"
+                        style="width:100%;font-size:12px;padding:7px;border-radius:9px;border:1.5px dashed #7c3aed;background:#faf5ff">
+                </div>
+            </div>
+            <div class="modal-btns">
+                <button type="button" class="btn-cancel" onclick="closeEditModal()">Bekor qilish</button>
+                <button type="submit" class="btn-save">✅ Saqlash</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function openEditModal(id, title, year, vol, issue, max, status, desc, subject) {
+    document.getElementById('editVolId').value   = id;
+    document.getElementById('editTitle').value   = title;
+    document.getElementById('editYear').value    = year;
+    document.getElementById('editVol').value     = vol;
+    document.getElementById('editIssue').value   = issue;
+    document.getElementById('editMax').value     = max;
+    document.getElementById('editStatus').value  = status;
+    document.getElementById('editDesc').value    = desc;
+    document.getElementById('editSubject').value = subject || 'mixed';
+    document.getElementById('editModal').classList.add('open');
+}
+function closeEditModal() {
+    document.getElementById('editModal').classList.remove('open');
+}
+document.getElementById('editModal').addEventListener('click', function(e) {
+    if (e.target === this) closeEditModal();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeEditModal(); });
+
+setTimeout(() => {
+    document.querySelectorAll('.msg').forEach(el => {
+        el.style.transition = 'opacity .5s'; el.style.opacity = 0;
+        setTimeout(() => el.remove(), 500);
+    });
+}, 4000);
+</script>
+</body>
+</html>

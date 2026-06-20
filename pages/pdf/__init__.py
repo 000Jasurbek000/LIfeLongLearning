@@ -1,0 +1,1 @@
+"""PDF generatsiya moduli."""

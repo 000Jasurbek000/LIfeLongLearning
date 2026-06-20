@@ -1,0 +1,313 @@
+{% load static site_i18n %}
+<!DOCTYPE html>
+<html lang="{{ current_language.html_lang }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{% block meta_description %}{% t 'base.footer.description' %}{% endblock %}">
+    <link rel="icon" type="image/png" href="{% static 'image/LOGO.png' %}">
+    <title>{% block title %}{% t 'base.brand.title' %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="preload" data-required-message="{% t 'common.form.required_fields' %}">
+    <!-- Header & Navigation -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="container">
+                <div class="nav-wrapper">
+                    <a href="{% url 'index' %}" class="logo">
+                        <img src="{% static 'image/LOGO 02.png' %}" alt="{% t 'base.brand.title' %}" class="logo-image logo-image-light">
+                        <img src="{% static 'image/LOGO.png' %}" alt="{% t 'base.brand.title' %}" class="logo-image logo-image-green">
+                    </a>
+                    <ul class="nav-menu">
+                        <li><a href="{% url 'index' %}" {% if request.resolver_match.url_name == 'index' %}class="active"{% endif %}>{% t 'base.nav.home' %}</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle{% if request.resolver_match.url_name == 'haqida' or request.resolver_match.url_name == 'tahrir_hayati' or request.resolver_match.url_name == 'jurnal_talablari' or request.resolver_match.url_name == 'meyoriy_hujjatlar' %} active{% endif %}">{% t 'base.nav.about' %} ▾</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{% url 'haqida' %}">{% t 'base.nav.about_overview' %}</a></li>
+                                <li><a href="{% url 'tahrir_hayati' %}">{% t 'base.nav.editorial_board' %}</a></li>
+                                <li><a href="{% url 'jurnal_talablari' %}">{% t 'base.nav.journal_requirements' %}</a></li>
+                                <li><a href="{% url 'meyoriy_hujjatlar' %}">{% t 'base.nav.regulatory_docs' %}</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="{% url 'arxiv' %}" {% if request.resolver_match.url_name == 'arxiv' or request.resolver_match.url_name == 'arxiv_detail' or request.resolver_match.url_name == 'arxiv_article_detail' %}class="active"{% endif %}>{% t 'base.nav.archive' %}</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle{% if request.resolver_match.url_name == 'yangiliklar' or request.resolver_match.url_name == 'yangilik_detail' or request.resolver_match.url_name == 'elonlar' or request.resolver_match.url_name == 'elon_detail' or request.resolver_match.url_name == 'aloqa' %} active{% endif %}">{% t 'base.nav.news' %} ▾</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{% url 'yangiliklar' %}">{% t 'base.nav.all_news' %}</a></li>
+                                <li><a href="{% url 'elonlar' %}">{% t 'base.nav.announcements' %}</a></li>
+                                <li><a href="{% url 'aloqa' %}">{% t 'base.nav.contact' %}</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    
+                    <!-- Search & Language Section -->
+                    <div class="header-actions">
+                        <!-- Advanced Search -->
+                        <div class="search-container">
+                            <button class="search-toggle" aria-label="{% t 'base.search.open_aria' %}">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <path d="m21 21-4.35-4.35"></path>
+                                </svg>
+                            </button>
+                            
+                            <div class="search-panel">
+                                <div class="search-panel-content">
+                                    <div class="search-header">
+                                        <h3>{% t 'base.search.title' %}</h3>
+                                        <button class="search-close" aria-label="{% t 'base.search.close_aria' %}">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="search-body">
+                                        <div class="search-input-group">
+                                            <div class="search-filter-select">
+                                                <select id="searchFilter" class="filter-select">
+                                                    <option value="title" selected>{% t 'base.search.filter.title' %}</option>
+                                                    <option value="author">{% t 'base.search.filter.author' %}</option>
+                                                    <option value="keywords">{% t 'base.search.filter.keywords' %}</option>
+                                                    <option value="all">{% t 'base.search.filter.all' %}</option>
+                                                </select>
+                                                <svg class="select-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                                </svg>
+                                            </div>
+                                            
+                                            <div class="search-input-wrapper">
+                                                <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <circle cx="11" cy="11" r="8"></circle>
+                                                    <path d="m21 21-4.35-4.35"></path>
+                                                </svg>
+                                                <input type="text" id="searchInput" class="search-input" placeholder="{% t 'base.search.placeholder' %}" autocomplete="off">
+                                                <button type="button" class="search-clear" aria-label="{% t 'base.search.clear' %}" style="display: none;">
+                                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                        <circle cx="12" cy="12" r="10"></circle>
+                                                        <line x1="15" y1="9" x2="9" y2="15"></line>
+                                                        <line x1="9" y1="9" x2="15" y2="15"></line>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                            
+                                            <button type="button" class="search-submit-btn" data-search-url="{% url 'qidiruv' %}">
+                                                {% t 'base.search.submit' %}
+                                            </button>
+                                        </div>
+                                        
+                                        <div class="search-suggestions">
+                                            <div class="suggestion-title">{% t 'base.search.popular_title' %}</div>
+                                            <div class="suggestion-tags">
+                                                <button class="suggestion-tag">{% t 'base.search.suggestions.quantum' %}</button>
+                                                <button class="suggestion-tag">{% t 'base.search.suggestions.ai' %}</button>
+                                                <button class="suggestion-tag">{% t 'base.search.suggestions.chemistry' %}</button>
+                                                <button class="suggestion-tag">{% t 'base.search.suggestions.biology' %}</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="search-overlay"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Language Selector -->
+                        <div class="language-selector">
+                            <button class="language-toggle" aria-label="{% t 'base.language.aria' %}">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                                </svg>
+                                <span class="current-lang">{{ current_language.short }}</span>
+                                <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </button>
+                            <div class="language-dropdown">
+                                {% for language in available_languages %}
+                                <a href="{% url 'set_language' language.code %}?next={{ request.get_full_path|urlencode }}" class="lang-option{% if current_language.code == language.code %} active{% endif %}" data-lang="{{ language.code }}">
+                                    <span class="lang-flag">{{ language.flag }}</span>
+                                    <span class="lang-name">{{ language.label }}</span>
+                                    <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <a href="{% url 'maqola_berish' %}" class="btn btn-primary{% if request.resolver_match.url_name == 'maqola_berish' %} active{% endif %}">{% t 'base.nav.submit_article' %}</a>
+                    <button class="mobile-menu-toggle">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    {% block content %}
+    {% endblock %}
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <div class="footer-logo">
+                        <div class="logo-icon">
+                            <span class="logo-text">IJ</span>
+                        </div>
+                        <div class="logo-content">
+                            <h3>{% t 'base.brand.title' %}</h3>
+                            <p>{% t 'base.brand.tagline' %}</p>
+                        </div>
+                    </div>
+                    <p class="footer-description">
+                        {% t 'base.footer.description' %}
+                    </p>
+                </div>
+                <div class="footer-column">
+                    <h4 class="footer-title">{% t 'base.footer.quick_links_title' %}</h4>
+                    <ul class="footer-links">
+                        <li><a href="{% url 'haqida' %}">{% t 'base.nav.about' %}</a></li>
+                        <li><a href="{% url 'tahrir_hayati' %}">{% t 'base.nav.editorial_board' %}</a></li>
+                        <li><a href="{% url 'jurnal_talablari' %}">{% t 'base.nav.journal_requirements' %}</a></li>
+                        <li><a href="{% url 'arxiv' %}">{% t 'base.nav.archive' %}</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4 class="footer-title">{% t 'base.footer.for_authors_title' %}</h4>
+                    <ul class="footer-links">
+                        <li><a href="{% url 'maqola_berish' %}">{% t 'base.nav.submit_article' %}</a></li>
+                        <li><a href="{% url 'jurnal_talablari' %}">{% t 'base.nav.journal_requirements' %}</a></li>
+                        <li><a href="{% url 'meyoriy_hujjatlar' %}">{% t 'base.nav.regulatory_docs' %}</a></li>
+                        <li><a href="{% url 'aloqa' %}">{% t 'common.links.help' %}</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4 class="footer-title">{% t 'base.footer.contact_title' %}</h4>
+                    <ul class="footer-contact">
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            <span>{% t 'base.footer.address' %}</span>
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                            <span><a href="mailto:lifelong1learning@gmail.com" style="color:inherit;text-decoration:none">lifelong1learning@gmail.com</a></span>
+                        </li>
+                        <li>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                            </svg>
+                            <span><a href="tel:+998977362011" style="color:inherit;text-decoration:none">+998 97 736 20 11</a></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>{% t 'base.footer.copyright' %}</p>
+                <div class="footer-social">
+                    <a href="#" aria-label="{% t 'base.footer.social.facebook' %}">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                        </svg>
+                    </a>
+                    <a href="#" aria-label="{% t 'base.footer.social.twitter' %}">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+                        </svg>
+                    </a>
+                    <a href="#" aria-label="{% t 'base.footer.social.linkedin' %}">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                            <rect x="2" y="9" width="4" height="12"></rect>
+                            <circle cx="4" cy="4" r="2"></circle>
+                        </svg>
+                    </a>
+                    <a href="https://t.me/XURSHID_HAMD11" target="_blank" aria-label="{% t 'base.footer.social.telegram' %}">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M21.198 2.433a2.242 2.242 0 0 0-1.022.215l-8.609 3.33c-2.068.805-4.133 1.598-5.724 2.21a205.505 205.505 0 0 1-2.849 1.09c-.42.147-.99.332-1.473.901-.728.968.193 1.798.919 2.286 1.61.997 3.309 1.783 4.97 2.664.344.184.668.383.998.563a.8.8 0 0 0 .278.046 1.146 1.146 0 0 0 .442-.103c.278-.14.48-.347.662-.572.573-.769 3.017-3.802 4.48-5.646a.376.376 0 0 1 .653.165.533.533 0 0 1-.091.352c-1.255 1.567-2.513 3.135-3.77 4.703-.425.53-.853 1.062-1.28 1.593-.048.06-.098.122-.145.184a1.9 1.9 0 0 0-.13.174c-.15.232-.283.488-.399.748-.377.878-.012 1.84.93 2.301 1.043.51 2.092 1.006 3.137 1.508.46.22.92.437 1.378.659.664.331 1.429.423 2.152.15.723-.274 1.303-.82 1.574-1.54.714-2.064 1.426-4.134 2.137-6.205.849-2.47 1.697-4.94 2.546-7.41.28-.811.514-1.641.681-2.485.124-.692.118-1.438-.317-2.024a1.845 1.845 0 0 0-.972-.66z"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/animations.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+    
+    <script>
+        // Remove preload class after page load
+        window.addEventListener('load', () => {
+            document.body.classList.remove('preload');
+            document.body.classList.add('page-loaded');
+        });
+    </script>
+    <!-- Newsletter Subscribe AJAX -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.js-subscribe-form').forEach(function(form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                var url = form.dataset.url;
+                var msgEl = form.querySelector('.js-subscribe-msg');
+                var data = new FormData(form);
+                fetch(url, {
+                    method: 'POST',
+                    body: data,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value
+                    }
+                })
+                    .then(function(r){ return r.json(); })
+                    .then(function(res) {
+                        if (msgEl) {
+                            msgEl.style.display = 'block';
+                            if (res.ok) {
+                                msgEl.style.background = '#d1fae5';
+                                msgEl.style.color = '#065f46';
+                                msgEl.style.border = '1px solid #6ee7b7';
+                                form.querySelector('input[name=full_name]') && (form.querySelector('input[name=full_name]').value = '');
+                                form.querySelector('input[name=email]') && (form.querySelector('input[name=email]').value = '');
+                            } else {
+                                msgEl.style.background = '#fee2e2';
+                                msgEl.style.color = '#991b1b';
+                                msgEl.style.border = '1px solid #fca5a5';
+                            }
+                            msgEl.textContent = res.msg;
+                        }
+                    })
+                    .catch(function() {
+                        if (msgEl) {
+                            msgEl.style.display = 'block';
+                            msgEl.style.background = '#fee2e2';
+                            msgEl.style.color = '#991b1b';
+                            msgEl.textContent = 'Xatolik yuz berdi. Qayta urinib ko\'ring.';
+                        }
+                    });
+            });
+        });
+    });
+    </script>
+</body>
+</html>

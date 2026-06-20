@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% load static site_i18n %}
+
+{% block title %}{% t 'news.meta_title' %}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/news-announcements.css' %}">
+{% endblock %}
+
+{% block content %}
+    <!-- Page Hero -->
+    <div data-header-style="accent">
+        <div class="page-hero">
+            <div class="container">
+                <h1 class="page-title">{% t 'news.hero.title' %}</h1>
+                <p class="page-subtitle">{% t 'news.hero.subtitle' %}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- News Section -->
+    <section class="content-section" data-header-style="accent">
+        <div class="container">
+            <div class="content-layout">
+                <!-- Main Content -->
+                <div class="main-content">
+                    <div class="news-header">
+                        <div class="news-stats">
+                            <span class="stat-badge">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                                </svg>
+                                {{ total_news }} {% t 'news.count_suffix' %}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="news-grid">
+                        {% for news in news_items %}
+                        <article class="news-card-full">
+                            <div class="news-image">
+                                <img src="{{ news.image }}" alt="{{ news.title }}">
+                                <span class="news-category">{{ news.category }}</span>
+                            </div>
+                            <div class="news-body">
+                                <div class="news-meta">
+                                    <span class="news-date">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <polyline points="12 6 12 12 16 14"></polyline>
+                                        </svg>
+                                        {{ news.date }}
+                                    </span>
+                                    <span class="news-author">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                            <circle cx="12" cy="7" r="4"></circle>
+                                        </svg>
+                                        {{ news.author }}
+                                    </span>
+                                    <span class="news-views">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                            <circle cx="12" cy="12" r="3"></circle>
+                                        </svg>
+                                        {{ news.views }}
+                                    </span>
+                                </div>
+                                <h2 class="news-title-large">
+                                    <a href="{% url 'yangilik_detail' news.slug %}">{{ news.title }}</a>
+                                </h2>
+                                <p class="news-excerpt">{{ news.excerpt }}</p>
+                                <a href="{% url 'yangilik_detail' news.slug %}" class="read-more-link">
+                                    <span>{% t 'common.actions.read_more' %}</span>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        <polyline points="12 5 19 12 12 19"></polyline>
+                                    </svg>
+                                </a>
+                            </div>
+                        </article>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+                <aside class="sidebar">
+                    <!-- Categories -->
+                    <div class="sidebar-widget">
+                        <h3 class="widget-title">{% t 'common.labels.categories' %}</h3>
+                        <div class="category-list">
+                            {% for category, count in categories.items %}
+                            <a href="#" class="category-item">
+                                <span class="category-name">{{ category }}</span>
+                                <span class="category-count">{{ count }}</span>
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Popular Articles -->
+                    <div class="sidebar-widget">
+                        <h3 class="widget-title">{% t 'common.labels.popular_articles' %}</h3>
+                        <div class="popular-list">
+                            {% for article in popular_articles|slice:":5" %}
+                            <div class="popular-item">
+                                <div class="popular-meta">
+                                    <span class="popular-date">{{ article.date }}</span>
+                                </div>
+                                <h4 class="popular-title">{{ article.title }}</h4>
+                                <p class="popular-authors">{{ article.authors }}</p>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Newsletter Subscribe -->
+                    <div class="sidebar-widget newsletter-widget">
+                        <h3 class="widget-title">{% t 'common.newsletter.title' %}</h3>
+                        <p class="widget-description">{% t 'common.newsletter.description' %}</p>
+                        <form class="newsletter-form js-subscribe-form" data-url="{% url 'subscribe' %}">
+                            {% csrf_token %}
+                            <input type="text" name="full_name" placeholder="F.I.O" required style="margin-bottom:6px;width:100%;padding:8px 12px;border:1.5px solid #e2e8f0;border-radius:7px;font-size:13px">
+                            <input type="email" name="email" placeholder="{% t 'common.placeholders.email' %}" required style="margin-bottom:6px;width:100%;padding:8px 12px;border:1.5px solid #e2e8f0;border-radius:7px;font-size:13px">
+                            <button type="submit" class="btn btn-primary btn-small">{% t 'common.actions.subscribe' %}</button>
+                            <div class="js-subscribe-msg" style="display:none;margin-top:8px;padding:8px 12px;border-radius:7px;font-size:12px;font-weight:500"></div>
+                        </form>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
+{% endblock %}

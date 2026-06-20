@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taqrizchilar — Admin Panel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter','Segoe UI',sans-serif; background: #f0f4f8; min-height: 100vh; padding: 24px; }
+        .container { max-width: 1100px; margin: 0 auto; }
+
+        .header {
+            background: linear-gradient(135deg, #02AB6F 0%, #0288D1 100%);
+            border-radius: 16px; padding: 24px 32px; margin-bottom: 24px;
+            display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+        }
+        .header h1 { color: white; font-size: 22px; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+        .header p  { color: rgba(255,255,255,.8); font-size: 13px; margin-top: 3px; }
+        .back-btn {
+            background: rgba(255,255,255,.2); color: white;
+            border: 1px solid rgba(255,255,255,.35);
+            padding: 9px 18px; border-radius: 10px;
+            text-decoration: none; font-size: 13px; font-weight: 600;
+        }
+        .back-btn:hover { background: rgba(255,255,255,.35); }
+
+        .msg { padding: 12px 16px; border-radius: 10px; font-size: 13px; font-weight: 600; margin-bottom: 16px; }
+        .msg-success { background: #d1fae5; color: #065f46; border-left: 4px solid #10b981; }
+        .msg-error   { background: #fee2e2; color: #991b1b; border-left: 4px solid #ef4444; }
+
+        .layout { display: grid; grid-template-columns: 1fr 360px; gap: 20px; }
+
+        /* Ro'yxat */
+        .card { background: white; border-radius: 16px; padding: 22px 24px; border: 1px solid #e2e8f0; }
+        .card h2 { font-size: 15px; font-weight: 700; color: #334155; margin-bottom: 18px; }
+
+        .reviewer-item {
+            display: flex; align-items: center; gap: 14px;
+            padding: 14px 0; border-bottom: 1px solid #f1f5f9;
+        }
+        .reviewer-item:last-child { border-bottom: none; }
+
+        .r-avatar {
+            width: 48px; height: 48px; border-radius: 50%; object-fit: cover;
+            border: 2px solid #e2e8f0; flex-shrink: 0;
+        }
+        .r-avatar-ph {
+            width: 48px; height: 48px; border-radius: 50%;
+            background: linear-gradient(135deg,#02AB6F,#0288D1);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; font-weight: 800; color: white; flex-shrink: 0;
+        }
+        .r-info { flex: 1; }
+        .r-name { font-size: 14px; font-weight: 700; color: #1e293b; }
+        .r-pos  { font-size: 12px; color: #64748b; margin-top: 2px; }
+        .r-meta { display: flex; gap: 8px; margin-top: 5px; flex-wrap: wrap; }
+        .chip {
+            font-size: 11px; padding: 2px 9px; border-radius: 20px;
+            background: #f1f5f9; color: #475569; font-weight: 600;
+        }
+        .chip-yellow { background: #fef3c7; color: #92400e; }
+        .chip-green  { background: #d1fae5; color: #065f46; }
+
+        .r-actions { display: flex; gap: 6px; flex-shrink: 0; }
+        .btn-del {
+            background: #fee2e2; color: #991b1b;
+            border: 1px solid #fecaca; padding: 6px 14px;
+            border-radius: 8px; font-size: 12px; font-weight: 600;
+            cursor: pointer; transition: all .2s;
+        }
+        .btn-del:hover { background: #ef4444; color: white; }
+        .btn-edit {
+            background: #eff6ff; color: #2563eb;
+            border: 1px solid #bfdbfe; padding: 6px 14px;
+            border-radius: 8px; font-size: 12px; font-weight: 600;
+            cursor: pointer; transition: all .2s;
+        }
+        .btn-edit:hover { background: #2563eb; color: white; }
+
+        /* Yaratish formasi */
+        .create-card { background: white; border-radius: 16px; padding: 22px 24px; border: 1px solid #e2e8f0; height: fit-content; }
+        .create-card h2 { font-size: 15px; font-weight: 700; color: #334155; margin-bottom: 18px; }
+        .form-group { margin-bottom: 14px; }
+        .form-group label { display: block; font-size: 12px; font-weight: 600; color: #475569; margin-bottom: 5px; }
+        .form-group input[type=text],
+        .form-group input[type=password] {
+            width: 100%; padding: 10px 12px; border-radius: 9px;
+            border: 1.5px solid #e2e8f0; font-size: 13px; font-family: inherit;
+            transition: border .2s;
+        }
+        .form-group input:focus { outline: none; border-color: #02AB6F; }
+        .form-group input[type=file] { width: 100%; font-size: 12px; padding: 7px; border-radius: 9px; border: 1.5px dashed #e2e8f0; background: #fafbfc; }
+        .btn-create {
+            width: 100%; padding: 11px; background: linear-gradient(135deg,#02AB6F,#0288D1);
+            color: white; border: none; border-radius: 10px;
+            font-size: 14px; font-weight: 700; cursor: pointer; transition: opacity .2s;
+        }
+        .btn-create:hover { opacity: .9; }
+        .divider { border: none; border-top: 1px solid #f1f5f9; margin: 14px 0; }
+
+        .empty { text-align: center; padding: 40px 20px; color: #94a3b8; }
+        .empty .icon { font-size: 36px; margin-bottom: 8px; }
+
+        @media(max-width:700px) { .layout { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+<div class="container">
+
+{% include 'admin/includes/admin_nav.html' %}
+
+    <div class="header">
+        <div>
+            <h1>🔬 Taqrizchilar</h1>
+            <p>Taqrizchilarni boshqarish va yangi taqrizchi yaratish</p>
+        </div>
+    </div>
+
+    {% if msg %}
+    <div class="msg {% if msg.0 == 'success' %}msg-success{% else %}msg-error{% endif %}">{{ msg.1 }}</div>
+    {% endif %}
+
+    <div class="layout">
+
+        <!-- Ro'yxat -->
+        <div class="card">
+            <h2>👥 Barcha taqrizchilar ({{ reviewers|length }} ta)</h2>
+            {% if reviewers %}
+            {% for r in reviewers %}
+            <div class="reviewer-item">
+                {% if r.photo %}
+                <img src="{{ r.photo.url }}" class="r-avatar" alt="{{ r.full_name }}">
+                {% else %}
+                <div class="r-avatar-ph">{{ r.full_name.0|upper }}</div>
+                {% endif %}
+                <div class="r-info">
+                    <div class="r-name">{{ r.full_name }}</div>
+                    {% if r.position %}<div class="r-pos">🏢 {{ r.position }}</div>{% endif %}
+                    <div class="r-meta">
+                        <span class="chip">👤 {{ r.user.username }}</span>
+                        <span class="chip" style="background:#ede9fe;color:#5b21b6">🎓 {{ r.get_specialization_display }}</span>
+                        {% if r.pending_count > 0 %}
+                        <span class="chip chip-yellow">⏳ {{ r.pending_count }} yangi</span>
+                        {% endif %}
+                        {% if r.reviewed_count > 0 %}
+                        <span class="chip chip-green">✅ {{ r.reviewed_count }} ko'rildi</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="r-actions">
+                    <button class="btn-edit" onclick="openEditModal({{ r.pk }}, '{{ r.full_name|escapejs }}', '{{ r.position|escapejs }}', '{{ r.specialization }}', '{{ r.user.username }}')">✏️ Tahrirlash</button>
+                    <form method="POST" onsubmit="return confirm('Haqiqatan o\'chirish kerakmi? Uning barcha taqriz ma\'lumotlari o\'chadi!')">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="delete">
+                        <input type="hidden" name="reviewer_id" value="{{ r.pk }}">
+                        <button type="submit" class="btn-del">🗑 O'chirish</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="empty">
+                <div class="icon">🔬</div>
+                <p>Hali taqrizchi yo'q</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Yaratish -->
+        <div class="create-card">
+            <h2>➕ Yangi taqrizchi yaratish</h2>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="create">
+                <div class="form-group">
+                    <label>F.I.O *</label>
+                    <input type="text" name="full_name" placeholder="Aliyev Alisher Alievich" required>
+                </div>
+                <div class="form-group">
+                    <label>Lavozimi</label>
+                    <input type="text" name="position" placeholder="Professor, Kimyo fanlari doktori">
+                </div>
+                <div class="form-group">
+                    <label>Yo'nalishi *</label>
+                    <select name="specialization" style="width:100%;padding:10px 12px;border-radius:9px;border:1.5px solid #e2e8f0;font-size:13px;font-family:inherit">
+                        <option value="chemistry">🧪 Kimyo fanlari</option>
+                        <option value="technology">⚙️ Texnologiya fanlari</option>
+                        <option value="materials">🔩 Materialshunoslik va nanotexnologiyalar</option>
+                        <option value="ecology">🌿 Atrof-muhit muhofazasi va ekologiya</option>
+                        <option value="biotechnology">🧬 Biotexnologiya va biokimyo</option>
+                    </select>
+                </div>
+                <hr class="divider">
+                <div class="form-group">
+                    <label>Username (kirish uchun) *</label>
+                    <input type="text" name="username" placeholder="aliyev_a" required autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label>Parol *</label>
+                    <input type="password" name="password" placeholder="Parol kiriting" required autocomplete="new-password">
+                </div>
+                <div class="form-group">
+                    <label>Rasm (ixtiyoriy)</label>
+                    <input type="file" name="photo" accept="image/*">
+                </div>
+                <button type="submit" class="btn-create">➕ Taqrizchi yaratish</button>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<!-- TAHRIRLASH MODALI -->
+<div class="modal-overlay" id="editModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:999;align-items:center;justify-content:center">
+    <div style="background:white;border-radius:18px;padding:28px 30px;width:100%;max-width:460px;max-height:90vh;overflow-y:auto">
+        <h2 style="font-size:17px;font-weight:800;color:#1e293b;margin-bottom:18px">✏️ Taqrizchini tahrirlash</h2>
+        <form method="POST" enctype="multipart/form-data" id="editForm">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="edit">
+            <input type="hidden" name="reviewer_id" id="editReviewerId">
+            <div style="margin-bottom:13px">
+                <label style="display:block;font-size:12px;font-weight:600;color:#475569;margin-bottom:5px">F.I.O *</label>
+                <input type="text" name="full_name" id="editFullName" required
+                    style="width:100%;padding:10px 12px;border-radius:9px;border:1.5px solid #e2e8f0;font-size:13px;font-family:inherit">
+            </div>
+            <div style="margin-bottom:13px">
+                <label style="display:block;font-size:12px;font-weight:600;color:#475569;margin-bottom:5px">Lavozimi</label>
+                <input type="text" name="position" id="editPosition"
+                    style="width:100%;padding:10px 12px;border-radius:9px;border:1.5px solid #e2e8f0;font-size:13px;font-family:inherit">
+            </div>
+            <div style="margin-bottom:13px">
+                <label style="display:block;font-size:12px;font-weight:600;color:#475569;margin-bottom:5px">Yo'nalishi *</label>
+                <select name="specialization" id="editSpecialization"
+                    style="width:100%;padding:10px 12px;border-radius:9px;border:1.5px solid #e2e8f0;font-size:13px;font-family:inherit">
+                    <option value="chemistry">🧪 Kimyo fanlari</option>
+                    <option value="technology">⚙️ Texnologiya fanlari</option>
+                    <option value="materials">🔩 Materialshunoslik va nanotexnologiyalar</option>
+                    <option value="ecology">🌿 Atrof-muhit muhofazasi va ekologiya</option>
+                    <option value="biotechnology">🧬 Biotexnologiya va biokimyo</option>
+                </select>
+            </div>
+            <hr style="border:none;border-top:1px solid #f1f5f9;margin:14px 0">
+            <div style="margin-bottom:13px">
+                <label style="display:block;font-size:12px;font-weight:600;color:#475569;margin-bottom:5px">Username *</label>
+                <input type="text" name="username" id="editUsername" required autocomplete="off"
+                    style="width:100%;padding:10px 12px;border-radius:9px;border:1.5px solid #e2e8f0;font-size:13px;font-family:inherit">
+            </div>
+            <div style="margin-bottom:13px">
+                <label style="display:block;font-size:12px;font-weight:600;color:#475569;margin-bottom:5px">Yangi parol <span style="color:#94a3b8;font-weight:400">(bo'sh qoldirsangiz o'zgarmaydi)</span></label>
+                <input type="password" name="new_password" placeholder="Yangi parol" autocomplete="new-password"
+                    style="width:100%;padding:10px 12px;border-radius:9px;border:1.5px solid #e2e8f0;font-size:13px;font-family:inherit">
+            </div>
+            <div style="margin-bottom:18px">
+                <label style="display:block;font-size:12px;font-weight:600;color:#475569;margin-bottom:5px">Yangi rasm <span style="color:#94a3b8;font-weight:400">(ixtiyoriy)</span></label>
+                <input type="file" name="photo" accept="image/*"
+                    style="width:100%;font-size:12px;padding:7px;border-radius:9px;border:1.5px dashed #e2e8f0;background:#fafbfc">
+            </div>
+            <div style="display:flex;gap:10px">
+                <button type="button" onclick="closeEditModal()"
+                    style="flex:1;padding:11px;border:1.5px solid #e2e8f0;background:white;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer">Bekor qilish</button>
+                <button type="submit"
+                    style="flex:1;padding:11px;background:linear-gradient(135deg,#2563eb,#6366f1);color:white;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer">✅ Saqlash</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openEditModal(id, fullName, position, spec, username) {
+        document.getElementById('editReviewerId').value = id;
+        document.getElementById('editFullName').value = fullName;
+        document.getElementById('editPosition').value = position;
+        document.getElementById('editSpecialization').value = spec;
+        document.getElementById('editUsername').value = username;
+        const m = document.getElementById('editModal');
+        m.style.display = 'flex';
+        setTimeout(() => m.style.opacity = 1, 10);
+    }
+    function closeEditModal() {
+        document.getElementById('editModal').style.display = 'none';
+    }
+    document.getElementById('editModal').addEventListener('click', function(e) {
+        if (e.target === this) closeEditModal();
+    });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeEditModal(); });
+
+    setTimeout(() => {
+        document.querySelectorAll('.msg').forEach(el => {
+            el.style.transition = 'opacity .5s'; el.style.opacity = 0;
+            setTimeout(() => el.remove(), 500);
+        });
+    }, 4000);
+</script>
+</body>
+</html>

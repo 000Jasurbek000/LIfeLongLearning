@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foydalanuvchilar - Admin Panel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: #f0f4f8;
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        .container { max-width: 1300px; margin: 0 auto; }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #02AB6F 0%, #0288D1 100%);
+            border-radius: 16px;
+            padding: 24px 32px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .header-left h1 {
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-left p {
+            color: rgba(255,255,255,0.8);
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        .badge {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 10px 22px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .badge .num { font-size: 22px; font-weight: 800; }
+        .badge .lbl { font-size: 11px; opacity: 0.9; }
+
+        .badge-warn {
+            background: rgba(245, 158, 11, 0.25);
+            color: white;
+            padding: 10px 22px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(245, 158, 11, 0.5);
+        }
+
+        .badge-warn .num { font-size: 22px; font-weight: 800; }
+        .badge-warn .lbl { font-size: 11px; opacity: 0.9; }
+
+        /* Toolbar */
+        .toolbar {
+            background: white;
+            border-radius: 12px;
+            padding: 14px 20px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .search-form {
+            flex: 1;
+            min-width: 250px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .search-input-wrap {
+            position: relative;
+            flex: 1;
+        }
+
+        .search-input-wrap input {
+            width: 100%;
+            padding: 9px 14px 9px 36px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 13px;
+            background: #f8fafc;
+            transition: all 0.2s;
+        }
+
+        .search-input-wrap input:focus {
+            outline: none;
+            border-color: #02AB6F;
+            background: white;
+        }
+
+        .search-input-wrap .si {
+            position: absolute;
+            left: 11px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 13px;
+        }
+
+        .btn {
+            padding: 9px 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .btn-green { background: linear-gradient(135deg, #02AB6F, #0288D1); color: white; }
+        .btn-gray { background: #f1f5f9; color: #475569; border: 1.5px solid #e2e8f0; }
+        .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+        /* Table */
+        .table-wrap {
+            background: white;
+            border-radius: 14px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            overflow: hidden;
+        }
+
+        table { width: 100%; border-collapse: collapse; }
+
+        thead { background: linear-gradient(135deg, #02AB6F 0%, #0288D1 100%); }
+
+        thead th {
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 13px 16px;
+            text-align: left;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #f1f5f9;
+            transition: background 0.15s;
+        }
+
+        tbody tr:hover { background: #f8fafc; }
+        tbody tr:last-child { border-bottom: none; }
+
+        tbody tr.has-pending {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+        }
+
+        tbody tr.has-pending:hover { background: #fef3c7; }
+
+        tbody td {
+            padding: 12px 16px;
+            font-size: 13px;
+            color: #374151;
+            vertical-align: middle;
+        }
+
+        .user-cell { display: flex; align-items: center; gap: 11px; }
+
+        .avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #02AB6F, #0288D1);
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .uname { font-weight: 600; font-size: 13px; color: #1e293b; }
+        .uname-link { text-decoration: none; }
+        .uname-link:hover .uname { color: #02AB6F; text-decoration: underline; }
+        .uphone { font-size: 11px; color: #64748b; margin-top: 2px; }
+
+        .degree-tag {
+            background: rgba(2, 171, 111, 0.1);
+            color: #02AB6F;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+
+        .wplace {
+            max-width: 180px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: #64748b;
+            font-size: 12px;
+            display: block;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 34px;
+            height: 26px;
+            padding: 0 10px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .p-blue   { background: #dbeafe; color: #1d4ed8; }
+        .p-green  { background: #dcfce7; color: #15803d; }
+        .p-red    { background: #fee2e2; color: #b91c1c; }
+        .p-yellow { background: #fef9c3; color: #a16207; }
+
+        /* Empty state */
+        .empty { text-align: center; padding: 60px 20px; }
+        .empty-icon { font-size: 52px; margin-bottom: 14px; opacity: 0.3; }
+        .empty h3 { color: #94a3b8; font-size: 17px; }
+
+        @media (max-width: 768px) {
+            .table-wrap { overflow-x: auto; }
+            .wplace { max-width: 100px; }
+            body { padding: 12px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+{% include 'admin/includes/admin_nav.html' %}
+
+    <!-- Header -->
+    <div class="header">
+        <div class="header-left">
+            <h1>👥 Foydalanuvchilar</h1>
+            <p>Maqola yuborgan barcha foydalanuvchilar ro'yxati</p>
+        </div>
+        <div class="badge">
+            <div class="num">{{ total_authors }}</div>
+            <div class="lbl">Jami foydalanuvchi</div>
+        </div>
+        {% with pending_count=authors|length %}
+        {% endwith %}
+    </div>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+        <form method="GET" class="search-form">
+            {% if status_filter %}<input type="hidden" name="status" value="{{ status_filter }}">{% endif %}
+            <div class="search-input-wrap">
+                <span class="si">🔍</span>
+                <input type="text" name="search" placeholder="Ism, telefon yoki ish joyi..." value="{{ search_query }}">
+            </div>
+            <button type="submit" class="btn btn-green">Qidirish</button>
+            {% if search_query or status_filter %}<a href="?" class="btn btn-gray">✕ Tozalash</a>{% endif %}
+        </form>
+        <a href="/admin/" class="btn btn-gray">⬅ Admin panelga qaytish</a>
+    </div>
+
+    <!-- Status filtrlari -->
+    <div style="display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap">
+        <a href="?{% if search_query %}search={{ search_query }}&{% endif %}" 
+           style="padding:7px 16px;border-radius:20px;font-size:13px;font-weight:600;text-decoration:none;border:1.5px solid {% if not status_filter %}#02AB6F;background:#02AB6F;color:white{% else %}#e2e8f0;background:white;color:#475569{% endif %}">
+            📌 Hammasi
+        </a>
+        <a href="?{% if search_query %}search={{ search_query }}&{% endif %}status=pending"
+           style="padding:7px 16px;border-radius:20px;font-size:13px;font-weight:600;text-decoration:none;border:1.5px solid {% if status_filter == 'pending' %}#f59e0b;background:#f59e0b;color:white{% else %}#fcd34d;background:#fffbeb;color:#92400e{% endif %}">
+            ⏳ Kutilmoqda
+        </a>
+        <a href="?{% if search_query %}search={{ search_query }}&{% endif %}status=approved"
+           style="padding:7px 16px;border-radius:20px;font-size:13px;font-weight:600;text-decoration:none;border:1.5px solid {% if status_filter == 'approved' %}#10b981;background:#10b981;color:white{% else %}#6ee7b7;background:#f0fdf4;color:#065f46{% endif %}">
+            ✅ Tasdiqlangan bor
+        </a>
+        <a href="?{% if search_query %}search={{ search_query }}&{% endif %}status=rejected"
+           style="padding:7px 16px;border-radius:20px;font-size:13px;font-weight:600;text-decoration:none;border:1.5px solid {% if status_filter == 'rejected' %}#ef4444;background:#ef4444;color:white{% else %}#fca5a5;background:#fff5f5;color:#991b1b{% endif %}">
+            ❌ Rad etilgan bor
+        </a>
+    </div>
+
+    <!-- Table -->
+    {% if authors %}
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th style="width:40px">#</th>
+                    <th>Foydalanuvchi</th>
+                    <th>Ilmiy daraja</th>
+                    <th>Ish joyi</th>
+                    <th style="text-align:center">Jami</th>
+                    <th style="text-align:center">✅ Tasdiqlangan</th>
+                    <th style="text-align:center">❌ Rad etilgan</th>
+                    <th style="text-align:center">⏳ Kutilmoqda</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for author in authors %}
+                <tr{% if author.kutilmoqda > 0 %} class="has-pending"{% endif %}>
+                    <td style="color:#94a3b8; font-size:12px">{{ forloop.counter }}</td>
+                    <td>
+                        <div class="user-cell">
+                            <div class="avatar">{{ author.full_name.0|upper }}</div>
+                            <div>
+                                <a href="{% url 'admin_foydalanuvchi_detail' author.pk %}" class="uname-link">
+                                    <div class="uname">{{ author.full_name }}</div>
+                                </a>
+                                <div class="uphone">📱 {{ author.phone }}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        {% if author.academic_degree %}
+                        <span class="degree-tag">{{ author.academic_degree }}</span>
+                        {% else %}<span style="color:#cbd5e1">—</span>{% endif %}
+                    </td>
+                    <td>
+                        {% if author.workplace %}
+                        <span class="wplace" title="{{ author.workplace }}">{{ author.workplace }}</span>
+                        {% else %}<span style="color:#cbd5e1">—</span>{% endif %}
+                    </td>
+                    <td style="text-align:center"><span class="pill p-blue">{{ author.total }}</span></td>
+                    <td style="text-align:center"><span class="pill p-green">{{ author.tasdiqlangan }}</span></td>
+                    <td style="text-align:center"><span class="pill p-red">{{ author.rad_etilgan }}</span></td>
+                    <td style="text-align:center"><span class="pill p-yellow">{{ author.kutilmoqda }}</span>
+                        {% if author.kutilmoqda > 0 %}
+                        <span style="font-size:16px; margin-left:4px;" title="Yangi maqolalar kutilmoqda">🔔</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="table-wrap">
+        <div class="empty">
+            <div class="empty-icon">🔍</div>
+            <h3>{% if search_query %}Hech narsa topilmadi{% else %}Hozircha foydalanuvchilar yo'q{% endif %}</h3>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+</body>
+</html>

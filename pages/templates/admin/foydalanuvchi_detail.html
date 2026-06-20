@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ author.full_name }} — Maqolalar</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: #f0f4f8;
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        .container { max-width: 1100px; margin: 0 auto; }
+
+        /* Messages */
+        .messages { margin-bottom: 16px; }
+        .msg {
+            padding: 12px 18px; border-radius: 10px;
+            font-size: 13px; font-weight: 600; margin-bottom: 8px;
+        }
+        .msg-success { background: #d1fae5; color: #065f46; border-left: 4px solid #10b981; }
+        .msg-error   { background: #fee2e2; color: #991b1b; border-left: 4px solid #ef4444; }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #02AB6F 0%, #0288D1 100%);
+            border-radius: 16px; padding: 24px 32px; margin-bottom: 24px;
+            display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+        }
+        .back-btn {
+            background: rgba(255,255,255,0.2); color: white;
+            border: 1px solid rgba(255,255,255,0.35);
+            padding: 9px 18px; border-radius: 10px;
+            text-decoration: none; font-size: 13px; font-weight: 600;
+            white-space: nowrap; transition: background .2s;
+        }
+        .back-btn:hover { background: rgba(255,255,255,0.35); }
+        .avatar-big {
+            width: 60px; height: 60px;
+            background: rgba(255,255,255,0.25); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 26px; font-weight: 800; color: white;
+            border: 2px solid rgba(255,255,255,0.45); flex-shrink: 0;
+        }
+        .author-info h1 { color: white; font-size: 22px; font-weight: 700; }
+        .author-info .meta {
+            color: rgba(255,255,255,0.85); font-size: 13px; margin-top: 4px;
+            display: flex; gap: 16px; flex-wrap: wrap;
+        }
+        .stats-row { margin-left: auto; display: flex; gap: 10px; flex-wrap: wrap; }
+        .stat-chip {
+            background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 10px; padding: 10px 18px; text-align: center; color: white;
+        }
+        .stat-chip .num { font-size: 20px; font-weight: 800; }
+        .stat-chip .lbl { font-size: 11px; opacity: .85; }
+
+        /* Section title */
+        .section-title {
+            font-size: 15px; font-weight: 700; color: #334155;
+            margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+        }
+
+        /* Maqola karta */
+        .article-card {
+            background: white; border-radius: 14px;
+            margin-bottom: 16px; border: 1.5px solid #e2e8f0;
+            overflow: hidden; transition: box-shadow .2s;
+        }
+        .article-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,.07); }
+        .article-card.pending  { border-left: 5px solid #f59e0b; }
+        .article-card.approved { border-left: 5px solid #10b981; }
+        .article-card.rejected { border-left: 5px solid #ef4444; }
+
+        .card-top {
+            padding: 16px 20px; display: flex; align-items: flex-start; gap: 14px;
+        }
+        .card-num {
+            width: 32px; height: 32px; border-radius: 8px; background: #f1f5f9;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 13px; font-weight: 700; color: #64748b;
+            flex-shrink: 0; margin-top: 2px;
+        }
+        .card-main { flex: 1; min-width: 0; }
+        .card-title { font-size: 15px; font-weight: 700; color: #1e293b; line-height: 1.4; margin-bottom: 8px; }
+        .card-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 12px; color: #64748b; }
+
+        /* Badge */
+        .badge { padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+        .badge-pending  { background: #fef3c7; color: #92400e; }
+        .badge-approved { background: #d1fae5; color: #065f46; }
+        .badge-rejected { background: #fee2e2; color: #991b1b; }
+        .badge-paid     { background: #dbeafe; color: #1e40af; }
+
+        /* Expand button */
+        .expand-btn {
+            background: #f1f5f9; border: none; cursor: pointer;
+            display: inline-flex; align-items: center; gap: 4px;
+            font-size: 11px; color: #64748b; padding: 3px 10px;
+            border-radius: 20px; transition: background .15s;
+        }
+        .expand-btn:hover { background: #e2e8f0; }
+        .toggle-icon { transition: transform .25s; display: inline-block; font-style: normal; }
+        .article-card.open .toggle-icon { transform: rotate(180deg); }
+
+        /* Action tugmalar */
+        .card-actions {
+            padding: 0 20px 14px 66px;
+            display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
+        }
+        .btn {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 8px 16px; border-radius: 9px;
+            font-size: 12px; font-weight: 600; cursor: pointer;
+            border: none; text-decoration: none; transition: all .2s;
+        }
+        .btn-approve { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+        .btn-approve:hover { background: #10b981; color: white; }
+        .btn-payment { background: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
+        .btn-payment:hover { background: #3b82f6; color: white; }
+        .btn-reject  { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+        .btn-reject:hover  { background: #ef4444; color: white; }
+        .btn-pdf { background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; }
+        .btn-pdf:hover { background: #e2e8f0; }
+
+        .payment-sent-info {
+            font-size: 11px; color: #64748b; background: #f8fafc;
+            border-radius: 8px; padding: 4px 10px; border: 1px solid #e2e8f0;
+        }
+
+        /* Rad etish sababi blok */
+        .rejection-note {
+            margin: 0 20px 14px 66px;
+            background: #fff5f5; border-radius: 10px;
+            padding: 12px 16px; border-left: 3px solid #ef4444;
+        }
+        .rejection-note .rn-label { font-size: 11px; font-weight: 700; color: #ef4444; margin-bottom: 4px; }
+        .rejection-note .rn-text  { font-size: 13px; color: #374151; white-space: pre-wrap; }
+
+        /* Tarix */
+        .history-body {
+            display: none; padding: 0 20px 16px 66px;
+            border-top: 1px dashed #e2e8f0; background: #fafbfc;
+        }
+        .article-card.open .history-body { display: block; }
+        .history-title {
+            font-size: 11px; font-weight: 700; color: #94a3b8;
+            text-transform: uppercase; letter-spacing: .05em; margin: 14px 0 10px;
+        }
+        .history-list { display: flex; flex-direction: column; gap: 8px; }
+        .history-item {
+            background: white; border-radius: 10px; padding: 11px 16px;
+            display: flex; align-items: flex-start; gap: 12px; border: 1px solid #e2e8f0;
+        }
+        .history-item.current { border-color: #bfdbfe; background: #eff6ff; }
+        .h-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+        .h-dot.pending  { background: #f59e0b; }
+        .h-dot.approved { background: #10b981; }
+        .h-dot.rejected { background: #ef4444; }
+        .h-info { flex: 1; font-size: 12px; color: #334155; }
+        .h-label { font-weight: 600; }
+        .h-date  { color: #94a3b8; font-size: 11px; margin-top: 2px; }
+        .h-note  { color: #ef4444; margin-top: 4px; font-style: italic; font-size: 11px; }
+
+        /* Extra info */
+        .extra-info { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+        .extra-item { background: white; border-radius: 8px; padding: 8px 12px; font-size: 12px; border: 1px solid #e2e8f0; }
+        .extra-item .key { color: #94a3b8; font-size: 11px; margin-bottom: 2px; }
+        .extra-item .val { color: #334155; font-weight: 500; line-height: 1.5; }
+
+        /* Bo'sh holat */
+        .empty-state { text-align: center; padding: 60px 20px; color: #94a3b8; }
+        .empty-state .icon { font-size: 48px; margin-bottom: 12px; }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,.5); z-index: 1000;
+            align-items: center; justify-content: center;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal {
+            background: white; border-radius: 16px;
+            width: 100%; max-width: 520px; padding: 28px;
+            box-shadow: 0 20px 60px rgba(0,0,0,.25); margin: 16px;
+        }
+        .modal h2 { font-size: 18px; font-weight: 700; color: #1e293b; margin-bottom: 10px; }
+        .modal-article-name {
+            font-size: 13px; background: #fef3c7; color: #78350f;
+            border-radius: 8px; padding: 10px 14px; margin-bottom: 18px;
+            border-left: 3px solid #f59e0b;
+        }
+        .modal label { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px; }
+        .modal textarea {
+            width: 100%; padding: 12px; border-radius: 10px;
+            border: 1.5px solid #e2e8f0; font-size: 13px; resize: vertical;
+            font-family: inherit; min-height: 120px; transition: border .2s;
+        }
+        .modal textarea:focus { outline: none; border-color: #ef4444; }
+        .modal .file-wrap { margin-top: 14px; }
+        .modal input[type=file] {
+            width: 100%; padding: 9px; border-radius: 10px;
+            border: 1.5px dashed #e2e8f0; font-size: 12px;
+            background: #fafbfc; cursor: pointer;
+        }
+        .modal-btns { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
+        .btn-cancel {
+            padding: 9px 20px; border-radius: 9px; border: 1.5px solid #e2e8f0;
+            background: white; font-size: 13px; font-weight: 600; color: #64748b; cursor: pointer;
+        }
+        .btn-cancel:hover { background: #f1f5f9; }
+        .btn-submit-reject {
+            padding: 9px 20px; border-radius: 9px; background: #ef4444;
+            color: white; border: none; font-size: 13px; font-weight: 600; cursor: pointer;
+        }
+        .btn-submit-reject:hover { background: #dc2626; }
+
+        /* ===== TAQRIZCHI BLOKI ===== */
+        .reviewer-block {
+            margin: 0 20px 14px 66px;
+            border-radius: 10px; padding: 11px 16px;
+            display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+            font-size: 12px; border: 1px solid #e2e8f0; background: #f8fafc;
+        }
+        .reviewer-block.rv-pending  { background: #fffbeb; border-color: #fcd34d; }
+        .reviewer-block.rv-approved { background: #f0fdf4; border-color: #6ee7b7; }
+        .reviewer-block.rv-rejected { background: #fff5f5; border-color: #fca5a5; }
+
+        .rv-label { font-weight: 700; color: #475569; }
+        .rv-name  { font-weight: 600; color: #1e293b; }
+        .rv-status { font-size: 11px; padding: 2px 9px; border-radius: 20px; font-weight: 600; }
+        .rv-status.pending  { background: #fef3c7; color: #92400e; }
+        .rv-status.approved { background: #d1fae5; color: #065f46; }
+        .rv-status.rejected { background: #fee2e2; color: #991b1b; }
+        .rv-reason { color: #ef4444; font-style: italic; font-size: 11px; margin-top: 4px; }
+        .btn-assign {
+            background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe;
+            padding: 5px 12px; border-radius: 8px; font-size: 11px;
+            font-weight: 600; cursor: pointer; transition: all .2s; margin-left: auto;
+        }
+        .btn-assign:hover { background: #3b82f6; color: white; }
+        .btn-prefill {
+            background: #fef3c7; color: #92400e; border: 1px solid #fcd34d;
+            padding: 5px 12px; border-radius: 8px; font-size: 11px;
+            font-weight: 600; cursor: pointer; transition: all .2s;
+        }
+        .btn-prefill:hover { background: #f59e0b; color: white; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+{% include 'admin/includes/admin_nav.html' %}
+
+    <!-- Messages -->
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="msg {% if message.tags == 'success' %}msg-success{% else %}msg-error{% endif %}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Header -->
+    <div class="header">
+        <a href="{% url 'admin_foydalanuvchilar' %}" class="back-btn">← Orqaga</a>
+        <div class="avatar-big">{{ author.full_name.0|upper }}</div>
+        <div class="author-info">
+            <h1>{{ author.full_name }}</h1>
+            <div class="meta">
+                <span>📱 {{ author.phone }}</span>
+                <span>✉️ {{ author.email }}</span>
+                {% if author.workplace %}<span>🏢 {{ author.workplace }}</span>{% endif %}
+                {% if author.academic_degree %}<span>🎓 {{ author.academic_degree }}</span>{% endif %}
+            </div>
+        </div>
+        <div class="stats-row">
+            <div class="stat-chip">
+                <div class="num">{{ article_groups|length }}</div>
+                <div class="lbl">Noyob maqola</div>
+            </div>
+            <div class="stat-chip">
+                <div class="num">{{ total }}</div>
+                <div class="lbl">Jami yuborish</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Maqolalar -->
+    <div class="section-title">📄 Maqolalar ro'yxati</div>
+
+    {% if article_groups %}
+        {% for group in article_groups %}
+        {% with latest=group.latest %}
+        <div class="article-card {{ latest.status }}" id="card-{{ forloop.counter }}">
+
+            <!-- Sarlavha va meta -->
+            <div class="card-top">
+                <div class="card-num">{{ forloop.counter }}</div>
+                <div class="card-main">
+                    <div class="card-title">{{ latest.title }}</div>
+                    <div class="card-meta">
+                        {% if latest.status == 'pending' %}
+                            <span class="badge badge-pending">⏳ Kutilmoqda</span>
+                        {% elif latest.status == 'approved' %}
+                            <span class="badge badge-approved">✅ Tasdiqlangan</span>
+                        {% elif latest.status == 'published' %}
+                            <span class="badge badge-approved">📚 Nashr etilgan</span>
+                        {% elif latest.status == 'rejected' %}
+                            <span class="badge badge-rejected">❌ Rad etilgan</span>
+                        {% endif %}
+
+                        {% if latest.payment_status == 'paid' %}
+                            <span class="badge badge-paid">💳 To'langan</span>
+                        {% endif %}
+
+                        {% if latest.submitted_at %}
+                        <span>📅 {{ latest.submitted_at|date:"d.m.Y H:i" }}</span>
+                        {% endif %}
+
+                        {% if latest.category %}
+                        <span>📂 {{ latest.get_category_display }}</span>
+                        {% endif %}
+
+                        {% if latest.volume %}
+                        <span>📚 {{ latest.volume.title }}</span>
+                        {% endif %}
+
+                        <span style="background:#eef2ff;color:#4338ca;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:600">
+                            📋 {{ group.step }}
+                        </span>
+
+                        {% if group.count > 1 %}
+                        <button class="expand-btn" onclick="toggleCard('card-{{ forloop.counter }}')">
+                            🔄 {{ group.count }}x yuborilgan
+                            <i class="toggle-icon">▼</i>
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action tugmalar -->
+            <div class="card-actions">
+                {% if group.show_send_payment %}
+                    <button class="btn btn-payment"
+                            onclick="sendPayment({{ latest.pk }}, '{{ latest.title|truncatechars:50|escapejs }}')">
+                        💰 To'lov linki {% if latest.payment_link_sent %}qayta {% endif %}yuborish
+                    </button>
+                    {% if latest.payment_link_sent %}
+                    <span class="payment-sent-info">
+                        ✅ {{ latest.payment_link_sent_count }}x yuborildi
+                        {% if latest.payment_link_sent_at %} · {{ latest.payment_link_sent_at|date:"d.m.Y" }}{% endif %}
+                    </span>
+                    {% endif %}
+                {% endif %}
+
+                {% if group.show_confirm_payment %}
+                    <button class="btn btn-approve"
+                            onclick="openApproveModal({{ latest.pk }}, '{{ latest.title|truncatechars:60|escapejs }}')">
+                        ✅ To'lovni tasdiqlash va tomga qo'shish
+                    </button>
+                {% endif %}
+
+                {% if latest.status != 'published' %}
+                    <button class="btn btn-reject"
+                            onclick="openRejectModal({{ latest.pk }}, '{{ latest.title|truncatechars:60|escapejs }}', '{% with rv=latest.reviews.first %}{% if rv and rv.status == 'rejected' %}{{ rv.rejection_reason|escapejs }}{% endif %}{% endwith %}')">
+                        ❌ Rad etish{% with rv=latest.reviews.first %}{% if rv and rv.status == 'rejected' %} (taqrizchi rad etgan){% endif %}{% endwith %}
+                    </button>
+                {% endif %}
+
+                {% if latest.status == 'published' and latest.volume %}
+                    {% if latest.personal_pdf or latest.pdf_file %}
+                    <a href="{% url 'arxiv_article_download' latest.volume.slug group.download_slug %}" class="btn btn-pdf">Yuklab olish</a>
+                    {% endif %}
+                    {% if latest.certificate_pdf %}
+                    <a href="{% url 'article_certificate_download' latest.volume.slug latest.pk %}" class="btn btn-pdf" style="background:#059669">Sertifikat</a>
+                    {% endif %}
+                {% endif %}
+
+                {% if latest.pdf_file %}
+                <a href="{{ latest.pdf_file.url }}" target="_blank" class="btn btn-pdf">
+                    📄 Asl PDF
+                </a>
+                {% endif %}
+            </div>
+
+            <!-- Rad etish sababi -->
+            {% if latest.status == 'rejected' and latest.rejection_reason %}
+            <div class="rejection-note">
+                <div class="rn-label">💬 RAD ETISH SABABI:</div>
+                <div class="rn-text">{{ latest.rejection_reason }}</div>
+            </div>
+            {% endif %}
+
+            <!-- Taqrizchi bloki -->
+            {% with review=latest.reviews.first %}
+            {% if review %}
+            <div class="reviewer-block rv-{{ review.status }}">
+                <span class="rv-label">🔬 Taqrizchi:</span>
+                <span class="rv-name">{{ review.reviewer.full_name }}</span>
+                <span class="rv-status {{ review.status }}">
+                    {% if review.status == 'pending' %}⏳ Ko'rib chiqmoqda
+                    {% elif review.status == 'approved' %}✅ Tasdiqladi
+                    {% else %}❌ Rad etdi{% endif %}
+                </span>
+                {% if review.reviewed_at %}
+                <span style="color:#94a3b8;font-size:11px">{{ review.reviewed_at|date:"d.m.Y H:i" }}</span>
+                {% endif %}
+                {% if review.status == 'rejected' %}
+                <div style="width:100%">
+                    {% if review.rejection_reason %}
+                    <div class="rv-reason">💬 {{ review.rejection_reason|truncatechars:120 }}</div>
+                    {% endif %}
+                    {% if review.rejection_file %}
+                    <a href="{{ review.rejection_file.url }}" target="_blank" style="font-size:11px;color:#3b82f6;text-decoration:none;margin-top:3px;display:inline-block">📎 Taqrizchi biriktirgan fayl</a>
+                    {% endif %}
+                </div>
+                {% endif %}
+                {% if review.status == 'rejected' %}
+                <button class="btn-prefill"
+                        onclick="prefillReject({{ latest.pk }}, '{{ latest.title|truncatechars:50|escapejs }}', '{{ review.rejection_reason|escapejs }}')">
+                    ⚡ Sababni avto-to'ldirish
+                </button>
+                {% endif %}
+                <button class="btn-assign"
+                        onclick="openAssignModal({{ latest.pk }}, '{{ latest.title|truncatechars:50|escapejs }}', {{ review.reviewer.pk }}, '{{ latest.category }}')">
+                    🔄 O'zgartirish
+                </button>
+            </div>
+            {% else %}
+            <div class="reviewer-block" style="background:#f8fafc;">
+                <span class="rv-label" style="color:#94a3b8">🔬 Taqrizchi biriktirilmagan</span>
+                <button class="btn-assign" style="margin-left:auto"
+                        onclick="openAssignModal({{ latest.pk }}, '{{ latest.title|truncatechars:50|escapejs }}', 0, '{{ latest.category }}')">
+                    ➕ Taqrizchi biriktirish
+                </button>
+            </div>
+            {% endif %}
+            {% endwith %}
+
+            <!-- Tarix (faqat bir necha marta yuborilganda) -->
+            {% if group.history %}
+            <div class="history-body">
+                <div class="history-title">📋 To'liq yuborish tarixi ({{ group.count }} ta)</div>
+                <div class="history-list">
+
+                    <div class="history-item current">
+                        <div class="h-dot {{ latest.status }}"></div>
+                        <div class="h-info">
+                            <div class="h-label">
+                                Eng oxirgi (joriy) —
+                                {% if latest.status == 'pending' %}⏳ Kutilmoqda
+                                {% elif latest.status == 'approved' %}✅ Tasdiqlangan
+                                {% elif latest.status == 'rejected' %}❌ Rad etilgan{% endif %}
+                            </div>
+                            {% if latest.submitted_at %}<div class="h-date">📅 {{ latest.submitted_at|date:"d.m.Y H:i" }}</div>{% endif %}
+                            {% if latest.rejection_reason %}<div class="h-note">💬 {{ latest.rejection_reason }}</div>{% endif %}
+                        </div>
+                    </div>
+
+                    {% for old in group.history %}
+                    <div class="history-item">
+                        <div class="h-dot {{ old.status }}"></div>
+                        <div class="h-info">
+                            <div class="h-label">
+                                {{ forloop.counter }}. oldingi yuborish —
+                                {% if old.status == 'pending' %}⏳ Kutilmoqda
+                                {% elif old.status == 'approved' %}✅ Tasdiqlangan
+                                {% elif old.status == 'rejected' %}❌ Rad etilgan{% endif %}
+                            </div>
+                            {% if old.submitted_at %}<div class="h-date">📅 {{ old.submitted_at|date:"d.m.Y H:i" }}</div>{% endif %}
+                            {% if old.rejection_reason %}<div class="h-note">💬 {{ old.rejection_reason }}</div>{% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                {% if latest.keywords or latest.abstract %}
+                <div class="extra-info">
+                    {% if latest.keywords %}
+                    <div class="extra-item">
+                        <div class="key">🔑 Kalit so'zlar</div>
+                        <div class="val">{{ latest.keywords }}</div>
+                    </div>
+                    {% endif %}
+                    {% if latest.abstract %}
+                    <div class="extra-item">
+                        <div class="key">📝 Annotatsiya</div>
+                        <div class="val" style="font-weight:400;color:#475569;line-height:1.6">{{ latest.abstract|truncatewords:80 }}</div>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+
+        </div>
+        {% endwith %}
+        {% endfor %}
+
+    {% else %}
+        <div class="empty-state">
+            <div class="icon">📭</div>
+            <p>Bu foydalanuvchi hali maqola yubormagan</p>
+        </div>
+    {% endif %}
+
+</div>
+
+<!-- RAD ETISH MODALI -->
+<div class="modal-overlay" id="rejectModal">
+    <div class="modal">
+        <h2>❌ Maqolani rad etish</h2>
+        <div class="modal-article-name" id="modalArticleName"></div>
+
+        <form method="POST" id="rejectForm">
+            {% csrf_token %}
+            <label>Rad etish sababi <span style="color:#ef4444">*</span></label>
+            <textarea name="rejection_reason" id="rejectReason" required
+                placeholder="Maqolani rad etish sababini batafsil yozing...&#10;Masalan: Statistik ma'lumotlar yetarli emas, manbalar ko'rsatilmagan..."></textarea>
+
+            <div class="modal-btns">
+                <button type="button" class="btn-cancel" onclick="closeRejectModal()">Bekor qilish</button>
+                <button type="submit" class="btn-submit-reject">❌ Rad etish va email yuborish</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- TAQRIZCHI BIRIKTIRISH MODALI -->
+<div class="modal-overlay" id="assignModal">
+    <div class="modal">
+        <h2>🔬 Taqrizchi biriktirish</h2>
+        <div class="modal-article-name" id="assignArticleTitle"></div>
+
+        <form method="POST" id="assignForm">
+            {% csrf_token %}
+            <label>Taqrizchi tanlash</label>
+            <div id="assignFilterNote" style="font-size:12px;color:#6366f1;font-weight:600;margin:4px 0 8px;display:none">🎯 Mos yo'nalishdagi taqrizchilar yuqorida</div>
+            <select name="reviewer_id" id="reviewerSelect" style="width:100%;padding:10px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:15px;margin-bottom:18px;background:#f8fafc">
+                <option value="0">— Taqrizchisiz (biriktirmay qoldirish) —</option>
+                {% for r in all_reviewers %}
+                <option value="{{ r.pk }}" data-spec="{{ r.specialization }}">{{ r.full_name }}{% if r.position %} · {{ r.position }}{% endif %} — 🎓 {{ r.get_specialization_display }} ({{ r.pending_count }} yangi)</option>
+                {% endfor %}
+            </select>
+
+            <div class="modal-btns">
+                <button type="button" class="btn-cancel" onclick="closeAssignModal()">Bekor qilish</button>
+                <button type="submit" class="btn-submit-reject" style="background:linear-gradient(135deg,#6366f1,#818cf8)">🔬 Biriktirish</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- To'lov linki yuborish uchun yashirin forma -->
+<form method="POST" id="paymentForm" style="display:none">
+    {% csrf_token %}
+</form>
+
+<!-- TO'LOV TASDIQLASH VA TOMGA QO'SHISH MODALI -->
+<div class="modal-overlay" id="approveModal">
+    <div class="modal">
+        <h2>✅ To'lovni tasdiqlash va tomga qo'shish</h2>
+        <div class="modal-article-name" id="approveArticleTitle"></div>
+        <p style="font-size:12px;color:#64748b;margin-bottom:14px">
+            To'lov tasdiqlangach maqola tomga qo'shiladi va PDF hamda sertifikat avtomatik yaratiladi.
+        </p>
+        <form method="POST" id="approveForm">
+            {% csrf_token %}
+            <label style="font-size:13px;font-weight:700;color:#374151;display:block;margin-bottom:8px">📚 Qaysi tomga qo'shish?</label>
+            <select name="volume_id" id="approveVolumeSelect" required
+                    style="width:100%;padding:10px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:14px;margin-bottom:18px;background:#f8fafc">
+                {% for v in active_volumes %}
+                <option value="{{ v.pk }}"
+                    {% if v.is_full %}disabled style="color:#94a3b8"{% endif %}>
+                    {{ v.title }}
+                    ({{ v.articles_count }}/{{ v.max_articles }}){% if v.is_full %} — 🔴 TO'LA{% else %} — 🟢 {{ v.remaining_slots }} joy{% endif %}
+                </option>
+                {% endfor %}
+            </select>
+            {% if not active_volumes %}
+            <p style="font-size:12px;color:#ef4444;margin-bottom:12px">Faol tom yo'q. <a href="{% url 'admin_tomlar' %}" target="_blank" style="color:#7c3aed">Tom yaratish →</a></p>
+            {% endif %}
+            <div class="modal-btns">
+                <button type="button" class="btn-cancel" onclick="closeApproveModal()">Bekor qilish</button>
+                <button type="submit" class="btn-submit-reject" style="background:linear-gradient(135deg,#059669,#10b981)" {% if not active_volumes %}disabled{% endif %}>✅ Tasdiqlash va tomga qo'shish</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function toggleCard(cardId) {
+        document.getElementById(cardId).classList.toggle('open');
+    }
+
+    function openRejectModal(articleId, title, prefillReason) {
+        document.getElementById('modalArticleName').textContent = '📄 ' + title;
+        document.getElementById('rejectForm').action = '/admin-panel/article/' + articleId + '/reject/';
+        document.getElementById('rejectReason').value = prefillReason || '';
+        document.getElementById('rejectModal').classList.add('active');
+        setTimeout(() => document.getElementById('rejectReason').focus(), 100);
+    }
+
+    function prefillReject(articleId, title, reason) {
+        openRejectModal(articleId, title, reason);
+    }
+
+    function openAssignModal(articleId, title, currentReviewerId, articleCategory) {
+        document.getElementById('assignArticleTitle').textContent = '📄 ' + title;
+        document.getElementById('assignForm').action = '/admin-panel/article/' + articleId + '/assign-reviewer/';
+
+        // Mos yo'nalishdagi taqrizchilarni yuqoriga chiqarish
+        const sel = document.getElementById('reviewerSelect');
+        const filterNote = document.getElementById('assignFilterNote');
+        const opts = Array.from(sel.options).slice(1); // 0-chi "Taqrizchisiz" ni saqlab qo'yamiz
+        const zeroOpt = sel.options[0];
+        opts.sort((a, b) => {
+            const aMatch = a.dataset.spec === articleCategory ? 0 : 1;
+            const bMatch = b.dataset.spec === articleCategory ? 0 : 1;
+            return aMatch - bMatch;
+        });
+        while (sel.options.length > 0) sel.remove(0);
+        sel.appendChild(zeroOpt);
+        opts.forEach(o => sel.appendChild(o));
+
+        if (articleCategory) {
+            filterNote.style.display = 'block';
+        } else {
+            filterNote.style.display = 'none';
+        }
+
+        sel.value = currentReviewerId || '0';
+        document.getElementById('assignModal').classList.add('active');
+    }
+
+    function closeAssignModal() {
+        document.getElementById('assignModal').classList.remove('active');
+    }
+
+    document.getElementById('rejectModal').addEventListener('click', function(e) {
+        if (e.target === this) closeRejectModal();
+    });
+
+    document.getElementById('assignModal').addEventListener('click', function(e) {
+        if (e.target === this) closeAssignModal();
+    });
+
+    document.getElementById('approveModal').addEventListener('click', function(e) {
+        if (e.target === this) closeApproveModal();
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') { closeRejectModal(); closeAssignModal(); closeApproveModal(); }
+    });
+
+    function openApproveModal(articleId, title) {
+        document.getElementById('approveArticleTitle').textContent = '📄 ' + title;
+        document.getElementById('approveForm').action = '/admin-panel/article/' + articleId + '/confirm-payment/';
+        document.getElementById('approveModal').classList.add('active');
+    }
+
+    function closeApproveModal() {
+        document.getElementById('approveModal').classList.remove('active');
+    }
+
+    function sendPayment(articleId, title) {
+        if (!confirm('💰 Muallifga to\'lov ko\'rsatmalari emaili yuborilsinmi?\n\n📄 ' + title)) return;
+        const form = document.getElementById('paymentForm');
+        form.action = '/admin-panel/article/' + articleId + '/send-payment/';
+        form.submit();
+    }
+
+    // Messages 4 sekunddan keyin yashiriladi
+    setTimeout(function() {
+        document.querySelectorAll('.msg').forEach(function(el) {
+            el.style.transition = 'opacity .5s';
+            el.style.opacity = '0';
+            setTimeout(function() { el.remove(); }, 500);
+        });
+    }, 4000);
+</script>
+</body>
+</html>

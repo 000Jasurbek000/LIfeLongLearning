@@ -1,0 +1,515 @@
+﻿<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ volume.title }} -- Admin</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Inter','Segoe UI',sans-serif; background:#f0f4f8; min-height:100vh; padding:24px; }
+.container { max-width:1200px; margin:0 auto; }
+
+.header {
+    background:linear-gradient(135deg,#7c3aed 0%,#2563eb 100%);
+    border-radius:16px; padding:22px 28px; margin-bottom:20px;
+    display:flex; align-items:center; gap:18px; flex-wrap:wrap;
+}
+.header-info { flex:1; }
+.header h1 { color:white; font-size:20px; font-weight:800; }
+.header-meta { color:rgba(255,255,255,.8); font-size:12px; margin-top:5px; display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
+.back-btn { background:rgba(255,255,255,.2); color:white; border:1px solid rgba(255,255,255,.35); padding:9px 18px; border-radius:10px; text-decoration:none; font-size:13px; font-weight:600; white-space:nowrap; }
+.back-btn:hover { background:rgba(255,255,255,.35); }
+
+.msg { padding:12px 16px; border-radius:10px; font-size:13px; font-weight:600; margin-bottom:16px; }
+.msg-success { background:#d1fae5; color:#065f46; border-left:4px solid #10b981; }
+.msg-error   { background:#fee2e2; color:#991b1b; border-left:4px solid #ef4444; }
+
+/* Stats */
+.stats-row { display:grid; grid-template-columns:repeat(auto-fill,minmax(155px,1fr)); gap:12px; margin-bottom:20px; }
+.stat-card { background:white; border-radius:12px; padding:14px 18px; border:1px solid #e2e8f0; text-align:center; }
+.stat-num { font-size:26px; font-weight:900; color:#1e293b; }
+.stat-num.red { color:#ef4444; }
+.stat-num.green { color:#10b981; }
+.stat-lbl { font-size:11px; color:#64748b; margin-top:3px; font-weight:600; }
+
+/* Progress */
+.progress-card { background:white; border-radius:12px; padding:16px 20px; border:1px solid #e2e8f0; margin-bottom:20px; display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
+.progress-wrap { flex:1; min-width:200px; }
+.progress-bar  { background:#f1f5f9; border-radius:20px; height:10px; overflow:hidden; }
+.progress-fill { height:100%; border-radius:20px; background:linear-gradient(90deg,#10b981,#06b6d4); transition:width .5s; }
+.progress-fill.full { background:linear-gradient(90deg,#f59e0b,#ef4444); }
+.progress-label { font-size:12px; color:#64748b; margin-top:5px; font-weight:600; }
+.progress-badge { font-size:13px; font-weight:700; white-space:nowrap; }
+
+/* Tabs */
+.tabs { display:flex; gap:4px; margin-bottom:20px; background:white; border-radius:14px; padding:6px; border:1px solid #e2e8f0; width:fit-content; }
+.tab-btn { padding:10px 22px; border-radius:10px; border:none; background:transparent; font-size:13px; font-weight:700; color:#64748b; cursor:pointer; transition:all .2s; white-space:nowrap; }
+.tab-btn.active { background:linear-gradient(135deg,#7c3aed,#2563eb); color:white; box-shadow:0 2px 8px rgba(124,58,237,.3); }
+.tab-btn:hover:not(.active) { background:#f1f5f9; color:#1e293b; }
+.tab-pane { display:none; }
+.tab-pane.active { display:block; }
+
+/* Section card */
+.section-card { background:white; border-radius:16px; border:1px solid #e2e8f0; overflow:hidden; margin-bottom:20px; }
+.section-header { padding:14px 20px; border-bottom:1px solid #f1f5f9; display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; }
+.section-header h2 { font-size:15px; font-weight:700; color:#1e293b; }
+
+/* PDF card */
+.pdf-card { background:linear-gradient(135deg,#faf5ff,#eff6ff); border:1px solid #ddd6fe; border-radius:12px; padding:16px 20px; margin-bottom:20px; display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+.pdf-card h3 { font-size:13px; font-weight:700; color:#5b21b6; white-space:nowrap; }
+.btn-pdf-dl { background:#7c3aed; color:white; padding:9px 18px; border-radius:9px; text-decoration:none; font-size:13px; font-weight:700; white-space:nowrap; }
+.pdf-upload-form { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-left:auto; }
+.pdf-upload-form input[type=file] { font-size:12px; padding:6px 10px; border-radius:8px; border:1.5px dashed #7c3aed; background:white; max-width:220px; }
+.btn-upload { background:linear-gradient(135deg,#7c3aed,#2563eb); color:white; padding:8px 16px; border:none; border-radius:9px; font-size:12px; font-weight:700; cursor:pointer; white-space:nowrap; }
+
+/* Form card */
+.form-card { background:white; border-radius:14px; border:1px solid #e2e8f0; padding:20px 24px; margin-bottom:20px; }
+.form-card h3 { font-size:14px; font-weight:800; color:#1e293b; margin-bottom:16px; padding-bottom:10px; border-bottom:1px solid #f1f5f9; }
+.form-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.form-grid.full { grid-template-columns:1fr; }
+.fg { display:flex; flex-direction:column; gap:5px; }
+.fg label { font-size:11px; font-weight:700; color:#475569; }
+.fg input, .fg select, .fg textarea { padding:9px 12px; border:1.5px solid #e2e8f0; border-radius:9px; font-size:13px; font-family:inherit; background:white; }
+.fg input:focus, .fg select:focus, .fg textarea:focus { outline:none; border-color:#7c3aed; }
+.btn-save { background:linear-gradient(135deg,#7c3aed,#2563eb); color:white; padding:10px 22px; border:none; border-radius:10px; font-size:13px; font-weight:700; cursor:pointer; margin-top:6px; }
+.btn-save:hover { opacity:.9; }
+
+/* Qo'shish trigger */
+.btn-add-trigger { background:linear-gradient(135deg,#02AB6F,#0288D1); color:white; border:none; padding:8px 16px; border-radius:9px; font-size:13px; font-weight:700; cursor:pointer; }
+.btn-add-trigger:hover { opacity:.9; }
+
+/* Add form inline */
+.add-form-row { background:#f8fafc; border-top:2px dashed #c7d2fe; padding:16px 20px; display:none; flex-wrap:wrap; gap:12px; align-items:flex-end; }
+.add-form-row.open { display:flex; }
+.add-form-row .fg { display:flex; flex-direction:column; gap:4px; }
+.add-form-row label { font-size:11px; font-weight:700; color:#475569; }
+.add-form-row input, .add-form-row select, .add-form-row textarea { padding:8px 10px; border:1.5px solid #e2e8f0; border-radius:8px; font-size:12px; font-family:inherit; background:white; }
+.add-form-row input:focus, .add-form-row select:focus { outline:none; border-color:#7c3aed; }
+.fg-title  { flex:3; min-width:200px; }
+.fg-author { flex:2; min-width:160px; }
+.fg-cat    { flex:1; min-width:140px; }
+.fg-date   { width:130px; }
+.fg-pages  { width:90px; }
+.fg-doi    { width:150px; }
+.fg-abs    { flex-basis:100%; }
+.fg-pdf    { width:200px; }
+.btn-save-add { background:linear-gradient(135deg,#02AB6F,#0288D1); color:white; border:none; padding:9px 20px; border-radius:9px; font-size:13px; font-weight:700; cursor:pointer; white-space:nowrap; }
+.btn-cancel-add { background:#f1f5f9; color:#475569; border:none; padding:9px 14px; border-radius:9px; font-size:13px; font-weight:600; cursor:pointer; }
+
+/* Table */
+table { width:100%; border-collapse:collapse; }
+thead th { background:#f8fafc; padding:10px 14px; text-align:left; font-size:11px; font-weight:700; color:#475569; white-space:nowrap; }
+tbody tr { border-top:1px solid #f1f5f9; }
+tbody tr:hover { background:#fafafa; }
+td { padding:10px 14px; font-size:13px; color:#374151; vertical-align:middle; }
+.td-title { max-width:260px; }
+.art-title { font-weight:600; color:#1e293b; }
+.art-sub   { font-size:11px; color:#64748b; margin-top:2px; }
+.cat-chip  { font-size:11px; padding:2px 8px; border-radius:12px; background:#f0fdf4; color:#065f46; font-weight:600; white-space:nowrap; }
+.btn-rm  { background:#fee2e2; color:#991b1b; border:1px solid #fecaca; padding:4px 11px; border-radius:7px; font-size:11px; font-weight:600; cursor:pointer; }
+.btn-rm:hover { background:#ef4444; color:white; }
+.btn-edit-sm { background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe; padding:4px 11px; border-radius:7px; font-size:11px; font-weight:600; cursor:pointer; }
+.btn-edit-sm:hover { background:#1d4ed8; color:white; }
+.btn-pdf-sm { background:#f5f3ff; color:#7c3aed; border:1px solid #ddd6fe; padding:4px 10px; border-radius:7px; font-size:11px; font-weight:600; text-decoration:none; }
+.td-actions { display:flex; gap:5px; flex-wrap:wrap; }
+.empty { padding:36px; text-align:center; color:#94a3b8; }
+.empty-icon { font-size:32px; margin-bottom:8px; }
+
+.badge-status { font-size:11px; padding:3px 9px; border-radius:20px; font-weight:700; }
+.s-active    { background:#d1fae5; color:#065f46; }
+.s-draft     { background:#f1f5f9; color:#475569; }
+.s-published { background:#ede9fe; color:#5b21b6; }
+
+/* Modal */
+.modal-ov { display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:1000; align-items:center; justify-content:center; padding:20px; }
+.modal-ov.open { display:flex; }
+.modal-box { background:white; border-radius:16px; padding:24px; width:100%; max-width:560px; max-height:90vh; overflow-y:auto; }
+.modal-box h2 { font-size:16px; font-weight:800; margin-bottom:16px; color:#1e293b; }
+.mg { margin-bottom:12px; }
+.mg label { display:block; font-size:12px; font-weight:700; color:#475569; margin-bottom:5px; }
+.mg input, .mg select, .mg textarea { width:100%; padding:9px 12px; border:1.5px solid #e2e8f0; border-radius:9px; font-size:13px; font-family:inherit; }
+.mg input:focus, .mg select:focus, .mg textarea:focus { outline:none; border-color:#7c3aed; }
+.mg-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.modal-btns { display:flex; gap:10px; justify-content:flex-end; margin-top:16px; }
+.btn-m-cancel { background:#f1f5f9; color:#475569; border:none; padding:10px 18px; border-radius:9px; font-size:13px; font-weight:600; cursor:pointer; }
+.btn-m-save { background:linear-gradient(135deg,#7c3aed,#2563eb); color:white; border:none; padding:10px 20px; border-radius:9px; font-size:13px; font-weight:700; cursor:pointer; }
+</style>
+</head>
+<body>
+<div class="container">
+
+{% include 'admin/includes/admin_nav.html' %}
+
+<div class="header">
+    <div class="header-info">
+        <h1>{{ volume.title }}</h1>
+        <div class="header-meta">
+            <span>{{ volume.year }}-yil</span>
+            <span>{{ volume.volume_number }}-tom, {{ volume.issue_number }}-son</span>
+            {% if volume.subject %}<span>{{ volume.get_subject_display }}</span>{% endif %}
+            <span class="badge-status s-{{ volume.status }}">
+                {% if volume.status == 'draft' %}Tayyorlanmoqda
+                {% elif volume.status == 'active' %}Faol
+                {% else %}Nashr etilgan{% endif %}
+            </span>
+            <span>{{ volume.views_count }} ko'rish</span>
+        </div>
+    </div>
+    <a href="{% url 'admin_tomlar' %}" class="back-btn">&larr; Tomlar</a>
+</div>
+
+{% if msg %}
+<div class="msg {% if msg.0 == 'success' %}msg-success{% else %}msg-error{% endif %}">{{ msg.1 }}</div>
+{% endif %}
+
+<!-- Statistika -->
+<div class="stats-row">
+    <div class="stat-card">
+        <div class="stat-num">{{ volume.submitted_articles_count }}</div>
+        <div class="stat-lbl">Tizim orqali</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-num">{{ volume.manual_articles_count }}</div>
+        <div class="stat-lbl">Qo'lda kiritilgan</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-num">{{ volume.articles_count }}</div>
+        <div class="stat-lbl">Jami maqolalar</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-num">{{ volume.max_articles }}</div>
+        <div class="stat-lbl">Belgilangan limit</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-num {% if volume.is_full %}red{% else %}green{% endif %}">{{ volume.remaining_slots }}</div>
+        <div class="stat-lbl">Bo'sh joy</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-num">{{ volume.views_count }}</div>
+        <div class="stat-lbl">Ko'rishlar</div>
+    </div>
+</div>
+
+<!-- Progress -->
+<div class="progress-card">
+    <div class="progress-wrap">
+        <div class="progress-bar">
+            <div class="progress-fill {% if volume.is_full %}full{% endif %}" style="width:{{ volume.fill_percent }}%"></div>
+        </div>
+        <div class="progress-label">{{ volume.articles_count }} / {{ volume.max_articles }} maqola ({{ volume.fill_percent }}%)</div>
+    </div>
+    <div class="progress-badge" style="color:{% if volume.is_full %}#ef4444{% else %}#10b981{% endif %}">
+        {% if volume.is_full %}Tom to'lgan{% else %}{{ volume.remaining_slots }} ta joy mavjud{% endif %}
+    </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('tab-system', this)">Tizim maqolalari ({{ articles|length }})</button>
+    <button class="tab-btn" onclick="switchTab('tab-volume', this)">Toplamdagi maqolalar ({{ manual_articles|length }})</button>
+</div>
+
+<!-- TAB 1: Tizim orqali tasdiqlangan maqolalar -->
+<div class="tab-pane active" id="tab-system">
+    <div class="section-card">
+        <div class="section-header">
+            <h2>Tizim orqali tasdiqlangan maqolalar ({{ articles|length }} ta)</h2>
+        </div>
+        {% if articles %}
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Maqola</th>
+                    <th>Yo'nalish</th>
+                    <th>Tasdiqlangan</th>
+                    <th>Amallar</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for art in articles %}
+            <tr>
+                <td style="color:#94a3b8;font-size:12px">{{ forloop.counter }}</td>
+                <td class="td-title">
+                    <div class="art-title">{{ art.title|truncatechars:65 }}</div>
+                    <div class="art-sub">{{ art.author_name }}{% if art.author_workplace %} &middot; {{ art.author_workplace|truncatechars:30 }}{% endif %}</div>
+                </td>
+                <td><span class="cat-chip">{{ art.get_category_display|truncatechars:22 }}</span></td>
+                <td style="font-size:12px;color:#64748b">
+                    {% if art.approved_at %}{{ art.approved_at|date:"d.m.Y" }}{% else %}&mdash;{% endif %}
+                </td>
+                <td>
+                    <div class="td-actions">
+                        {% if art.pdf_file %}<a href="{{ art.pdf_file.url }}" target="_blank" class="btn-pdf-sm">PDF</a>{% endif %}
+                        <form method="POST" style="display:inline" onsubmit="return confirm('Maqolani tomdan ajratish?')">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="remove_article">
+                            <input type="hidden" name="article_id" value="{{ art.pk }}">
+                            <button type="submit" class="btn-rm">Olib tashlash</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty">
+            <div class="empty-icon">&#128214;</div>
+            <p>Tizim orqali biriktirilgan maqola yo'q</p>
+            <p style="font-size:12px;margin-top:5px">Maqolani tasdiqlashda shu tomni tanlang</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- TAB 2: Toplam shakllantirish -->
+<div class="tab-pane" id="tab-volume">
+
+    <!-- Tom ma'lumotlari va PDF -->
+    <div class="form-card">
+        <h3>Tom ma'lumotlari va umumiy PDF</h3>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="upload_pdf">
+            <div class="form-grid">
+                <div class="fg">
+                    <label>Umumiy tom PDF fayli</label>
+                    {% if volume.pdf_file %}
+                    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+                        <a href="{{ volume.pdf_file.url }}" target="_blank" class="btn-pdf-sm" style="padding:6px 14px">Joriy PDF ko'rish</a>
+                        <span style="font-size:11px;color:#10b981;font-weight:600">Yuklangan</span>
+                    </div>
+                    <input type="file" name="pdf_file" accept=".pdf" style="margin-top:6px">
+                    {% else %}
+                    <input type="file" name="pdf_file" accept=".pdf">
+                    <span style="font-size:11px;color:#94a3b8;margin-top:3px">Hali PDF yuklanmagan</span>
+                    {% endif %}
+                </div>
+                <div style="display:flex;align-items:flex-end">
+                    <button type="submit" class="btn-save">{% if volume.pdf_file %}PDF almashtirish{% else %}PDF yuklash{% endif %}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Toplamdagi maqolalar -->
+    <div class="section-card">
+        <div class="section-header">
+            <h2>Toplamdagi maqolalar ({{ manual_articles|length }} ta)</h2>
+            <button class="btn-add-trigger" onclick="toggleAddForm()">+ Yangi maqola qo'shish</button>
+        </div>
+
+        <!-- Qo'shish formasi -->
+        <div class="add-form-row" id="addFormRow">
+            <form method="POST" enctype="multipart/form-data" style="display:contents">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="add_manual_article">
+                <div class="fg fg-title">
+                    <label>Maqola nomi *</label>
+                    <input type="text" name="ma_title" placeholder="Maqola sarlavhasi..." required>
+                </div>
+                <div class="fg fg-author">
+                    <label>Muallif(lar) *</label>
+                    <input type="text" name="ma_authors" placeholder="Karimov A., Rahimov B.">
+                </div>
+                <div class="fg fg-cat">
+                    <label>Fan yo'nalishi</label>
+                    <select name="ma_category">
+                        {% for val, lbl in category_choices %}
+                        <option value="{{ val }}">{{ lbl }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="fg fg-date">
+                    <label>Nashr sanasi</label>
+                    <input type="date" name="ma_date">
+                </div>
+                <div class="fg fg-pages">
+                    <label>Sahifalar</label>
+                    <input type="text" name="ma_pages" placeholder="1-12">
+                </div>
+                <div class="fg fg-doi">
+                    <label>DOI (ixtiyoriy)</label>
+                    <input type="text" name="ma_doi" placeholder="10.xxxxx/...">
+                </div>
+                <div class="fg fg-pdf">
+                    <label>PDF fayl (ixtiyoriy)</label>
+                    <input type="file" name="ma_pdf" accept=".pdf">
+                </div>
+                <div class="fg fg-abs">
+                    <label>Annotatsiya (ixtiyoriy)</label>
+                    <textarea name="ma_abstract" rows="2" placeholder="Qisqa tavsif..."></textarea>
+                </div>
+                <div style="display:flex;gap:8px;margin-top:4px;flex-basis:100%">
+                    <button type="submit" class="btn-save-add">Qo'shish</button>
+                    <button type="button" class="btn-cancel-add" onclick="toggleAddForm()">Bekor qilish</button>
+                </div>
+            </form>
+        </div>
+
+        {% if manual_articles %}
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Maqola</th>
+                    <th>Muallif(lar)</th>
+                    <th>Yo'nalish</th>
+                    <th>Sana</th>
+                    <th>Sahifalar</th>
+                    <th>PDF</th>
+                    <th>Amallar</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for ma in manual_articles %}
+            <tr>
+                <td style="color:#94a3b8;font-size:12px">{{ forloop.counter }}</td>
+                <td class="td-title">
+                    <div class="art-title">{{ ma.title|truncatechars:55 }}</div>
+                    {% if ma.doi %}<div class="art-sub" style="color:#7c3aed">{{ ma.doi }}</div>{% endif %}
+                </td>
+                <td style="font-size:12px;color:#475569;max-width:160px">{{ ma.authors }}</td>
+                <td><span class="cat-chip">{{ ma.get_category_display|truncatechars:20 }}</span></td>
+                <td style="font-size:12px;color:#64748b">{{ ma.published_date|date:"d.m.Y"|default:"&mdash;" }}</td>
+                <td style="font-size:12px;color:#64748b">{{ ma.pages|default:"&mdash;" }}</td>
+                <td>
+                    {% if ma.pdf_file %}
+                    <a href="{{ ma.pdf_file.url }}" target="_blank" class="btn-pdf-sm">PDF</a>
+                    {% else %}
+                    <span style="font-size:11px;color:#cbd5e1">Yuklanmagan</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <div class="td-actions">
+                        <button class="btn-edit-sm"
+                            onclick="openEditMa({{ ma.pk }},'{{ ma.title|escapejs }}','{{ ma.authors|escapejs }}','{{ ma.category }}','{{ ma.published_date|date:'Y-m-d'|default:'' }}','{{ ma.pages|escapejs }}','{{ ma.doi|escapejs }}','{{ ma.abstract|escapejs }}')">
+                            Tahrirlash
+                        </button>
+                        <form method="POST" style="display:inline" onsubmit="return confirm('Maqolani o\'chirish?')">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="remove_manual_article">
+                            <input type="hidden" name="ma_id" value="{{ ma.pk }}">
+                            <button type="submit" class="btn-rm">O'chirish</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty">
+            <div class="empty-icon">&#9998;</div>
+            <p>Toplamdagi maqola yo'q</p>
+            <p style="font-size:12px;margin-top:5px">Yuqoridagi "+ Yangi maqola qo'shish" tugmasini bosing</p>
+        </div>
+        {% endif %}
+    </div>
+
+</div><!-- /tab-volume -->
+
+</div><!-- /container -->
+
+<!-- TAHRIRLASH MODALI -->
+<div class="modal-ov" id="editMaModal">
+    <div class="modal-box">
+        <h2>Maqolani tahrirlash</h2>
+        <form method="POST" enctype="multipart/form-data" id="editMaForm">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="edit_manual_article">
+            <input type="hidden" name="ma_id" id="eMaId">
+            <div class="mg">
+                <label>Maqola nomi *</label>
+                <input type="text" name="ma_title" id="eMaTitle" required>
+            </div>
+            <div class="mg">
+                <label>Muallif(lar) *</label>
+                <input type="text" name="ma_authors" id="eMaAuthors">
+            </div>
+            <div class="mg">
+                <label>Fan yo'nalishi</label>
+                <select name="ma_category" id="eMaCat">
+                    {% for val, lbl in category_choices %}
+                    <option value="{{ val }}">{{ lbl }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mg-row">
+                <div class="mg">
+                    <label>Nashr sanasi</label>
+                    <input type="date" name="ma_date" id="eMaDate">
+                </div>
+                <div class="mg">
+                    <label>Sahifalar</label>
+                    <input type="text" name="ma_pages" id="eMaPages" placeholder="1-12">
+                </div>
+            </div>
+            <div class="mg">
+                <label>DOI (ixtiyoriy)</label>
+                <input type="text" name="ma_doi" id="eMaDoi" placeholder="10.xxxxx/...">
+            </div>
+            <div class="mg">
+                <label>Annotatsiya</label>
+                <textarea name="ma_abstract" id="eMaAbstract" rows="3"></textarea>
+            </div>
+            <div class="mg">
+                <label>PDF fayl (almashtirish uchun)</label>
+                <input type="file" name="ma_pdf" accept=".pdf">
+            </div>
+            <div class="modal-btns">
+                <button type="button" class="btn-m-cancel" onclick="closeEditMa()">Bekor qilish</button>
+                <button type="submit" class="btn-m-save">Saqlash</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+function switchTab(tabId, btn) {
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
+    btn.classList.add('active');
+}
+
+function toggleAddForm() {
+    document.getElementById('addFormRow').classList.toggle('open');
+}
+
+function openEditMa(id, title, authors, category, date, pages, doi, abstract) {
+    document.getElementById('eMaId').value       = id;
+    document.getElementById('eMaTitle').value    = title;
+    document.getElementById('eMaAuthors').value  = authors;
+    document.getElementById('eMaCat').value      = category;
+    document.getElementById('eMaDate').value     = date;
+    document.getElementById('eMaPages').value    = pages;
+    document.getElementById('eMaDoi').value      = doi;
+    document.getElementById('eMaAbstract').value = abstract;
+    document.getElementById('editMaModal').classList.add('open');
+}
+function closeEditMa() {
+    document.getElementById('editMaModal').classList.remove('open');
+}
+document.getElementById('editMaModal').addEventListener('click', function(e) {
+    if (e.target === this) closeEditMa();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeEditMa(); });
+
+// Agar URL-da tab parametr bo'lsa
+const urlParams = new URLSearchParams(window.location.search);
+if (urlParams.get('tab') === 'volume') {
+    switchTab('tab-volume', document.querySelectorAll('.tab-btn')[1]);
+}
+
+setTimeout(() => {
+    document.querySelectorAll('.msg').forEach(el => {
+        el.style.transition = 'opacity .5s';
+        el.style.opacity = 0;
+        setTimeout(() => el.remove(), 500);
+    });
+}, 4000);
+</script>
+</body>
+</html>

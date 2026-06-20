@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static site_i18n %}
+
+{% block title %}{% t 'docs.meta_title' %}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .docs-page { max-width: 900px; margin: 0 auto 60px auto; padding: 0 2rem; }
+    .docs-images { display: flex; flex-direction: column; gap: 2rem; }
+    .docs-images img {
+        width: 100%; height: auto; display: block;
+        border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <section class="page-hero" data-header-style="default">
+        <div class="container">
+            <h2 class="page-title">{% t 'docs.hero.title' %}</h2>
+            <p class="page-subtitle">{% t 'docs.hero.subtitle' %}</p>
+        </div>
+    </section>
+
+    <div class="docs-page" data-header-style="accent">
+        {% if documents %}
+        <div class="docs-images">
+            {% for doc in documents %}
+            <img src="{{ doc.image.url }}" alt="{% t 'docs.image1_alt' %} {{ forloop.counter }}">
+            {% endfor %}
+        </div>
+        {% else %}
+        <p style="text-align:center;color:#64748b;padding:2rem;">Hujjatlar admin panel orqali yuklanadi.</p>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,35 @@
+/* Subscriber admin - compact rows */
+.model-subscriber #result_list td,
+.model-subscriber #result_list th {
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+    line-height: 1.4 !important;
+}
+.model-subscriber #result_list tr {
+    height: auto !important;
+}
+
+/* Jadvalni fixed qilamiz: ustun kengliklari aniq ishlasin */
+.model-subscriber #result_list {
+    width: 100% !important;
+    table-layout: fixed !important;
+}
+
+/* 2-ustun: F.I.O (checkboxdan keyin) */
+.model-subscriber #result_list th:nth-child(2),
+.model-subscriber #result_list td:nth-child(2) {
+    width: 24% !important;
+    max-width: 24% !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+/* Oxirgi ustun: Obuna bo'lgan vaqt */
+.model-subscriber #result_list th:last-child,
+.model-subscriber #result_list td:last-child {
+    width: 170px !important;
+    max-width: 170px !important;
+    white-space: nowrap !important;
+    font-size: 12px !important;
+}

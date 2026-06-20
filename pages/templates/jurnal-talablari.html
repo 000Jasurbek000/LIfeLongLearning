@@ -1,0 +1,478 @@
+{% extends 'base.html' %}
+{% load static site_i18n %}
+
+{% block title %}{% t 'requirements.meta_title' %}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .req-page {
+        max-width: 860px;
+        margin: 0 auto 60px auto;
+        padding: 0 2rem;
+    }
+
+    .req-page-title {
+        display: none;
+    }
+
+    .req-block {
+        background: #fff;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 2rem 2.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .req-block h2 {
+        font-size: 1.3rem;
+        font-weight: 700;
+        color: #1a237e;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid #e8eaf6;
+    }
+
+    /* Oddiy matn */
+    .req-block p {
+        font-size: 1rem;
+        color: #333;
+        line-height: 1.8;
+        margin-bottom: 0.8rem;
+    }
+
+    /* Ro'yxat */
+    .req-block ul {
+        padding-left: 1.5rem;
+        margin: 0.5rem 0;
+    }
+
+    .req-block li {
+        font-size: 1rem;
+        color: #333;
+        line-height: 1.9;
+    }
+
+    /* ===== FORMAT NAMUNALARI ===== */
+
+    /* Sarlavha: Times New Roman 14pt, BOSH HARFLAR, qalin, markazda */
+    .sample-title {
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 14pt;
+        font-weight: bold;
+        text-align: center;
+        text-transform: uppercase;
+        color: #000;
+        margin: 1.2rem 0;
+        padding: 0.8rem;
+        background: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    /* Muallif ismi: Times New Roman 14pt, qalin, markazda */
+    .sample-author {
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 14pt;
+        font-weight: bold;
+        text-align: center;
+        color: #000;
+        margin: 0.8rem 0;
+        padding: 0.6rem;
+        background: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    /* Ish joyi: Times New Roman 14pt, kursiv, markazda */
+    .sample-workplace {
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 14pt;
+        font-style: italic;
+        text-align: center;
+        color: #000;
+        margin: 0.8rem 0;
+        padding: 0.6rem;
+        background: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    /* Email: Times New Roman 14pt, tagiga chizilgan, markazda */
+    .sample-email {
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 14pt;
+        text-decoration: underline;
+        text-align: center;
+        color: #1a0dab;
+        margin: 0.8rem 0;
+        padding: 0.6rem;
+        background: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    /* Annotatsiya sarlavhasi: Times New Roman 14pt, qalin, markazda */
+    .sample-abstract-title {
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 14pt;
+        font-weight: bold;
+        text-align: center;
+        color: #000;
+        margin: 0.8rem 0;
+        padding: 0.6rem;
+        background: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    /* Annotatsiya matni: Times New Roman 14pt, kursiv, ikkala tomonga */
+    .sample-abstract-text {
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 14pt;
+        font-style: italic;
+        text-align: justify;
+        color: #000;
+        margin: 0.8rem 0;
+        padding: 0.6rem;
+        background: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    /* Bo'lim sarlavhasi: Times New Roman 14pt, BOSH HARFLAR, qalin, markazda */
+    .sample-section {
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 14pt;
+        font-weight: bold;
+        text-align: center;
+        text-transform: uppercase;
+        color: #000;
+        margin: 0.8rem 0;
+        padding: 0.6rem;
+        background: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    /* Asosiy matn: Times New Roman 14pt, ikkala tomonga, birinchi qator 1 sm chekinish */
+    .sample-body-text {
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 14pt;
+        text-align: justify;
+        text-indent: 1cm;
+        line-height: 1.5;
+        color: #000;
+        margin: 0.8rem 0;
+        padding: 0.6rem;
+        background: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    /* Jadval nomi: Times New Roman 14pt, qalin, markazda */
+    .sample-table-caption {
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 14pt;
+        font-weight: bold;
+        text-align: center;
+        color: #000;
+        margin: 0.8rem 0;
+        padding: 0.6rem;
+        background: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    /* Rasm nomi: Times New Roman 12pt, ikkala tomonga */
+    .sample-figure-caption {
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 12pt;
+        text-align: justify;
+        color: #000;
+        margin: 0.8rem 0;
+        padding: 0.6rem;
+        background: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    /* Adabiyot: Times New Roman 12pt, ikkala tomonga, osilib qoluvchi chekinish */
+    .sample-reference {
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 12pt;
+        text-align: justify;
+        padding-left: 1.5cm;
+        text-indent: -1.5cm;
+        color: #000;
+        margin: 0.8rem 0;
+        padding: 0.6rem 0.6rem 0.6rem 2.1cm;
+        background: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    .format-label {
+        font-size: 0.8rem;
+        color: #888;
+        font-style: italic;
+        margin-bottom: 0.3rem;
+        display: block;
+    }
+
+    .format-item {
+        margin-bottom: 1.5rem;
+    }
+
+    .format-item:last-child {
+        margin-bottom: 0;
+    }
+
+    /* Jadval namunasi */
+    .sample-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-family: 'Times New Roman', Times, serif;
+        font-size: 13pt;
+        margin: 0.5rem 0 1rem 0;
+    }
+
+    .sample-table th {
+        padding: 6px 16px;
+        text-align: left;
+        font-weight: bold;
+        border-bottom: 2px solid #333;
+    }
+
+    .sample-table td {
+        padding: 6px 16px;
+        text-align: left;
+    }
+
+    .sample-table thead tr {
+        border-bottom: 2px solid #333;
+    }
+
+    /* Rasm namunasi */
+    .sample-figure-wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 1rem;
+        margin: 0.8rem 0;
+    }
+
+    .sample-figure-img {
+        max-width: 280px;
+        height: auto;
+        border: 1px solid #ccc;
+        margin-bottom: 0.6rem;
+    }
+
+    .req-cta {
+        text-align: center;
+        margin: 3rem 0;
+    }
+
+    .req-cta a {
+        background: #1a237e;
+        color: white;
+        padding: 1rem 3rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-size: 1.1rem;
+        font-weight: 600;
+        display: inline-block;
+        transition: background 0.2s;
+    }
+
+    .req-cta a:hover {
+        background: #283593;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <section class="page-hero" data-header-style="default">
+        <div class="container">
+            <h2 class="page-title">{% t 'requirements.hero.title' %}</h2>
+            <p class="page-subtitle">{% t 'requirements.hero.subtitle' %}</p>
+        </div>
+    </section>
+
+<div class="req-page" data-header-style="accent">
+
+    <!-- 1. Yo'nalishlar -->
+    <div class="req-block">
+        <h2>{% t 'requirements.sections.fields.title' %}</h2>
+        <ul>
+            <li>{% t 'requirements.sections.fields.item1' %}</li>
+            <li>{% t 'requirements.sections.fields.item2' %}</li>
+            <li>{% t 'requirements.sections.fields.item3' %}</li>
+            <li>{% t 'requirements.sections.fields.item4' %}</li>
+            <li>{% t 'requirements.sections.fields.item5' %}</li>
+        </ul>
+    </div>
+
+    <!-- 2. Sahifa parametrlari -->
+    <div class="req-block">
+        <h2>{% t 'requirements.sections.page.title' %}</h2>
+        <ul>
+            <li>{% t 'requirements.sections.page.item1' %}</li>
+            <li>{% t 'requirements.sections.page.item2' %}</li>
+            <li>{% t 'requirements.sections.page.item3' %}</li>
+            <li>{% t 'requirements.sections.page.item4' %}</li>
+            <li>{% t 'requirements.sections.page.item5' %}</li>
+            <li>{% t 'requirements.sections.page.item6' %}</li>
+        </ul>
+    </div>
+
+    <!-- 3. Maqola tuzilishi / format namunalari -->
+    <div class="req-block">
+        <h2>{% t 'requirements.sections.structure.title' %}</h2>
+
+        <div class="format-item">
+            <span class="format-label">{% t 'requirements.sections.structure.label1' %}</span>
+            <div class="sample-title">{% t 'requirements.sections.structure.sample_title' %}</div>
+        </div>
+
+        <div class="format-item">
+            <span class="format-label">{% t 'requirements.sections.structure.label2' %}</span>
+            <div class="sample-author">{% t 'requirements.sections.structure.sample_author' %}</div>
+        </div>
+
+        <div class="format-item">
+            <span class="format-label">{% t 'requirements.sections.structure.label3' %}</span>
+            <div class="sample-workplace">{% t 'requirements.sections.structure.sample_workplace' %}</div>
+        </div>
+
+        <div class="format-item">
+            <span class="format-label">{% t 'requirements.sections.structure.label4' %}</span>
+            <div class="sample-email">example@mail.uz</div>
+        </div>
+
+        <div class="format-item">
+            <span class="format-label">{% t 'requirements.sections.structure.label5' %}</span>
+            <div class="sample-abstract-title">{% t 'requirements.sections.structure.sample_annotation' %}</div>
+        </div>
+
+        <div class="format-item">
+            <span class="format-label">{% t 'requirements.sections.structure.label6' %}</span>
+            <div class="sample-abstract-text">{% t 'requirements.sections.structure.sample_annotation_text' %}</div>
+        </div>
+
+        <div class="format-item">
+            <span class="format-label">{% t 'requirements.sections.structure.label7' %}</span>
+            <div class="sample-abstract-text"><strong>{% t 'requirements.sections.structure.sample_keywords' %}</strong> {% t 'requirements.sections.structure.sample_keywords_text' %}</div>
+        </div>
+    </div>
+
+    <!-- 4. Bo'limlar -->
+    <div class="req-block">
+        <h2>{% t 'requirements.sections.article_sections.title' %}</h2>
+
+        <div class="format-item">
+            <span class="format-label">{% t 'requirements.sections.article_sections.label1' %}</span>
+            <div class="sample-section">{% t 'requirements.sections.article_sections.sample_section' %}</div>
+        </div>
+
+        <div class="format-item">
+            <span class="format-label">{% t 'requirements.sections.article_sections.label2' %}</span>
+            <div class="sample-body-text">{% t 'requirements.sections.article_sections.sample_text' %}</div>
+        </div>
+
+        <p style="color:#555; margin-top:1rem;">{% t 'requirements.sections.article_sections.lead' %}</p>
+        <ul>
+            <li>{% t 'requirements.sections.article_sections.item1' %}</li>
+            <li>{% t 'requirements.sections.article_sections.item2' %}</li>
+            <li>{% t 'requirements.sections.article_sections.item3' %}</li>
+            <li>{% t 'requirements.sections.article_sections.item4' %}</li>
+            <li>{% t 'requirements.sections.article_sections.item5' %}</li>
+            <li>{% t 'requirements.sections.article_sections.item6' %}</li>
+        </ul>
+    </div>
+
+    <!-- 5. Jadval va rasmlar -->
+    <div class="req-block">
+        <h2>{% t 'requirements.sections.tables_figures.title' %}</h2>
+
+        <p>{% t 'requirements.sections.tables_figures.intro' %}</p>
+
+        <div class="format-item">
+            <span class="format-label">{% t 'requirements.sections.tables_figures.table_label' %}</span>
+            <div class="sample-table-caption">{% t 'requirements.sections.tables_figures.table_caption'|safe %}</div>
+            <table class="sample-table">
+                <thead>
+                    <tr>
+                        <th>{% t 'requirements.sections.tables_figures.th1' %}</th>
+                        <th>{% t 'requirements.sections.tables_figures.th2' %}</th>
+                        <th>{% t 'requirements.sections.tables_figures.th3' %}</th>
+                        <th>{% t 'requirements.sections.tables_figures.th4' %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>{% t 'requirements.sections.tables_figures.cell' %}</td>
+                        <td>{% t 'requirements.sections.tables_figures.cell' %}</td>
+                        <td>{% t 'requirements.sections.tables_figures.cell' %}</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>{% t 'requirements.sections.tables_figures.cell' %}</td>
+                        <td>{% t 'requirements.sections.tables_figures.cell' %}</td>
+                        <td>{% t 'requirements.sections.tables_figures.cell' %}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="format-item">
+            <span class="format-label">{% t 'requirements.sections.tables_figures.figure_label' %}</span>
+            <div class="sample-figure-wrap">
+                <img src="https://picsum.photos/300/200?random=42" alt="{% t 'requirements.sections.tables_figures.figure_alt' %}" class="sample-figure-img">
+                <div class="sample-figure-caption">{% t 'requirements.sections.tables_figures.figure_caption' %}</div>
+            </div>
+        </div>
+
+        <ul>
+            <li>{% t 'requirements.sections.tables_figures.item1' %}</li>
+            <li>{% t 'requirements.sections.tables_figures.item2' %}</li>
+        </ul>
+    </div>
+
+    <!-- 6. Adabiyotlar -->
+    <div class="req-block">
+        <h2>{% t 'requirements.sections.references.title' %}</h2>
+
+        <div class="format-item">
+            <span class="format-label">{% t 'requirements.sections.references.label' %}</span>
+            <div class="sample-reference">{% t 'requirements.sections.references.sample' %}</div>
+        </div>
+
+        <ul>
+            <li>{% t 'requirements.sections.references.item1' %}</li>
+            <li>{% t 'requirements.sections.references.item2' %}</li>
+            <li>{% t 'requirements.sections.references.item3' %}</li>
+        </ul>
+    </div>
+
+    <!-- 7. Mualliflar ma'lumotlari -->
+    <div class="req-block">
+        <h2>{% t 'requirements.sections.additional.title' %}</h2>
+        <ul>
+            <li>{% t 'requirements.sections.additional.item1' %}</li>
+            <li>{% t 'requirements.sections.additional.item2' %}</li>
+            <li>{% t 'requirements.sections.additional.item3' %}</li>
+            <li>{% t 'requirements.sections.additional.item4' %}</li>
+            <li>{% t 'requirements.sections.additional.item5' %}</li>
+        </ul>
+    </div>
+
+    <div class="req-cta">
+        <a href="{% url 'maqola_berish' %}">{% t 'base.nav.submit_article' %}</a>
+    </div>
+</div>
+{% endblock %}

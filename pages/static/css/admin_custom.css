@@ -1,0 +1,478 @@
+/* Custom Admin CSS - Jazzmin uchun moslashtirilgan */
+
+/* Logo uchun background */
+.brand-link {
+    background: white !important;
+    padding: 10px !important;
+}
+
+.brand-link .brand-image {
+    max-height: 45px !important;
+    width: auto !important;
+}
+
+/* Sidebar yaxshiroq ko'rinishi */
+.sidebar-light-success .nav-sidebar > .nav-item > .nav-link.active {
+    background-color: rgba(40, 167, 69, 0.1) !important;
+    color: #28a745 !important;
+}
+
+/* Admin table improvements - KOMPAKT DIZAYN */
+#result_list {
+    border-collapse: separate !important;
+    border-spacing: 0 8px !important;
+    width: 100%;
+    font-size: 14px;
+    table-layout: auto;
+}
+
+#result_list tbody tr {
+    background: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+#result_list tbody tr:hover {
+    box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+    transform: translateY(-1px);
+}
+
+#result_list tbody td {
+    padding: 10px 6px !important;
+    vertical-align: middle !important;
+    border: none !important;
+}
+
+#result_list tbody td:first-child {
+    border-radius: 8px 0 0 8px;
+    padding-left: 12px !important;
+    padding-right: 4px !important;
+    width: 30px !important;
+    max-width: 30px !important;
+}
+
+#result_list tbody td:last-child {
+    border-radius: 0 8px 8px 0;
+    padding-right: 12px !important;
+    padding-left: 4px !important;
+    width: 42px !important;
+    max-width: 42px !important;
+}
+
+#result_list thead th {
+    background: linear-gradient(135deg, #02AB6F 0%, #86DAF1 100%) !important;
+    color: white !important;
+    font-weight: 700 !important;
+    padding: 12px 6px !important;
+    border: none !important;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    text-align: left !important;
+    font-size: 13px;
+    letter-spacing: 0.3px;
+}
+
+#result_list thead th:first-child {
+    border-radius: 8px 0 0 8px;
+    padding-left: 12px !important;
+    padding-right: 4px !important;
+    width: 30px !important;
+    max-width: 30px !important;
+}
+
+#result_list thead th:last-child {
+    border-radius: 0 8px 8px 0;
+    padding-right: 12px !important;
+    padding-left: 4px !important;
+    width: 42px !important;
+    max-width: 42px !important;
+}
+
+/* Column widths - TOR VA KOMPAKT */
+#result_list th:nth-child(2) { width: 240px; max-width: 240px; } /* Muallif FIO */
+#result_list th:nth-child(3) { width: 190px; } /* Yo'nalish */
+#result_list th:nth-child(4) { width: 130px; } /* Telefon */
+#result_list th:nth-child(5) { width: 50px; text-align: center !important; } /* Holat */
+#result_list th:nth-child(6) { width: 50px; text-align: center !important; } /* To'lov */
+#result_list th:nth-child(7) { width: 50px; text-align: center !important; } /* Link */
+#result_list th:nth-child(8) { width: 72px; text-align: center !important; } /* Sana */
+
+/* Checkbox styling - KICHIKROQ */
+input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    accent-color: #02AB6F;
+    margin: 0;
+    display: block;
+}
+
+/* Pagination styling */
+.pagination {
+    margin: 15px 0;
+    padding: 12px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+}
+
+/* Filter sidebar */
+#changelist-filter {
+    background: white;
+    border-radius: 8px;
+    padding: 0;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    overflow: hidden;
+}
+
+#changelist-filter h2 {
+    background: linear-gradient(135deg, #02AB6F 0%, #86DAF1 100%);
+    color: white;
+    padding: 12px 16px;
+    margin: 0;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+#changelist-filter h3 {
+    color: #2c3e50;
+    font-weight: 700;
+    margin: 15px 16px 10px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+#changelist-filter ul {
+    margin: 0 16px 15px;
+    padding: 0;
+}
+
+#changelist-filter li {
+    padding: 8px 10px;
+    border-bottom: 1px solid #f0f0f0;
+    transition: all 0.2s;
+    font-size: 13px;
+}
+
+#changelist-filter li:hover {
+    background-color: rgba(2,171,111,0.06);
+    padding-left: 14px;
+    border-left: 3px solid rgba(2,171,111,0.3);
+}
+
+#changelist-filter li.selected {
+    background-color: rgba(2,171,111,0.12);
+    border-left: 4px solid #02AB6F;
+    padding-left: 14px;
+    font-weight: 600;
+}
+
+#changelist-filter a {
+    color: #495057;
+    text-decoration: none;
+    display: block;
+}
+
+#changelist-filter li.selected a {
+    color: #02AB6F;
+    font-weight: 700;
+}
+
+/* Search bar */
+#changelist-search {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+    margin-bottom: 15px;
+}
+
+#searchbar {
+    padding: 10px 14px;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    width: 100%;
+    max-width: 400px;
+}
+
+#searchbar:focus {
+    border-color: #02AB6F;
+    box-shadow: 0 0 0 3px rgba(2,171,111,0.1);
+    outline: none;
+}
+
+/* Actions dropdown */
+.actions {
+    background: white;
+    padding: 12px 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+    margin-bottom: 15px;
+}
+
+.actions select {
+    padding: 8px 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 13px;
+    margin-right: 10px;
+    min-width: 180px;
+}
+
+.actions select:focus {
+    border-color: #02AB6F;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(2,171,111,0.1);
+}
+
+.actions button,
+.actions input[type="submit"] {
+    background: linear-gradient(135deg, #02AB6F 0%, #20c997 100%);
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 13px;
+    box-shadow: 0 2px 4px rgba(2,171,111,0.3);
+}
+
+.actions button:hover,
+.actions input[type="submit"]:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(2,171,111,0.4);
+}
+
+/* Add button styling */
+.addlink,
+.add-row a {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    color: white !important;
+    padding: 10px 18px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-block;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,123,255,0.3);
+    font-size: 13px;
+}
+
+.addlink:hover,
+.add-row a:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,123,255,0.4);
+}
+
+/* Content wrapper */
+#content {
+    padding: 20px;
+}
+
+/* Breadcrumbs */
+.breadcrumbs {
+    background: white;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    font-size: 13px;
+}
+
+.breadcrumbs a {
+    color: #02AB6F;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.breadcrumbs a:hover {
+    color: #028a59;
+    text-decoration: underline;
+}
+
+/* Messages */
+.messagelist {
+    margin: 0 0 15px 0;
+    padding: 0;
+}
+
+.messagelist li {
+    background: white;
+    border-left: 5px solid;
+    padding: 12px 18px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+    font-weight: 500;
+    font-size: 13px;
+}
+
+.messagelist .success {
+    border-left-color: #28a745;
+    background: linear-gradient(90deg, rgba(40,167,69,0.1) 0%, white 100%);
+}
+
+.messagelist .error {
+    border-left-color: #dc3545;
+    background: linear-gradient(90deg, rgba(220,53,69,0.1) 0%, white 100%);
+}
+
+.messagelist .warning {
+    border-left-color: #ffc107;
+    background: linear-gradient(90deg, rgba(255,193,7,0.1) 0%, white 100%);
+}
+
+/* Approve va Reject sahifalar uchun */
+.approve-container, .reject-container {
+    background: transparent !important;
+    padding: 0 !important;
+}
+
+.article-header {
+    margin-top: 20px;
+}
+
+/* Action buttons styling for Jazzmin */
+.action-buttons {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+/* Admin list sahifasidagi approve/reject tugmalar */
+.button {
+    display: inline-block;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 500;
+    transition: all 0.3s;
+    border: none;
+    cursor: pointer;
+}
+
+.button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    text-decoration: none;
+}
+
+/* PDF preview button */
+a[href*=".pdf"] {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white !important;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: all 0.3s;
+}
+
+a[href*=".pdf"]:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+/* Status badges uchun ranglar */
+.badge {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* Jazzmin change list uchun responsive */
+@media (max-width: 768px) {
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+/* Form styling */
+.rejection-form textarea,
+.rejection-form input[type="file"] {
+    max-width: 100%;
+}
+
+/* Info sections */
+.info-section, .author-contact, .article-info {
+    margin-bottom: 20px;
+}
+
+/* Contact item links */
+.contact-item a,
+.info-item a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.contact-item a:hover,
+.info-item a:hover {
+    text-decoration: underline;
+}
+
+/* Jazzmin sidebar menu active item */
+.nav-sidebar .nav-link.active {
+    background-color: rgba(255,255,255,0.1) !important;
+}
+
+/* Custom approve/reject pages header fix */
+.breadcrumbs {
+    background: transparent !important;
+}
+
+/* Modal improvements */
+.modal-content {
+    border-radius: 10px;
+}
+
+/* Table improvements */
+.table th {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+}
+
+/* Button hover improvements */
+.btn-approve:hover,
+.btn-reject:hover,
+.btn-cancel:hover {
+    text-decoration: none !important;
+}
+
+/* Fix for Jazzmin breadcrumbs */
+.content-wrapper .breadcrumbs a {
+    color: #007bff;
+}
+
+.content-wrapper .breadcrumbs a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive fixes */
+@media (max-width: 992px) {
+    .approve-container,
+    .reject-container {
+        padding: 10px !important;
+    }
+    
+    .article-header h1 {
+        font-size: 22px !important;
+    }
+}

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load site_i18n %}
+
+{% block title %}Qidiruv — {% t 'base.brand.title' %}{% endblock %}
+
+{% block content %}
+<section class="page-hero" data-header-style="default">
+    <div class="container">
+        <h2 class="page-title">{% t 'base.search.title' %}</h2>
+        <p class="page-subtitle">{% if query %}"{{ query }}" bo'yicha {{ results_total }} ta natija{% else %}Maqola, muallif yoki kalit so'z bo'yicha qidiring{% endif %}</p>
+    </div>
+</section>
+
+<section class="content-section" data-header-style="accent">
+    <div class="container" style="max-width:960px;margin:0 auto 60px;">
+        <form method="get" action="{% url 'qidiruv' %}" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:2rem;">
+            <select name="filter" style="padding:10px 14px;border-radius:8px;border:1px solid #e2e8f0;">
+                <option value="all" {% if filter_type == 'all' %}selected{% endif %}>{% t 'base.search.filter.all' %}</option>
+                <option value="title" {% if filter_type == 'title' %}selected{% endif %}>{% t 'base.search.filter.title' %}</option>
+                <option value="author" {% if filter_type == 'author' %}selected{% endif %}>{% t 'base.search.filter.author' %}</option>
+                <option value="keywords" {% if filter_type == 'keywords' %}selected{% endif %}>{% t 'base.search.filter.keywords' %}</option>
+            </select>
+            <input type="text" name="q" value="{{ query }}" placeholder="{% t 'base.search.placeholder' %}" style="flex:1;min-width:220px;padding:10px 14px;border-radius:8px;border:1px solid #e2e8f0;">
+            <button type="submit" class="btn btn-primary">{% t 'base.search.submit' %}</button>
+        </form>
+
+        {% if query and article_results %}
+        <h3 style="margin-bottom:1rem;">Maqolalar</h3>
+        <div style="display:flex;flex-direction:column;gap:1rem;margin-bottom:2rem;">
+            {% for article in article_results %}
+            <a href="{{ article.url }}" style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1.25rem;text-decoration:none;color:inherit;">
+                <strong>{{ article.title }}</strong>
+                <p style="color:#64748b;margin:0.5rem 0 0;">{{ article.authors }}</p>
+            </a>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if query and news_results %}
+        <h3 style="margin-bottom:1rem;">Yangiliklar</h3>
+        <div style="display:flex;flex-direction:column;gap:1rem;">
+            {% for item in news_results %}
+            <a href="{% url 'yangilik_detail' item.slug %}" style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:1.25rem;text-decoration:none;color:inherit;">
+                <strong>{{ item.title }}</strong>
+                <p style="color:#64748b;margin:0.5rem 0 0;">{{ item.excerpt|truncatewords:20 }}</p>
+            </a>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if query and not results_total %}
+        <p style="text-align:center;color:#64748b;padding:2rem;">Hech narsa topilmadi.</p>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

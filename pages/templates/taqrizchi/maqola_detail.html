@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maqola ko'rish — {{ article.title|truncatechars:40 }}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter','Segoe UI',sans-serif; background: #f0f4f8; min-height: 100vh; }
+
+        .navbar {
+            background: linear-gradient(135deg, #02AB6F 0%, #0288D1 100%);
+            padding: 0 32px; display: flex; align-items: center;
+            justify-content: space-between; height: 60px;
+            position: sticky; top: 0; z-index: 100;
+        }
+        .navbar-brand { color: white; font-size: 15px; font-weight: 800; text-decoration: none; }
+        .back-btn {
+            color: white; text-decoration: none; font-size: 12px; font-weight: 600;
+            background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.3);
+            padding: 7px 16px; border-radius: 8px; transition: background .2s;
+        }
+        .back-btn:hover { background: rgba(255,255,255,.35); }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 28px 24px; }
+
+        .msg { padding: 12px 16px; border-radius: 10px; font-size: 13px; font-weight: 600; margin-bottom: 14px; }
+        .msg-success { background: #d1fae5; color: #065f46; border-left: 4px solid #10b981; }
+        .msg-error   { background: #fee2e2; color: #991b1b; border-left: 4px solid #ef4444; }
+
+        /* Status banner */
+        .status-banner {
+            border-radius: 14px; padding: 18px 22px;
+            display: flex; align-items: center; gap: 14px;
+            margin-bottom: 20px;
+        }
+        .status-banner.pending  { background: #fef3c7; border: 1.5px solid #fcd34d; }
+        .status-banner.approved { background: #d1fae5; border: 1.5px solid #6ee7b7; }
+        .status-banner.rejected { background: #fee2e2; border: 1.5px solid #fca5a5; }
+        .status-icon { font-size: 28px; }
+        .status-text h3 { font-size: 15px; font-weight: 700; color: #1e293b; }
+        .status-text p  { font-size: 13px; color: #64748b; margin-top: 2px; }
+
+        /* Action bar */
+        .action-bar {
+            background: white; border-radius: 14px; padding: 16px 20px;
+            display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+            margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,.05);
+            border: 1.5px solid #e2e8f0;
+        }
+        .action-bar-title { font-size: 13px; font-weight: 700; color: #334155; flex: 1; }
+        .btn {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 9px 18px; border-radius: 10px;
+            font-size: 13px; font-weight: 600; cursor: pointer;
+            border: none; text-decoration: none; transition: all .2s;
+        }
+        .btn-approve { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+        .btn-approve:hover { background: #10b981; color: white; }
+        .btn-reject  { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+        .btn-reject:hover  { background: #ef4444; color: white; }
+        .btn-pdf { background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; }
+        .btn-pdf:hover { background: #e2e8f0; }
+
+        /* Sections */
+        .section {
+            background: white; border-radius: 14px; padding: 22px 24px;
+            margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,.04);
+            border: 1px solid #e2e8f0;
+        }
+        .section h2 { font-size: 14px; font-weight: 700; color: #334155; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+        .row { display: flex; padding: 9px 0; border-bottom: 1px solid #f1f5f9; font-size: 13px; }
+        .row:last-child { border-bottom: none; }
+        .row .lbl { width: 180px; flex-shrink: 0; color: #94a3b8; font-weight: 500; }
+        .row .val { color: #1e293b; font-weight: 600; flex: 1; line-height: 1.5; }
+
+        /* PDF frame */
+        .pdf-frame { width: 100%; height: 600px; border-radius: 10px; border: none; background: #f1f5f9; }
+
+        /* Modal */
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 1000; align-items: center; justify-content: center; }
+        .modal-overlay.active { display: flex; }
+        .modal { background: white; border-radius: 16px; padding: 28px; width: 100%; max-width: 480px; margin: 16px; box-shadow: 0 20px 60px rgba(0,0,0,.22); }
+        .modal h2 { font-size: 17px; font-weight: 700; margin-bottom: 16px; color: #1e293b; }
+        .modal label { font-size: 13px; font-weight: 600; color: #374151; display: block; margin-bottom: 6px; }
+        .modal textarea { width: 100%; padding: 12px; border-radius: 10px; border: 1.5px solid #e2e8f0; font-size: 13px; resize: vertical; font-family: inherit; min-height: 110px; }
+        .modal textarea:focus { outline: none; border-color: #ef4444; }
+        .modal input[type=file] { width: 100%; padding: 9px; border-radius: 10px; border: 1.5px dashed #e2e8f0; font-size: 12px; background: #fafbfc; margin-top: 12px; }
+        .modal-btns { display: flex; gap: 10px; justify-content: flex-end; margin-top: 18px; }
+        .btn-cancel { padding: 9px 18px; border-radius: 9px; border: 1.5px solid #e2e8f0; background: white; font-size: 13px; font-weight: 600; color: #64748b; cursor: pointer; }
+        .btn-cancel:hover { background: #f1f5f9; }
+        .btn-submit { padding: 9px 18px; border-radius: 9px; background: #ef4444; color: white; border: none; font-size: 13px; font-weight: 600; cursor: pointer; }
+        .btn-submit:hover { background: #dc2626; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="{% url 'reviewer_profil' %}" class="navbar-brand">🔬 Taqrizchi Kabineti</a>
+    <a href="{% url 'reviewer_profil' %}" class="back-btn">← Orqaga</a>
+</nav>
+
+<div class="container">
+
+    {% if messages %}
+    {% for message in messages %}
+    <div class="msg {% if message.tags == 'success' %}msg-success{% else %}msg-error{% endif %}">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
+
+    <!-- Status banner -->
+    <div class="status-banner {{ review.status }}">
+        <div class="status-icon">
+            {% if review.status == 'pending' %}⏳{% elif review.status == 'approved' %}✅{% else %}❌{% endif %}
+        </div>
+        <div class="status-text">
+            <h3>
+                {% if review.status == 'pending' %}Ko'rib chiqilmagan
+                {% elif review.status == 'approved' %}Siz tasdiqladingiz
+                {% else %}Siz rad etdingiz{% endif %}
+            </h3>
+            <p>
+                {% if review.status == 'pending' %}Iltimos maqolani ko'rib chiqib qaror qabul qiling
+                {% elif review.reviewed_at %}Ko'rib chiqildi: {{ review.reviewed_at|date:"d.m.Y H:i" }}
+                {% endif %}
+            </p>
+        </div>
+    </div>
+
+    <!-- Action bar (faqat pending uchun) -->
+    {% if review.status == 'pending' %}
+    <div class="action-bar">
+        <span class="action-bar-title">⚡ Qaror qabul qiling:</span>
+        <a href="{% url 'reviewer_article_approve' review.pk %}"
+           class="btn btn-approve"
+           onclick="return confirm('✅ Bu maqolani tasdiqlaysizmi?')">
+            ✅ Tasdiqlash
+        </a>
+        <button class="btn btn-reject" onclick="document.getElementById('rejectModal').classList.add('active')">
+            ❌ Rad etish
+        </button>
+        {% if article.pdf_file %}
+        <a href="{{ article.pdf_file.url }}" target="_blank" class="btn btn-pdf">📄 PDF yuklab olish</a>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- Maqola ma'lumotlari -->
+    <div class="section">
+        <h2>📄 Maqola ma'lumotlari</h2>
+        <div class="row"><span class="lbl">Sarlavha</span><span class="val">{{ article.title }}</span></div>
+        <div class="row"><span class="lbl">Yo'nalish</span><span class="val">{{ article.get_category_display }}</span></div>
+        <div class="row"><span class="lbl">Yuborilgan sana</span><span class="val">{{ article.submitted_at|date:"d.m.Y H:i" }}</span></div>
+        {% if article.keywords %}
+        <div class="row"><span class="lbl">Kalit so'zlar</span><span class="val">{{ article.keywords }}</span></div>
+        {% endif %}
+        {% if article.abstract %}
+        <div class="row"><span class="lbl">Annotatsiya</span><span class="val" style="font-weight:400;color:#475569;line-height:1.6">{{ article.abstract }}</span></div>
+        {% endif %}
+    </div>
+
+    <!-- Muallif -->
+    <div class="section">
+        <h2>👤 Muallif ma'lumotlari</h2>
+        <div class="row"><span class="lbl">F.I.O</span><span class="val">{{ article.author_name }}</span></div>
+        <div class="row"><span class="lbl">Ilmiy daraja</span><span class="val">{{ article.author_degree|default:"—" }}</span></div>
+        <div class="row"><span class="lbl">Ish joyi</span><span class="val">{{ article.author_workplace|default:"—" }}</span></div>
+        <div class="row"><span class="lbl">Email</span><span class="val">{{ article.author_email }}</span></div>
+        {% if article.author_orcid %}
+        <div class="row"><span class="lbl">ORCID</span><span class="val">{{ article.author_orcid }}</span></div>
+        {% endif %}
+    </div>
+
+    <!-- PDF -->
+    {% if article.pdf_file %}
+    <div class="section">
+        <h2>📄 PDF fayl</h2>
+        <iframe src="{{ article.pdf_file.url }}" class="pdf-frame"></iframe>
+        <div style="margin-top:12px">
+            <a href="{{ article.pdf_file.url }}" target="_blank" class="btn btn-pdf">⬇️ Yuklab olish</a>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Rad etish sababi (arxiv uchun) -->
+    {% if review.status == 'rejected' and review.rejection_reason %}
+    <div class="section" style="border-left: 4px solid #ef4444;">
+        <h2 style="color:#991b1b">💬 Rad etish sababi</h2>
+        <p style="font-size:14px;color:#374151;white-space:pre-wrap;line-height:1.6">{{ review.rejection_reason }}</p>
+        {% if review.rejection_file %}
+        <div style="margin-top:12px">
+            <a href="{{ review.rejection_file.url }}" target="_blank" class="btn btn-pdf">📎 Biriktirgan faylingiz</a>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+</div>
+
+<!-- Rad etish modali -->
+<div class="modal-overlay" id="rejectModal">
+    <div class="modal">
+        <h2>❌ Maqolani rad etish</h2>
+        <p style="font-size:13px;color:#64748b;margin-bottom:16px">Sababni yozing. Qaror admin sahifasida ko'rsatiladi.</p>
+        <form method="POST" action="{% url 'reviewer_article_reject' review.pk %}">
+            {% csrf_token %}
+            <label>Rad etish sababi (matn)</label>
+            <textarea name="rejection_reason" placeholder="Sabab va tavsiyalarni batafsil yozing..."></textarea>
+            <div class="modal-btns">
+                <button type="button" class="btn-cancel" onclick="document.getElementById('rejectModal').classList.remove('active')">Bekor qilish</button>
+                <button type="submit" class="btn-submit">❌ Rad etish</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById('rejectModal').addEventListener('click', function(e) {
+        if (e.target === this) this.classList.remove('active');
+    });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') document.getElementById('rejectModal').classList.remove('active'); });
+    setTimeout(() => {
+        document.querySelectorAll('.msg').forEach(el => {
+            el.style.transition = 'opacity .5s'; el.style.opacity = 0;
+            setTimeout(() => el.remove(), 500);
+        });
+    }, 4000);
+</script>
+</body>
+</html>

@@ -1,0 +1,620 @@
+{
+  "base": {
+    "brand": {
+      "title": "Ilmiy Jurnal",
+      "tagline": "Fan va tadqiqot platformasi"
+    },
+    "nav": {
+      "home": "Bosh sahifa",
+      "about": "Jurnal haqida",
+      "about_overview": "Umumiy ma'lumot",
+      "editorial_board": "Tahrir hay'ati",
+      "journal_requirements": "Jurnal talablari",
+      "regulatory_docs": "Meyoriy hujjatlar",
+      "archive": "Arxiv",
+      "news": "Yangiliklar",
+      "all_news": "Barcha yangiliklar",
+      "announcements": "E'lonlar",
+      "contact": "Aloqa",
+      "submit_article": "Maqola berish"
+    },
+    "search": {
+      "open_aria": "Qidiruv",
+      "title": "Qidiruv",
+      "close_aria": "Yopish",
+      "filter": {
+        "title": "Maqola sarlavhasi",
+        "author": "Muallif ismi",
+        "keywords": "Kalit so'zlar",
+        "all": "Barchasi"
+      },
+      "placeholder": "Qidiring...",
+      "clear": "Tozalash",
+      "submit": "Qidirish",
+      "popular_title": "Mashhur qidiruvlar:",
+      "suggestions": {
+        "quantum": "Kvant fizika",
+        "ai": "Sun'iy intellekt",
+        "chemistry": "Kimyoviy sintez",
+        "biology": "Biologiya"
+      }
+    },
+    "language": {
+      "aria": "Til",
+      "uz": "O'zbekcha",
+      "ru": "Русский",
+      "en": "English"
+    },
+    "footer": {
+      "description": "O'zbekistondagi eng yetakchi ilmiy jurnallardan biri. Turli sohalar bo'yicha ilmiy tadqiqotlarni nashr etamiz.",
+      "quick_links_title": "Tezkor havolalar",
+      "for_authors_title": "Mualliflar uchun",
+      "contact_title": "Aloqa",
+      "address": "Buxoro sh., Akademik Ibrohim Mo'minov ko'chasi 28/2",
+      "copyright": "© 2026 Ilmiy Jurnal. Barcha huquqlar himoyalangan.",
+      "social": {
+        "facebook": "Facebook",
+        "twitter": "Twitter",
+        "linkedin": "LinkedIn",
+        "telegram": "Telegram"
+      }
+    }
+  },
+  "common": {
+    "actions": {
+      "view_all": "Barchasini ko'rish →",
+      "read_more": "Batafsil o'qish",
+      "details": "Batafsil",
+      "more_info": "Batafsil ma'lumot",
+      "subscribe": "Obuna bo'lish",
+      "view": "Ko'rish",
+      "download": "Yuklab olish",
+      "read_full": "To'liq o'qish",
+      "go_to_archive": "Arxivga o'tish",
+      "send_message": "Xabar yuborish",
+      "send_article": "Maqolani yuborish",
+      "view_full": "To'liq ko'rish",
+      "view_all_announcements": "Barcha e'lonlar",
+      "view_all_members": "Barcha a'zolarni ko'rish"
+    },
+    "newsletter": {
+      "title": "Yangiliklardan xabardor bo'ling",
+      "description": "Eng so'nggi yangiliklar va e'lonlarni elektron pochtangizga oling",
+      "announcement_title": "E'lonlardan xabardor bo'ling",
+      "announcement_description": "Muhim e'lonlar to'g'risida birinchilardan xabardor bo'ling",
+      "homepage_title": "Yangiliklar ro'yxatiga obuna bo'ling",
+      "homepage_description": "Jurnal yangiliklari va so'nggi maqolalar haqida birinchilardan bo'lib xabardor bo'ling"
+    },
+    "placeholders": {
+      "email": "Email manzilingiz",
+      "email_full": "Email manzilingizni kiriting",
+      "full_name": "Ismingiz va familiyangiz",
+      "phone": "+998 90 123 45 67",
+      "message": "Xabaringizni bu yerga yozing...",
+      "organization": "Universitet yoki institut nomi",
+      "position": "Professor, dotsent, doktorant...",
+      "article_title": "Maqolaning to'liq sarlavhasi",
+      "keywords": "Vergul bilan ajratilgan (masalan: fizika, kvant, energiya)",
+      "abstract": "Maqolaning qisqacha mazmuni (150-250 so'z)",
+      "coauthors": "Hamualliflar F.I.O. va tashkilotlari (har bir hamuallif yangi qatordan)",
+      "search": "Qidiring..."
+    },
+    "breadcrumb": {
+      "home": "Bosh sahifa",
+      "news": "Yangiliklar",
+      "announcements": "E'lonlar"
+    },
+    "labels": {
+      "categories": "Kategoriyalar",
+      "popular_articles": "Ommabop maqolalar",
+      "useful_links": "Foydali havolalar",
+      "contact": "Aloqa",
+      "email": "Elektron pochta",
+      "phone": "Telefon",
+      "address": "Manzil",
+      "working_hours": "Ish vaqti",
+      "social_networks": "Ijtimoiy tarmoqlar",
+      "published": "E'lon qilingan",
+      "journal": "Jurnal",
+      "publication": "Nashr",
+      "issue_volume": "Son va tom",
+      "date": "Sana",
+      "annotation": "Annotatsiya",
+      "references": "Adabiyotlar",
+      "keywords": "Kalit so'zlar",
+      "citation": "Iqtibos uchun",
+      "navigation": "Navigatsiya",
+      "article_info": "Maqola ma'lumotlari",
+      "reviews": "Taqrizlar"
+    },
+    "links": {
+      "latest_issue": "Yangi son",
+      "help": "Yordam",
+      "scientific_articles": "Ilmiy maqolalar",
+      "archive_description": "Jurnalimizda nashr etilgan maqolalar bilan tanishing"
+    },
+    "form": {
+      "select": "Tanlang",
+      "required_fields": "Iltimos, barcha majburiy maydonlarni to'ldiring"
+    }
+  },
+  "home": {
+    "meta_title": "Ilmiy Jurnal - Bosh Sahifa",
+    "hero": {
+      "badge": "Ilmiy tadqiqotlar platformasi",
+      "title": "Fan va bilim manbayi",
+      "description": "Ilmiy maqolalar, tadqiqotlar va zamonaviy bilimlar bilan tanishing. O'z tadqiqotlaringizni dunyoga taqdim eting.",
+      "archive_cta": "Arxivni ko'rish",
+      "published_articles": "Nashr etilgan maqolalar",
+      "authors": "Mualliflar",
+      "issues": "Sonlar"
+    },
+    "features": {
+      "title": "Jurnalimiz imkoniyatlari",
+      "description": "Ilmiy tadqiqotlaringizni nashr etish uchun barcha shart-sharoitlar",
+      "items": {
+        "fast_publish": {
+          "title": "Tezkor nashr",
+          "description": "Maqolalaringiz tez ko'rib chiqiladi va nashr etiladi. O'rtacha 2-3 hafta ichida natija."
+        },
+        "open_access": {
+          "title": "Ochiq kirish",
+          "description": "Barcha maqolalar ochiq kirish asosida bepul o'qish uchun mavjud."
+        },
+        "editorial": {
+          "title": "Tajribali tahrir hay'ati",
+          "description": "Yuqori malakali mutaxassislar va professor-o'qituvchilar tomonidan ko'rib chiqiladi."
+        },
+        "standards": {
+          "title": "Xalqaro standartlar",
+          "description": "Xalqaro ilmiy standartlar va talablarga javob beruvchi jurnal."
+        },
+        "digital_archive": {
+          "title": "Raqamli arxiv",
+          "description": "Barcha nashrlar raqamli formatda saqlanadi va qidiruv tizimida mavjud."
+        },
+        "quality_control": {
+          "title": "Sifat nazorati",
+          "description": "Har bir maqola bir nechta taqrizchilar tomonidan baholanadi."
+        }
+      }
+    },
+    "latest_articles": {
+      "title": "So'nggi maqolalar",
+      "cards": {
+        "physics": {
+          "badge": "Fizika",
+          "title": "Kvant mexanikasining zamonaviy yo'nalishlari",
+          "excerpt": "Kvant fizikasidagi so'nggi tadqiqotlar va ularning amaliy qo'llanilishi haqida batafsil tahlil...",
+          "author": "Prof. A. Karimov",
+          "date": "15 Aprel, 2026"
+        },
+        "chemistry": {
+          "badge": "Kimyo",
+          "title": "Organik sintezda yangi katalizatorlar",
+          "excerpt": "Zamonaviy organik sintez jarayonlarida qo'llaniladigan yangi turdagi katalizatorlar va ularning samaradorligi...",
+          "author": "Dr. M. Toshmatova",
+          "date": "12 Aprel, 2026"
+        },
+        "biology": {
+          "badge": "Biologiya",
+          "title": "O'simliklar fiziologiyasida yangi yondashuvlar",
+          "excerpt": "O'simliklar metabolizmi va ularning atrof-muhitga moslashuv mexanizmlari bo'yicha ilmiy tadqiqot...",
+          "author": "Prof. S. Rahmonov",
+          "date": "8 Aprel, 2026"
+        }
+      }
+    },
+    "news": {
+      "title": "So'nggi yangiliklar"
+    },
+    "announcement": {
+      "title": "Muhim e'lon"
+    },
+    "editorial": {
+      "title": "Tahrir hay'ati",
+      "description": "Jurnalimizning tajribali mutaxassislari",
+      "review_suffix": "taqriz",
+      "members": {
+        "member1": {
+          "position": "Bosh muharrir",
+          "workplace": "O'zbekiston Milliy universiteti, Fizika fakulteti dekani, professor."
+        },
+        "member2": {
+          "position": "Bosh muharrir o'rinbosari",
+          "workplace": "Toshkent Davlat Texnika universiteti, Kimyo kafedrasi mudiri, dotsent."
+        },
+        "member3": {
+          "position": "Mas'ul kotib",
+          "workplace": "Samarqand Davlat universiteti, Biologiya kafedrasi professori."
+        }
+      }
+    },
+    "achievements": {
+      "title": "Jurnalimiz yutuqlari",
+      "description": "Raqamlarda bizning muvaffaqiyatlarimiz",
+      "published_articles": "Nashr etilgan maqolalar",
+      "active_authors": "Faol mualliflar",
+      "international_cooperation": "Xalqaro hamkorlik",
+      "satisfaction": "Mamnunlik darajasi"
+    }
+  },
+  "about": {
+    "meta_title": "Jurnal Haqida - Ilmiy Jurnal",
+    "hero": {
+      "title": "Jurnal haqida",
+      "subtitle": "Ilmiy tadqiqotlar va innovatsiyalar platformasi"
+    },
+    "sections": {
+      "general": {
+        "title": "Umumiy ma'lumot",
+        "text": "\"Ilmiy Jurnal\" — O'zbekistonda ilmiy tadqiqotlarni nashr etuvchi yetakchi ilmiy-nazariy jurnal hisoblanadi. Jurnal 2010-yilda tashkil etilgan bo'lib, tabiiy fanlar, ijtimoiy fanlar, gumanitar fanlar va texnologiya sohalaridagi ilmiy tadqiqotlarni muntazam ravishda nashr etib kelmoqda."
+      },
+      "goals": {
+        "title": "Maqsad va vazifalar",
+        "lead": "Jurnalimizning asosiy maqsadlari quyidagilardan iborat:",
+        "item1": "Yuqori sifatli ilmiy tadqiqotlarni nashr etish va ommalashtirish",
+        "item2": "Yosh olimlar va tadqiqotchilarni qo'llab-quvvatlash",
+        "item3": "Xalqaro ilmiy hamjamiyat bilan hamkorlikni rivojlantirish",
+        "item4": "Ilmiy bilimlarning tarqalishiga hissa qo'shish",
+        "item5": "Innovatsion g'oyalar va tadqiqotlarni rag'batlantirish"
+      },
+      "policy": {
+        "title": "Nashr etish siyosati",
+        "text": "Jurnal \"Ochiq kirish\" (Open Access) siyosatiga amal qiladi. Bu barcha maqolalar bepul o'qish va yuklab olish uchun ochiq ekanligini anglatadi. Biz ilmiy bilimlar barcha qiziquvchilar uchun ochiq bo'lishi kerak deb hisoblaymiz."
+      },
+      "review": {
+        "title": "Ko'rib chiqish jarayoni",
+        "lead": "Barcha yuborilgan maqolalar ikki bosqichli ko'rib chiqish jarayonidan o'tadi:",
+        "step1_title": "Dastlabki ko'rib chiqish:",
+        "step1_text": "Tahrir hay'ati tomonidan maqolaning jurnal maqsadlariga muvofiqligi tekshiriladi",
+        "step2_title": "Taqrizchilar tomonidan ko'rib chiqish:",
+        "step2_text": "Maqola kamida 2 mustaqil mutaxassis tomonidan batafsil tahlil qilinadi"
+      },
+      "indexing": {
+        "title": "Indekslanish",
+        "lead": "Jurnalimiz quyidagi xalqaro bazalarda indekslanadi:",
+        "item1": "Google Scholar",
+        "item2": "Research Gate",
+        "item3": "Academia.edu",
+        "item4": "O'zbekiston Milliy kutubxonasi elektron katalogi"
+      },
+      "ethics": {
+        "title": "Etika va sifat standartlari",
+        "text": "Biz COPE (Committee on Publication Ethics) prinsiplarini qo'llab-quvvatlaymiz va barcha mualliflardan, taqrizchilardan va tahririyat a'zolaridan yuqori etika standartlariga rioya qilishni talab qilamiz. Plagiat, ma'lumotlarni soxtalashtirish va boshqa akademik noto'g'ri xatti-harakatlarga yo'l qo'yilmaydi."
+      }
+    },
+    "info": {
+      "issn_title": "ISSN raqami",
+      "issn_value": "2181-9580 (Print)<br>2181-9599 (Online)",
+      "frequency_title": "Nashr chastotasi",
+      "frequency_value": "Yilda 4 marta<br>(Mart, Iyun, Sentabr, Dekabr)",
+      "language_title": "Til",
+      "language_value": "O'zbek, Rus,<br>Ingliz tillari"
+    },
+    "sidebar": {
+      "quick_links_title": "Tezkor havolalar",
+      "latest_issue_title": "Yangi son",
+      "latest_issue_month": "Mart 2026"
+    }
+  },
+  "contact": {
+    "meta_title": "Aloqa - Ilmiy Jurnal",
+    "hero": {
+      "title": "Biz bilan bog'laning",
+      "subtitle": "Savollaringiz bo'lsa, biz bilan aloqaga chiqing"
+    },
+    "panel_title": "Aloqa ma'lumotlari",
+    "cards": {
+      "address_title": "Manzil",
+      "address_value": "Buxoro shahri,<br>Akademik Ibrohim Mo'minov ko'chasi 28/2",
+      "phone_title": "Telefon",
+      "email_title": "Elektron pochta",
+      "hours_title": "Ish vaqti",
+      "hours_value": "Dushanba - Juma:<br>9:00 - 18:00<br>Shanba - Yakshanba: Dam olish"
+    },
+    "social_title": "Ijtimoiy tarmoqlar",
+    "form": {
+      "title": "Xabar yuborish",
+      "name": "Ism-familiya *",
+      "email": "Elektron pochta *",
+      "phone": "Telefon raqami",
+      "subject": "Mavzu *",
+      "message": "Xabar *",
+      "subject_options": {
+        "general": "Umumiy savol",
+        "submission": "Maqola yuborish bo'yicha",
+        "review": "Ko'rib chiqish jarayoni",
+        "technical": "Texnik yordam",
+        "cooperation": "Hamkorlik",
+        "other": "Boshqa"
+      }
+    },
+    "map": {
+      "title": "Bizning joylashuvimiz",
+      "address": "Buxoro shahri, Akademik Ibrohim Mo'minov ko'chasi 28/2",
+      "hint": "Xaritani ko'rish uchun bu yerni bosing"
+    }
+  },
+  "submit": {
+    "meta_title": "Maqola Berish - Ilmiy Jurnal",
+    "hero": {
+      "title": "Maqola yuborish",
+      "subtitle": "Tadqiqotlaringizni jurnalimizda nashr eting"
+    },
+    "header": {
+      "title": "Maqola yuklash",
+      "description": "Quyidagi forma orqali maqolangizni yuboring"
+    },
+    "form": {
+      "author_name": "Muallif F.I.O.",
+      "email": "Elektron pochta",
+      "phone": "Telefon raqami",
+      "organization": "Tashkilot nomi",
+      "position": "Lavozim",
+      "degree": "Ilmiy daraja",
+      "article_title": "Maqola sarlavhasi",
+      "category": "Yo'nalish",
+      "keywords": "Kalit so'zlar",
+      "keywords_help": "5-7 ta kalit so'z kiriting",
+      "abstract": "Annotatsiya",
+      "coauthors": "Hamualliflar",
+      "file": "Maqola fayli",
+      "file_cta": "Fayl tanlang yoki bu yerga torting",
+      "file_hint": "DOC, DOCX yoki PDF (Max: 10MB)",
+      "agreement": "Men maqola talablarini o'qib chiqdim va rozi bo'ldim",
+      "originality": "Maqola mening original tadqiqotim bo'lib, boshqa joyda nashr etilmagan",
+      "degrees": {
+        "phd": "PhD",
+        "dsc": "DSc",
+        "candidate": "Fan nomzodi",
+        "doctor": "Fan doktori",
+        "none": "Yo'q"
+      },
+      "categories": {
+        "chemistry": "Kimyo fanlari (noorganik, organik, analitik, fizikaviy kimyo)",
+        "technology": "Texnologiya fanlari (oziq-ovqat, kimyoviy, neft va gaz texnologiyasi)",
+        "materials": "Materialshunoslik va nanotexnologiyalar",
+        "ecology": "Atrof-muhit muhofazasi va ekologiya",
+        "biotechnology": "Biotexnologiya va biokimyo"
+      }
+    },
+    "sidebar": {
+      "review_title": "Ko'rib chiqish jarayoni",
+      "step1_title": "1-bosqich:",
+      "step1_text": "Dastlabki ko'rib chiqish (1-3 kun)",
+      "step2_title": "2-bosqich:",
+      "step2_text": "Taqrizchilar tomonidan ko'rib chiqish (10-15 kun)",
+      "step3_title": "3-bosqich:",
+      "step3_text": "Tahrir va to'g'rilash (5-7 kun)",
+      "step4_title": "4-bosqich:",
+      "step4_text": "Qabul qilish va nashr (2-3 kun)",
+      "notes_title": "Muhim eslatmalar",
+      "note1": "Maqola hajmi: 8-15 bet",
+      "note2": "Shrift: Times New Roman, 14pt",
+      "note3": "Interval: 1.5",
+      "note4": "Sahifa formati: A4",
+      "note5": "Chetlar: har tomondan 2 sm",
+      "help_title": "Yordam kerakmi?",
+      "help_text": "Savollaringiz bo'lsa, biz bilan bog'laning:"
+    }
+  },
+  "requirements": {
+    "meta_title": "Jurnal talablari",
+    "hero": {
+      "title": "Jurnal talablari",
+      "subtitle": "Maqolalarga qo'yiladigan talablar"
+    },
+    "sections": {
+      "fields": {
+        "title": "Qabul qilinadigan yo'nalishlar",
+        "item1": "Kimyo fanlari (noorganik, organik, analitik, fizikaviy kimyo)",
+        "item2": "Texnologiya fanlari (oziq-ovqat, kimyoviy, neft va gaz texnologiyasi)",
+        "item3": "Materialshunoslik va nanotexnologiyalar",
+        "item4": "Atrof-muhit muhofazasi va ekologiya",
+        "item5": "Biotexnologiya va biokimyo"
+      },
+      "page": {
+        "title": "Sahifa parametrlari",
+        "item1": "Format: A4 (210 × 297 mm)",
+        "item2": "Maydonlar: yuqori va pastdan – 2 sm; chapdan – 3 sm; o'ngdan – 1,5 sm",
+        "item3": "Maqolaning matnidagi barcha harflar – Times New Roman 14 o'lchamda",
+        "item4": "Qator oraliq intervali – 1,15",
+        "item5": "Barcha xatboshilar – 1,25",
+        "item6": "Kenglik bo'yicha tekislash"
+      },
+      "structure": {
+        "title": "Maqola tuzilishi va rasmiylashtirish",
+        "label1": "Maqolaning nomi — Times New Roman 14 o'lchamda qalin, katta harfli formatda o'rtada joylashishi lozim",
+        "sample_title": "MAQOLANING NOMI (KATTA HARFLAR BILAN, QALIN, MARKAZDA)",
+        "label2": "Muallifning familiya, ismi va sharifi — Times New Roman 14 o'lchamda qalin, o'rtada joylashishi lozim",
+        "sample_author": "Familiya Ism Sharif",
+        "label3": "Ish joyi va lavozimi — Times New Roman 14 o'lchamda kursiv, o'rtada joylashishi lozim",
+        "sample_workplace": "Toshkent kimyo-texnologiya instituti, Texnologiya kafedrasi dotsenti",
+        "label4": "Elektron manzil — Times New Roman 14 o'lchamda chizilgan matn, o'rtada joylashishi lozim",
+        "label5": "Annotatsiya sarlavhasi — Times New Roman 14 o'lchamda qalin, o'rtada",
+        "sample_annotation": "Annotatsiya",
+        "label6": "Annotatsiya matni — Times New Roman 14 o'lchamda kursiv, ikkala tomonga tekislangan (150–250 so'z)",
+        "sample_annotation_text": "Annotatsiya matni Times New Roman 14 o'lchamda kursiv yoziladi va ikkala tomonga tekislanadi. Annotatsiya tadqiqotning maqsadi, metodlari, asosiy natijalari va xulosalarini qisqacha bayon qilishi lozim...",
+        "label7": "Kalit so'zlar — Times New Roman 14 o'lchamda, 5–7 ta so'z",
+        "sample_keywords": "Kalit so'zlar:",
+        "sample_keywords_text": "kimyo, texnologiya, sintez, reaktsiya, katalizator"
+      },
+      "article_sections": {
+        "title": "Maqola bo'limlari",
+        "label1": "Bo'lim sarlavhasi — Times New Roman 14 o'lchamda qalin, KATTA HARFLAR, markazda",
+        "sample_section": "KIRISH",
+        "label2": "Asosiy matn — Times New Roman 14 o'lchamda, ikkala tomonga tekislangan, birinchi qator 1,25 sm chekinish",
+        "sample_text": "Asosiy matn Times New Roman 14 o'lchamda yoziladi, ikkala tomonga tekislanadi va har bir xatboshi 1,25 sm chekinish bilan boshlanadi. Satr oralig'i 1,15 bo'lishi lozim.",
+        "lead": "Maqola quyidagi bo'limlardan iborat bo'lishi lozim:",
+        "item1": "KIRISH",
+        "item2": "ADABIYOTLAR TAHLILI",
+        "item3": "TADQIQOT METODOLOGIYASI",
+        "item4": "NATIJALAR VA MUHOKAMA",
+        "item5": "XULOSA",
+        "item6": "FOYDALANILGAN ADABIYOTLAR"
+      },
+      "tables_figures": {
+        "title": "Jadvallar va rasmlar",
+        "intro": "Jadval raqamlanishi yuqori o'ng qismda, nomlanishi jadvalning yuqori qismining markazida bosma harflarda, shu bilan birgalikda ularning manbasi aniq ko'rsatilishi lozim.",
+        "table_label": "Jadval nomi — Times New Roman 14 o'lchamda qalin, o'rtada joylashtiriladi (jadval ustida)",
+        "table_caption": "1-jadval<br>Jadval nomi [1]",
+        "th1": "№",
+        "th2": "Sarlavha 1",
+        "th3": "Sarlavha 2",
+        "th4": "Sarlavha 3",
+        "cell": "Matn",
+        "figure_label": "Rasm — rasm ostida: Times New Roman 12 o'lchamda, ikkala tomonga tekislangan",
+        "figure_alt": "Laboratoriya",
+        "figure_caption": "1-rasm. Kimyoviy reaktsiya mexanizmi sxemasi [1]",
+        "item1": "Rasmlar sifati: kamida 300 dpi",
+        "item2": "Barcha jadval va rasmlar matnda havola qilinishi shart"
+      },
+      "references": {
+        "title": "Foydalanilgan adabiyotlar",
+        "label": "Adabiyot — Times New Roman 12 o'lchamda, ikkala tomonga tekislangan, APA formati",
+        "sample": "1. Karimov, A. B., & Rahimov, S. T. (2022). Kimyoviy jarayonlarni modellashtirishning zamonaviy usullari. Kimyo va texnologiya jurnali, 5(2), 45–58.",
+        "item1": "Kamida 15 ta manba",
+        "item2": "APA (American Psychological Association) formati",
+        "item3": "Matnda raqam bilan ko'rsatiladi: [1], [2, 3], [4–6]"
+      },
+      "additional": {
+        "title": "Qo'shimcha talablar",
+        "item1": "Maqola hajmi: 8–15 sahifa",
+        "item2": "Plagiat: o'xshashlik indeksi 25% dan oshmasligi kerak",
+        "item3": "Maqola ilgari boshqa jurnallarda nashr etilmagan bo'lishi kerak",
+        "item4": "Maqola o'zbek, rus yoki ingliz tilida taqdim etilishi mumkin",
+        "item5": "Maqolaning nomi, muallifning familiya, ismi va sharifi, ish joyi va lavozimi, annotatsiya va kalit so'zlar o'zbek, rus va ingliz tillarida yozilishi kerak"
+      }
+    }
+  },
+  "docs": {
+    "meta_title": "Meyoriy hujjatlar",
+    "hero": {
+      "title": "Meyoriy hujjatlar",
+      "subtitle": "Rasmiy hujjatlar va guvohnomalar"
+    },
+    "image1_alt": "Meyoriy hujjat 1",
+    "image2_alt": "Meyoriy hujjat 2",
+    "image3_alt": "Meyoriy hujjat 3"
+  },
+  "editorial": {
+    "meta_title": "Tahrir hay'ati - Ilmiy Jurnal",
+    "hero": {
+      "title": "Tahrir hay'ati",
+      "subtitle": "Jurnalimizning tajribali mutaxassislari"
+    },
+    "intro": "Bizning tahrir hay'atimiz yuqori malakali professor va dotsent o'qituvchilardan iborat bo'lib, barcha yuborilgan maqolalarni professional darajada ko'rib chiqadi.",
+    "roles": {
+      "member": "Tahrir hay'ati a'zosi",
+      "editor_in_chief": "Bosh muharrir",
+      "deputy_editor": "Bosh muharrir o'rinbosari",
+      "executive_secretary": "Mas'ul kotib"
+    },
+    "members": {
+      "member1_workplace": "Renessans ta'lim universiteti Rektori, professor.",
+      "member2_workplace": "O'zbekiston Milliy universiteti, Fizika fakulteti dekani, professor.",
+      "member3_workplace": "Toshkent Davlat Texnika universiteti, Kimyo kafedrasi mudiri, dotsent.",
+      "member4_workplace": "Samarqand Davlat universiteti, Biologiya kafedrasi professori.",
+      "member5_workplace": "Buxoro Davlat universiteti, Matematika fakulteti dekani, professor.",
+      "member6_workplace": "Andijon Davlat universiteti, Filologiya kafedrasi mudiri, professor.",
+      "member7_workplace": "Farg'ona Politexnika instituti, Informatika kafedrasi dotsenti.",
+      "member8_workplace": "Urganch Davlat universiteti, Iqtisodiyot fakulteti professori."
+    },
+    "info": {
+      "members_title": "Tahrir hay'ati a'zolari",
+      "members_text": "Jurnalimiz tahrir hay'atida O'zbekistonning nufuzli oliy ta'lim muassasalarining professor va dotsent o'qituvchilari faoliyat yuritadi.",
+      "quality_title": "Sifat nazorati",
+      "quality_text": "Har bir maqola kamida ikki mustaqil taqrizchi tomonidan professional ko'rib chiqiladi va baholanadi.",
+      "international_title": "Xalqaro tajriba",
+      "international_text": "Tahrir hay'ati a'zolari xalqaro ilmiy konferensiyalarda faol ishtirok etadi va xorijiy hamkorlar bilan ishlaydi."
+    }
+  },
+  "archive": {
+    "meta_title": "Arxiv - Kimyo va texnologiya jurnali",
+    "hero": {
+      "title": "Arxiv",
+      "subtitle": "Nashr etilgan jurnallar"
+    },
+    "volume_label": "Tom",
+    "issue_label": "Son",
+    "year_suffix": "yil",
+    "cover_alt_suffix": "muqovasi",
+    "article_suffix": "maqola",
+    "views_suffix": "ko'rishlar",
+    "full_view": "To'liq ko'rish"
+  },
+  "archive_issue": {
+    "title_prefix": "Tom",
+    "issue_label": "Son",
+    "year_suffix": "yil",
+    "cover_alt_suffix": "muqovasi",
+    "published_collection": "Nashr etilgan to'plam",
+    "in_this_volume": "ushbu tomda",
+    "views_label": "ko'rish",
+    "total_interest": "umumiy qiziqish",
+    "publish_date": "nashr sanasi",
+    "articles_title": "Ushbu tomdagi maqolalar",
+    "collection_title": "To'plam",
+    "collection_status": "To'plam shakllantirilmoqda",
+    "collection_note": "Yangi maqolalar va materiallar muntazam ravishda qo'shib boriladi.",
+    "categories_title": "Ruknlar",
+    "popular_articles_title": "Ko'p o'qilgan maqolalar"
+  },
+  "archive_article": {
+    "hero_subtitle": "maqolalari",
+    "meta_line_prefix": "Development Of Science",
+    "issue_label": "Issue",
+    "volume_label": "Volume",
+    "annotation_title": "Annotatsiya",
+    "references_title": "Adabiyotlar",
+    "keywords_title": "Kalit so'zlar",
+    "citation_title": "Iqtibos uchun",
+    "citation_style": "APA (American Psychological Association)",
+    "navigation_title": "Navigatsiya",
+    "article_info_title": "Maqola ma'lumotlari"
+  },
+  "news": {
+    "meta_title": "Yangiliklar - Ilmiy Jurnal",
+    "hero": {
+      "title": "Yangiliklar",
+      "subtitle": "Jurnalimiz va ilmiy jamiyatdan so'nggi yangiliklar"
+    },
+    "count_suffix": "ta yangilik"
+  },
+  "news_detail": {
+    "title_suffix": "Yangiliklar",
+    "views_suffix": "ko'rishlar",
+    "share_title": "Ulashish:",
+    "share_telegram": "Telegram orqali ulashish",
+    "share_facebook": "Facebook orqali ulashish",
+    "share_twitter": "Twitter orqali ulashish",
+    "share_copy": "Havola nusxalash",
+    "other_news": "Boshqa yangiliklar"
+  },
+  "announcements": {
+    "meta_title": "E'lonlar - Ilmiy Jurnal",
+    "hero": {
+      "title": "E'lonlar",
+      "subtitle": "Muhim xabarlar va tashkiliy e'lonlar"
+    },
+    "count_suffix": "ta e'lon",
+    "priority": {
+      "high": "Muhim e'lonlar",
+      "medium": "Umumiy e'lonlar",
+      "low": "Arxiv e'lonlar"
+    },
+    "read": "O'qish"
+  },
+  "announcement_detail": {
+    "title_suffix": "E'lonlar",
+    "priority": {
+      "high": "Muhim",
+      "medium": "O'rta"
+    },
+    "published_label": "E'lon qilingan:",
+    "attachment_title": "Qo'shimcha hujjat",
+    "questions_cta": "Savollaringiz bormi?",
+    "other_announcements": "Boshqa e'lonlar"
+  }
+}

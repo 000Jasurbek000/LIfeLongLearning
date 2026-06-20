@@ -1,0 +1,92 @@
+{% load static %}
+<style>
+.admin-nav {
+    background: #1e293b;
+    border-radius: 14px;
+    padding: 6px 10px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    flex-wrap: wrap;
+}
+.admin-nav .nav-brand {
+    color: white;
+    font-size: 14px;
+    font-weight: 800;
+    padding: 8px 14px 8px 6px;
+    margin-right: 6px;
+    border-right: 1px solid rgba(255,255,255,.15);
+    white-space: nowrap;
+}
+.admin-nav a {
+    color: rgba(255,255,255,.6);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 9px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all .15s;
+    white-space: nowrap;
+}
+.admin-nav a:hover {
+    background: rgba(255,255,255,.1);
+    color: rgba(255,255,255,.95);
+}
+.admin-nav a.active {
+    background: linear-gradient(135deg,#02AB6F,#0288D1);
+    color: white;
+    box-shadow: 0 2px 8px rgba(2,171,111,.35);
+}
+.admin-nav .nav-sep {
+    width: 1px; height: 20px;
+    background: rgba(255,255,255,.13);
+    margin: 0 6px; flex-shrink: 0;
+}
+.admin-nav .nav-right {
+    margin-left: auto;
+    display: flex; gap: 3px; align-items: center;
+}
+.admin-nav a.nav-ext {
+    color: rgba(255,255,255,.45);
+    font-size: 12px;
+    padding: 7px 12px;
+}
+.admin-nav a.nav-ext:hover { color: white; background: rgba(255,255,255,.1); }
+@media(max-width:700px) {
+    .admin-nav a { font-size: 12px; padding: 7px 10px; }
+    .admin-nav .nav-brand { font-size: 12px; }
+}
+</style>
+
+<nav class="admin-nav">
+    <span class="nav-brand">⚙️ Admin Panel</span>
+
+    <a href="{% url 'admin_foydalanuvchilar' %}"
+       class="{% if request.resolver_match.url_name == 'admin_foydalanuvchilar' or request.resolver_match.url_name == 'admin_foydalanuvchi_detail' %}active{% endif %}">
+        👥 Maqolalar
+    </a>
+
+    <a href="{% url 'admin_taqrizchilar' %}"
+       class="{% if request.resolver_match.url_name == 'admin_taqrizchilar' %}active{% endif %}">
+        🔬 Taqrizchilar
+    </a>
+
+    <a href="{% url 'admin_tomlar' %}"
+       class="{% if request.resolver_match.url_name == 'admin_tomlar' or request.resolver_match.url_name == 'admin_tom_detail' %}active{% endif %}">
+        📚 Tomlar
+    </a>
+
+    <div class="nav-right">
+        <div class="nav-sep"></div>
+        <a href="{% url 'reviewer_login' %}" class="nav-ext" target="_blank">
+            🔑 Taqrizchi login
+        </a>
+        <a href="/admin/" class="nav-ext" target="_blank">
+            🛠️ Django Admin
+        </a>
+    </div>
+</nav>

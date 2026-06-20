@@ -1,0 +1,259 @@
+{% extends 'base.html' %}
+{% load static site_i18n %}
+
+{% block title %}{{ announcement.title }} - {% t 'announcement_detail.title_suffix' %}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/news-announcements.css' %}">
+{% endblock %}
+
+{% block content %}
+    <!-- Page Hero -->
+    <div data-header-style="accent">
+        <div class="page-hero">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="{% url 'index' %}">{% t 'common.breadcrumb.home' %}</a>
+                    <span>/</span>
+                    <a href="{% url 'elonlar' %}">{% t 'common.breadcrumb.announcements' %}</a>
+                    <span>/</span>
+                    <span>{{ announcement.category }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Announcement Section -->
+    <section class="article-section" data-header-style="accent">
+        <div class="container">
+            <div class="article-layout">
+                <!-- Main Announcement -->
+                <article class="article-main announcement-main">
+                    <!-- Announcement Header -->
+                    <header class="announcement-detail-header">
+                        <div class="announcement-badges">
+                            <span class="announcement-category-badge">{{ announcement.category }}</span>
+                            {% if announcement.priority == 'yuqori' %}
+                            <span class="priority-badge high">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                </svg>
+                                {% t 'announcement_detail.priority.high' %}
+                            </span>
+                            {% elif announcement.priority == 'o\'rta' %}
+                            <span class="priority-badge medium">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                </svg>
+                                {% t 'announcement_detail.priority.medium' %}
+                            </span>
+                            {% endif %}
+                        </div>
+                        
+                        <h1 class="announcement-detail-title">{{ announcement.title }}</h1>
+                        
+                        <div class="announcement-detail-meta">
+                            <div class="meta-item">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                                <span>{% t 'announcement_detail.published_label' %} {{ announcement.date }}</span>
+                            </div>
+                            {% if announcement.start_date and announcement.end_date %}
+                            <div class="meta-item">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg>
+                                <span>{{ announcement.start_date }} - {{ announcement.end_date }}</span>
+                            </div>
+                            {% endif %}
+                            <div class="meta-item">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                                <span>{{ announcement.author }}</span>
+                            </div>
+                        </div>
+
+                        <!-- Icon Display -->
+                        <div class="announcement-icon-display">
+                            {% if announcement.icon == 'warning' %}
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                <line x1="12" y1="9" x2="12" y2="13"></line>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                            {% elif announcement.icon == 'info' %}
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="16" x2="12" y2="12"></line>
+                                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                            </svg>
+                            {% elif announcement.icon == 'calendar' %}
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                            {% else %}
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                            </svg>
+                            {% endif %}
+                        </div>
+                    </header>
+
+                    <!-- Announcement Content -->
+                    <div class="announcement-detail-content">
+                        {{ announcement.content|linebreaks }}
+                    </div>
+
+                    <!-- Attachment -->
+                    {% if announcement.attachment %}
+                    <div class="announcement-attachment">
+                        <div class="attachment-card">
+                            <div class="attachment-icon">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                                    <polyline points="13 2 13 9 20 9"></polyline>
+                                </svg>
+                            </div>
+                            <div class="attachment-info">
+                                <h4 class="attachment-title">{% t 'announcement_detail.attachment_title' %}</h4>
+                                <p class="attachment-name">{{ announcement.attachment }}</p>
+                            </div>
+                            <a href="#" class="attachment-download" download>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                                {% t 'common.actions.download' %}
+                            </a>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Announcement Footer -->
+                    <footer class="announcement-detail-footer">
+                        <div class="announcement-actions">
+                            <a href="{% url 'elonlar' %}" class="btn btn-outline">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                                    <polyline points="12 19 5 12 12 5"></polyline>
+                                </svg>
+                                {% t 'common.actions.view_all_announcements' %}
+                            </a>
+                            {% if announcement.category == 'Muhim' or announcement.category == 'Talablar' %}
+                            <a href="{% url 'aloqa' %}" class="btn btn-primary">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                    <polyline points="22,6 12,13 2,6"></polyline>
+                                </svg>
+                                {% t 'announcement_detail.questions_cta' %}
+                            </a>
+                            {% endif %}
+                        </div>
+                    </footer>
+                </article>
+
+                <!-- Sidebar -->
+                <aside class="article-sidebar">
+                    <!-- Related Announcements -->
+                    {% if related_announcements %}
+                    <div class="sidebar-widget">
+                        <h3 class="widget-title">{% t 'announcement_detail.other_announcements' %}</h3>
+                        <div class="related-announcements-list">
+                            {% for item in related_announcements %}
+                            <article class="related-announcement-item">
+                                <div class="related-announcement-icon">
+                                    {% if item.priority == 'yuqori' %}
+                                    <span class="priority-indicator high"></span>
+                                    {% elif item.priority == 'o\'rta' %}
+                                    <span class="priority-indicator medium"></span>
+                                    {% else %}
+                                    <span class="priority-indicator low"></span>
+                                    {% endif %}
+                                </div>
+                                <div class="related-announcement-content">
+                                    <span class="related-announcement-category">{{ item.category }}</span>
+                                    <h4 class="related-announcement-title">
+                                        <a href="{% url 'elon_detail' item.slug %}">{{ item.title }}</a>
+                                    </h4>
+                                    <span class="related-announcement-date">{{ item.date }}</span>
+                                </div>
+                            </article>
+                            {% endfor %}
+                        </div>
+                        <a href="{% url 'elonlar' %}" class="widget-more-link">
+                            {% t 'common.actions.view_all_announcements' %}
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </a>
+                    </div>
+                    {% endif %}
+
+                    <!-- Important Links -->
+                    <div class="sidebar-widget">
+                        <h3 class="widget-title">{% t 'common.labels.useful_links' %}</h3>
+                        <div class="links-list">
+                            <a href="{% url 'maqola_berish' %}" class="link-item">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                </svg>
+                                <span>{% t 'base.nav.submit_article' %}</span>
+                            </a>
+                            <a href="{% url 'jurnal_talablari' %}" class="link-item">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
+                                <span>{% t 'base.nav.journal_requirements' %}</span>
+                            </a>
+                            <a href="{% url 'yangiliklar' %}" class="link-item">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                                </svg>
+                                <span>{% t 'base.nav.news' %}</span>
+                            </a>
+                            <a href="{% url 'aloqa' %}" class="link-item">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                    <polyline points="22,6 12,13 2,6"></polyline>
+                                </svg>
+                                <span>{% t 'base.nav.contact' %}</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Newsletter -->
+                    <div class="sidebar-widget newsletter-widget">
+                        <h3 class="widget-title">{% t 'common.newsletter.announcement_title' %}</h3>
+                        <p class="widget-description">{% t 'common.newsletter.announcement_description' %}</p>
+                        <form class="newsletter-form">
+                            <input type="email" placeholder="{% t 'common.placeholders.email' %}" required>
+                            <button type="submit" class="btn btn-primary btn-small">{% t 'common.actions.subscribe' %}</button>
+                        </form>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
+{% endblock %}

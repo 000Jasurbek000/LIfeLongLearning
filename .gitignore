@@ -1,0 +1,13 @@
+.env
+db.sqlite3
+__pycache__/
+*.pyc
+.venv/
+staticfiles/
+media/
+*.log
+.DS_Store
+Thumbs.db
+*.py[cod]
+.pytest_cache/
+.cursor/

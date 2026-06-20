@@ -1,0 +1,285 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+    .approve-container {
+        max-width: 1000px;
+        margin: 20px auto;
+        padding: 30px;
+    }
+    
+    .article-header {
+        background: linear-gradient(135deg, #02AB6F 0%, #86DAF1 100%);
+        padding: 30px;
+        border-radius: 10px 10px 0 0;
+        color: white;
+        margin-bottom: 0;
+    }
+    
+    .article-header h1 {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 600;
+    }
+    
+    .article-body {
+        background: white;
+        padding: 30px;
+        border: 1px solid #e0e0e0;
+        border-top: none;
+        border-radius: 0 0 10px 10px;
+    }
+    
+    .info-section {
+        margin-bottom: 30px;
+        padding: 20px;
+        background: #f8f9fa;
+        border-left: 4px solid #007bff;
+        border-radius: 5px;
+    }
+    
+    .info-section h2 {
+        margin-top: 0;
+        color: #007bff;
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+    
+    .info-row {
+        display: flex;
+        padding: 10px 0;
+        border-bottom: 1px solid #e9ecef;
+    }
+    
+    .info-row:last-child {
+        border-bottom: none;
+    }
+    
+    .info-label {
+        font-weight: 600;
+        color: #495057;
+        min-width: 150px;
+    }
+    
+    .info-value {
+        color: #212529;
+        flex: 1;
+    }
+    
+    .pdf-preview {
+        text-align: center;
+        padding: 30px;
+        background: #e7f3ff;
+        border-radius: 10px;
+        margin: 20px 0;
+    }
+    
+    .pdf-preview a {
+        display: inline-block;
+        padding: 15px 30px;
+        background: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: 500;
+        transition: all 0.3s;
+    }
+    
+    .pdf-preview a:hover {
+        background: #0056b3;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    
+    .payment-info {
+        background: #d4edda;
+        border-left-color: #28a745;
+    }
+    
+    .payment-info h2 {
+        color: #28a745;
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        margin-top: 30px;
+        padding-top: 30px;
+        border-top: 2px solid #e0e0e0;
+    }
+    
+    .btn-approve {
+        padding: 15px 40px;
+        background: #28a745;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 18px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .btn-approve:hover {
+        background: #218838;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(40,167,69,0.4);
+    }
+    
+    .btn-cancel {
+        padding: 15px 40px;
+        background: #6c757d;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 18px;
+        font-weight: 600;
+        transition: all 0.3s;
+        display: inline-block;
+    }
+    
+    .btn-cancel:hover {
+        background: #5a6268;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(108,117,125,0.4);
+        color: white;
+    }
+    
+    .status-badge {
+        display: inline-block;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+    
+    .status-pending {
+        background: #fff3cd;
+        color: #856404;
+    }
+</style>
+{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+    &rsaquo; <a href="{% url 'admin:pages_article_changelist' %}">Maqolalar</a>
+    &rsaquo; Maqolani tasdiqlash
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="approve-container">
+    <div class="article-header">
+        <h1>✅ Maqolani tasdiqlash</h1>
+    </div>
+    
+    <div class="article-body">
+        <div class="info-section">
+            <h2>📄 Maqola ma'lumotlari</h2>
+            <div class="info-row">
+                <span class="info-label">Sarlavha:</span>
+                <span class="info-value"><strong>{{ article.title }}</strong></span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Holat:</span>
+                <span class="info-value">
+                    <span class="status-badge status-pending">⏳ {{ article.get_status_display }}</span>
+                </span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Yuborilgan sana:</span>
+                <span class="info-value">{{ article.submitted_at|date:"d.m.Y H:i" }}</span>
+            </div>
+        </div>
+        
+        <div class="pdf-preview">
+            {% if article.pdf_file %}
+                <a href="{{ article.pdf_file.url }}" target="_blank">
+                    📥 PDF faylni yuklab olish / Ko'rish
+                </a>
+            {% else %}
+                <p style="color: #6c757d;">PDF fayl yuklanmagan</p>
+            {% endif %}
+        </div>
+        
+        <div class="info-section">
+            <h2>👤 Muallif ma'lumotlari</h2>
+            <div class="info-row">
+                <span class="info-label">F.I.O:</span>
+                <span class="info-value"><strong>{{ article.author_name }}</strong></span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">📧 Email:</span>
+                <span class="info-value">
+                    <a href="mailto:{{ article.author_email }}">{{ article.author_email }}</a>
+                </span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">📱 Telefon:</span>
+                <span class="info-value">{{ article.author_phone }}</span>
+            </div>
+            {% if article.author_degree %}
+            <div class="info-row">
+                <span class="info-label">🎓 Ilmiy daraja:</span>
+                <span class="info-value">{{ article.get_author_degree_label }}</span>
+            </div>
+            {% endif %}
+            {% if article.author_workplace %}
+            <div class="info-row">
+                <span class="info-label">🏢 Ish joyi:</span>
+                <span class="info-value">{{ article.author_workplace }}</span>
+            </div>
+            {% endif %}
+            {% if article.author_orcid %}
+            <div class="info-row">
+                <span class="info-label">🆔 ORCID:</span>
+                <span class="info-value">{{ article.author_orcid }}</span>
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="info-section payment-info">
+            <h2>💰 To'lov ma'lumotlari</h2>
+            <div class="info-row">
+                <span class="info-label">To'lov holati:</span>
+                <span class="info-value"><strong>{{ article.get_payment_status_display }}</strong></span>
+            </div>
+            {% if article.payment_amount %}
+            <div class="info-row">
+                <span class="info-label">Summa:</span>
+                <span class="info-value">{{ article.payment_amount|floatformat:0 }} so'm</span>
+            </div>
+            {% endif %}
+            {% if article.payment_date %}
+            <div class="info-row">
+                <span class="info-label">To'lov sanasi:</span>
+                <span class="info-value">{{ article.payment_date|date:"d.m.Y H:i" }}</span>
+            </div>
+            {% endif %}
+            {% if article.payment_transaction_id %}
+            <div class="info-row">
+                <span class="info-label">Tranzaksiya ID:</span>
+                <span class="info-value"><code>{{ article.payment_transaction_id }}</code></span>
+            </div>
+            {% endif %}
+        </div>
+        
+        <form method="post">
+            {% csrf_token %}
+            <div class="action-buttons">
+                <button type="submit" class="btn-approve">
+                    ✅ Maqolani tasdiqlash
+                </button>
+                <a href="{% url 'admin:pages_article_changelist' %}" class="btn-cancel">
+                    ← Bekor qilish
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

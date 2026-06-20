@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obunachlar - Admin Panel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter','Segoe UI',sans-serif; background: #f0f4f8; min-height: 100vh; padding: 24px; }
+        .container { max-width: 1200px; margin: 0 auto; }
+
+        .header {
+            background: linear-gradient(135deg, #02AB6F 0%, #0288D1 100%);
+            border-radius: 16px; padding: 24px 32px; margin-bottom: 20px;
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;
+        }
+        .header-left h1 { color: white; font-size: 24px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+        .header-left p { color: rgba(255,255,255,0.8); font-size: 13px; margin-top: 4px; }
+        .badge { background: rgba(255,255,255,0.2); color: white; padding: 10px 22px; border-radius: 10px; text-align: center; border: 1px solid rgba(255,255,255,0.3); }
+        .badge .num { font-size: 22px; font-weight: 800; display: block; }
+        .badge .lbl { font-size: 11px; opacity: 0.9; }
+
+        .nav-links { background: white; border-radius: 12px; padding: 14px 20px; margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .nav-link { padding: 8px 18px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 500; color: #555; border: 1.5px solid #e2e8f0; transition: all .2s; }
+        .nav-link:hover { background: #f1f5f9; }
+        .nav-link.active { background: linear-gradient(135deg,#02AB6F,#0288D1); color: white; border-color: transparent; }
+
+        .toolbar { background: white; border-radius: 12px; padding: 14px 20px; margin-bottom: 20px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .search-form { flex: 1; min-width: 250px; display: flex; gap: 8px; }
+        .search-form input { flex:1; padding: 9px 14px; border: 1.5px solid #e2e8f0; border-radius: 8px; font-size: 14px; }
+        .search-form input:focus { outline: none; border-color: #02AB6F; }
+        .btn { padding: 9px 18px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-primary { background: linear-gradient(135deg,#02AB6F,#0288D1); color: white; }
+        .btn-secondary { background: #f1f5f9; color: #555; border: 1.5px solid #e2e8f0; }
+        .btn-danger { background: #fee2e2; color: #dc2626; border: 1.5px solid #fca5a5; }
+        .btn:hover { opacity: .88; }
+
+        .table-card { background: white; border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); overflow: hidden; }
+        .table-card table { width: 100%; border-collapse: collapse; }
+        .table-card th { background: #f8fafc; padding: 13px 16px; text-align: left; font-size: 12px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: .5px; border-bottom: 1px solid #e2e8f0; }
+        .table-card td { padding: 13px 16px; font-size: 14px; color: #374151; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+        .table-card tr:last-child td { border-bottom: none; }
+        .table-card tr:hover td { background: #fafbfc; }
+
+        .badge-src { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+        .src-newsletter { background: #dbeafe; color: #1d4ed8; }
+        .src-article { background: #d1fae5; color: #065f46; }
+        .badge-active { background: #d1fae5; color: #065f46; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+        .badge-inactive { background: #fee2e2; color: #991b1b; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+
+        .empty-state { text-align: center; padding: 60px 20px; color: #94a3b8; }
+        .empty-state svg { opacity: .35; margin-bottom: 16px; }
+        .empty-state p { font-size: 15px; }
+
+        .msg { padding: 12px 20px; border-radius: 8px; margin-bottom: 16px; font-size: 14px; font-weight: 500; }
+        .msg-success { background: #d1fae5; color: #065f46; border: 1px solid #6ee7b7; }
+        .msg-error   { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <!-- Header -->
+    <div class="header">
+        <div class="header-left">
+            <h1>&#128236; Obunachlar</h1>
+            <p>Xabar obunachilari ro'yxati</p>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <div class="badge"><span class="num">{{ total }}</span><span class="lbl">Jami</span></div>
+            <div class="badge"><span class="num">{{ active }}</span><span class="lbl">Faol</span></div>
+        </div>
+    </div>
+
+    <!-- Nav -->
+    <div class="nav-links">
+        <a href="/admin-panel/foydalanuvchilar/" class="nav-link">&#128100; Foydalanuvchilar</a>
+        <a href="/admin-panel/taqrizchilar/" class="nav-link">&#128203; Taqrizchilar</a>
+        <a href="/admin-panel/tomlar/" class="nav-link">&#128218; Tomlar</a>
+        <a href="/admin-panel/elonlar/" class="nav-link">&#128226; E'lonlar</a>
+        <a href="/admin-panel/obunachlar/" class="nav-link active">&#128236; Obunachlar</a>
+    </div>
+
+    <!-- Messages -->
+    {% for m in messages %}
+    <div class="msg {% if m.tags == 'error' %}msg-error{% else %}msg-success{% endif %}">{{ m }}</div>
+    {% endfor %}
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+        <form class="search-form" method="get">
+            <input type="text" name="q" value="{{ q }}" placeholder="FIO yoki Email qidirish...">
+            <button type="submit" class="btn btn-primary">&#128269; Qidirish</button>
+            {% if q %}<a href="/admin-panel/obunachlar/" class="btn btn-secondary">&#10005; Tozalash</a>{% endif %}
+        </form>
+        <span style="font-size:13px;color:#94a3b8">{{ subscribers|length }} ta natija</span>
+    </div>
+
+    <!-- Table -->
+    <div class="table-card">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>F.I.O</th>
+                    <th>Email</th>
+                    <th>Manba</th>
+                    <th>Holat</th>
+                    <th>Obuna sanasi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if subscribers %}
+                    {% for sub in subscribers %}
+                    <tr>
+                        <td style="color:#94a3b8;font-size:12px">{{ forloop.counter }}</td>
+                        <td><strong>{{ sub.full_name }}</strong></td>
+                        <td>
+                            <a href="mailto:{{ sub.email }}" style="color:#0056b3;text-decoration:none">{{ sub.email }}</a>
+                        </td>
+                        <td>
+                            {% if sub.source == 'article' %}
+                                <span class="badge-src src-article">&#128196; Maqola yuborish</span>
+                            {% else %}
+                                <span class="badge-src src-newsletter">&#128236; Obuna formasi</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if sub.is_active %}
+                                <span class="badge-active">&#10003; Faol</span>
+                            {% else %}
+                                <span class="badge-inactive">&#10005; Nofaol</span>
+                            {% endif %}
+                        </td>
+                        <td style="color:#64748b;font-size:13px">{{ sub.created_at|date:"d.m.Y H:i" }}</td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6">
+                            <div class="empty-state">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                    <polyline points="22,6 12,13 2,6"/>
+                                </svg>
+                                <p>{% if q %}Qidiruv bo'yicha natija topilmadi{% else %}Hali obunachi yo'q{% endif %}</p>
+                            </div>
+                        </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+</body>
+</html>

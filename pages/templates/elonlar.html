@@ -1,0 +1,233 @@
+{% extends 'base.html' %}
+{% load static site_i18n %}
+
+{% block title %}{% t 'announcements.meta_title' %}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/news-announcements.css' %}">
+{% endblock %}
+
+{% block content %}
+    <!-- Page Hero -->
+    <div data-header-style="accent">
+        <div class="page-hero">
+            <div class="container">
+                <h1 class="page-title">{% t 'announcements.hero.title' %}</h1>
+                <p class="page-subtitle">{% t 'announcements.hero.subtitle' %}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Announcements Section -->
+    <section class="content-section" data-header-style="accent">
+        <div class="container">
+            <div class="content-layout">
+                <!-- Main Content -->
+                <div class="main-content">
+                    <div class="announcements-header">
+                        <div class="announcements-stats">
+                            <span class="stat-badge">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                                </svg>
+                                {{ total_announcements }} {% t 'announcements.count_suffix' %}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- High Priority Announcements -->
+                    {% if priority_groups.yuqori %}
+                    <div class="priority-section">
+                        <h2 class="priority-title priority-high">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="12"></line>
+                                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                            </svg>
+                            {% t 'announcements.priority.high' %}
+                        </h2>
+                        <div class="announcements-list">
+                            {% for announcement in priority_groups.yuqori %}
+                            <article class="announcement-card priority-high">
+                                <div class="announcement-icon-wrapper">
+                                    {% if announcement.icon == 'warning' %}
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                        <line x1="12" y1="9" x2="12" y2="13"></line>
+                                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                                    </svg>
+                                    {% elif announcement.icon == 'info' %}
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                    </svg>
+                                    {% else %}
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                        <polyline points="14 2 14 8 20 8"></polyline>
+                                    </svg>
+                                    {% endif %}
+                                </div>
+                                <div class="announcement-content">
+                                    <div class="announcement-header">
+                                        <span class="announcement-category">{{ announcement.category }}</span>
+                                        <span class="announcement-date">{{ announcement.date }}</span>
+                                    </div>
+                                    <h3 class="announcement-title">
+                                        <a href="{% url 'elon_detail' announcement.slug %}">{{ announcement.title }}</a>
+                                    </h3>
+                                    {% if announcement.start_date and announcement.end_date %}
+                                    <div class="announcement-period">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                                        </svg>
+                                        <span>{{ announcement.start_date }} - {{ announcement.end_date }}</span>
+                                    </div>
+                                    {% endif %}
+                                    <p class="announcement-excerpt">{{ announcement.excerpt }}</p>
+                                    <a href="{% url 'elon_detail' announcement.slug %}" class="announcement-link">
+                                        {% t 'common.actions.more_info' %}
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                                            <polyline points="12 5 19 12 12 19"></polyline>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </article>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Medium Priority Announcements -->
+                    {% if priority_groups.orta %}
+                    <div class="priority-section">
+                        <h2 class="priority-title priority-medium">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="16" x2="12" y2="12"></line>
+                                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                            </svg>
+                            {% t 'announcements.priority.medium' %}
+                        </h2>
+                        <div class="announcements-grid">
+                            {% for announcement in priority_groups.orta %}
+                            <article class="announcement-card-compact">
+                                <span class="announcement-category">{{ announcement.category }}</span>
+                                <h3 class="announcement-title-compact">
+                                    <a href="{% url 'elon_detail' announcement.slug %}">{{ announcement.title }}</a>
+                                </h3>
+                                <p class="announcement-excerpt-short">{{ announcement.excerpt|truncatewords:20 }}</p>
+                                <div class="announcement-footer">
+                                    <span class="announcement-date-small">{{ announcement.date }}</span>
+                                    <a href="{% url 'elon_detail' announcement.slug %}" class="announcement-link-small">
+                                        {% t 'announcements.read' %}
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                                            <polyline points="12 5 19 12 12 19"></polyline>
+                                        </svg>
+                                    </a>
+                                </div>
+                            </article>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Low Priority Announcements -->
+                    {% if priority_groups.past %}
+                    <div class="priority-section">
+                        <h2 class="priority-title priority-low">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="9" y1="9" x2="15" y2="9"></line>
+                                <line x1="9" y1="15" x2="15" y2="15"></line>
+                            </svg>
+                            {% t 'announcements.priority.low' %}
+                        </h2>
+                        <div class="announcements-list-simple">
+                            {% for announcement in priority_groups.past %}
+                            <article class="announcement-list-item">
+                                <div class="announcement-list-content">
+                                    <span class="announcement-category-badge">{{ announcement.category }}</span>
+                                    <h4 class="announcement-list-title">
+                                        <a href="{% url 'elon_detail' announcement.slug %}">{{ announcement.title }}</a>
+                                    </h4>
+                                    <span class="announcement-list-date">{{ announcement.date }}</span>
+                                </div>
+                            </article>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Sidebar -->
+                <aside class="sidebar">
+                    <!-- Categories -->
+                    <div class="sidebar-widget">
+                        <h3 class="widget-title">{% t 'common.labels.categories' %}</h3>
+                        <div class="category-list">
+                            {% for category, count in categories.items %}
+                            <a href="#" class="category-item">
+                                <span class="category-name">{{ category }}</span>
+                                <span class="category-count">{{ count }}</span>
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Important Links -->
+                    <div class="sidebar-widget">
+                        <h3 class="widget-title">{% t 'common.labels.useful_links' %}</h3>
+                        <div class="links-list">
+                            <a href="{% url 'maqola_berish' %}" class="link-item">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                </svg>
+                                <span>{% t 'base.nav.submit_article' %}</span>
+                            </a>
+                            <a href="{% url 'jurnal_talablari' %}" class="link-item">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
+                                <span>{% t 'base.nav.journal_requirements' %}</span>
+                            </a>
+                            <a href="{% url 'aloqa' %}" class="link-item">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                    <polyline points="22,6 12,13 2,6"></polyline>
+                                </svg>
+                                <span>{% t 'base.nav.contact' %}</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Newsletter Subscribe -->
+                    <div class="sidebar-widget newsletter-widget">
+                        <h3 class="widget-title">{% t 'common.newsletter.announcement_title' %}</h3>
+                        <p class="widget-description">{% t 'common.newsletter.announcement_description' %}</p>
+                        <form class="newsletter-form js-subscribe-form" data-url="{% url 'subscribe' %}">
+                            {% csrf_token %}
+                            <input type="text" name="full_name" placeholder="F.I.O" required style="margin-bottom:6px;width:100%;padding:8px 12px;border:1.5px solid #e2e8f0;border-radius:7px;font-size:13px">
+                            <input type="email" name="email" placeholder="{% t 'common.placeholders.email' %}" required style="margin-bottom:6px;width:100%;padding:8px 12px;border:1.5px solid #e2e8f0;border-radius:7px;font-size:13px">
+                            <button type="submit" class="btn btn-primary btn-small">{% t 'common.actions.subscribe' %}</button>
+                            <div class="js-subscribe-msg" style="display:none;margin-top:8px;padding:8px 12px;border-radius:7px;font-size:12px;font-weight:500"></div>
+                        </form>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,312 @@
+{% extends 'base.html' %}
+{% load static site_i18n %}
+
+{% block title %}{{ article.title }} - {{ volume.journal_name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .article-page {
+        max-width: 1180px;
+        margin: 0 auto 60px;
+        padding: 0 2rem;
+    }
+
+    .article-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.8fr) 320px;
+        gap: 2rem;
+        align-items: start;
+    }
+
+    .article-content {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .article-card,
+    .article-side-card {
+        background: #fff;
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        box-shadow: 0 18px 36px rgba(15, 23, 42, 0.08);
+        border-radius: 24px;
+        padding: 1.6rem;
+    }
+
+    .article-meta-line {
+        display: inline-flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+        align-items: center;
+        color: #0288D1;
+        background: rgba(2, 136, 209, 0.08);
+        padding: 0.5rem 0.9rem;
+        border-radius: 999px;
+        font-weight: 700;
+        font-size: 0.92rem;
+    }
+
+    .article-heading {
+        font-size: 2.15rem;
+        line-height: 1.25;
+        color: #0f172a;
+        margin: 1rem 0 0.9rem;
+    }
+
+    .article-authors {
+        font-size: 1.04rem;
+        color: #334155;
+        line-height: 1.8;
+        margin-bottom: 1.25rem;
+    }
+
+    .article-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.85rem;
+        flex-wrap: wrap;
+        padding-top: 1rem;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    .article-date {
+        font-size: 0.92rem;
+        color: #64748b;
+        font-weight: 600;
+        margin-right: auto;
+    }
+
+    .action-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.45rem;
+        border-radius: 999px;
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 700;
+        transition: all 0.25s ease;
+    }
+
+    .action-link.primary {
+        background: var(--gradient-primary);
+        color: #fff;
+        padding: 0.72rem 1.15rem;
+        box-shadow: 0 12px 24px rgba(2, 171, 111, 0.2);
+    }
+
+    .action-link.primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 16px 28px rgba(2, 171, 111, 0.26);
+    }
+
+    .action-link.secondary {
+        color: #0288D1;
+        background: rgba(2, 136, 209, 0.09);
+        padding: 0.72rem 1.1rem;
+    }
+
+    .action-link.secondary:hover {
+        background: #0288D1;
+        color: #fff;
+    }
+
+    .content-section h3 {
+        font-size: 1.28rem;
+        color: #0f172a;
+        margin-bottom: 1rem;
+    }
+
+    .content-section p,
+    .reference-list li,
+    .citation-box {
+        color: #334155;
+        line-height: 1.9;
+        font-size: 1rem;
+    }
+
+    .reference-list {
+        margin: 0;
+        padding-left: 1.2rem;
+    }
+
+    .reference-list li + li {
+        margin-top: 0.9rem;
+    }
+
+    .keyword-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.65rem;
+    }
+
+    .keyword-tag {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.55rem 0.9rem;
+        border-radius: 999px;
+        background: rgba(2, 171, 111, 0.08);
+        color: #02885d;
+        font-size: 0.9rem;
+        font-weight: 700;
+    }
+
+    .citation-box {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 18px;
+        padding: 1rem;
+    }
+
+    .article-sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+        position: sticky;
+        top: 95px;
+    }
+
+    .article-side-card h4 {
+        font-size: 1.08rem;
+        color: #0f172a;
+        margin-bottom: 0.9rem;
+    }
+
+    .side-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .side-item {
+        color: #475569;
+        line-height: 1.7;
+        font-size: 0.95rem;
+    }
+
+    .side-item strong {
+        color: #0f172a;
+    }
+
+    .back-link {
+        color: #0288D1;
+        text-decoration: none;
+        font-weight: 700;
+        transition: color 0.2s ease;
+    }
+
+    .back-link:hover {
+        color: #02AB6F;
+    }
+
+    @media (max-width: 1024px) {
+        .article-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .article-sidebar {
+            position: static;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .article-page {
+            padding: 0 1rem;
+        }
+
+        .article-heading {
+            font-size: 1.65rem;
+        }
+
+        .article-actions {
+            align-items: flex-start;
+        }
+
+        .article-date {
+            margin-right: 0;
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="page-hero" data-header-style="default">
+    <div class="container">
+        <h2 class="page-title">{{ volume.journal_name }}</h2>
+        <p class="page-subtitle">{% t 'archive_issue.title_prefix' %} {{ volume.volume }}, {% t 'archive_issue.issue_label' %} {{ volume.issue }} {% t 'archive_article.hero_subtitle' %}</p>
+    </div>
+</section>
+
+<div class="article-page" data-header-style="accent">
+    <div class="article-layout">
+        <div class="article-content">
+            <article class="article-card">
+                <div class="article-meta-line">{% t 'archive_article.meta_line_prefix' %} {{ volume.year }} / {{ volume.issue }} &nbsp; • &nbsp; {% t 'archive_article.issue_label' %} {{ volume.issue }}. {% t 'archive_article.volume_label' %} {{ volume.volume }}.</div>
+                <h1 class="article-heading">{{ article.title }}</h1>
+                <div class="article-authors">{{ article.display_authors }}</div>
+
+                <div class="article-actions">
+                    <span class="article-date">{{ article.date }}</span>
+                    <a href="{% url 'arxiv_article_download' volume.slug article.slug %}" class="action-link primary">{% t 'common.actions.download' %}</a>
+                    {% if article.source == 'submitted' and article.has_certificate_pdf %}
+                    <a href="{% url 'article_certificate_download' volume.slug article.article_id %}" class="action-link primary" style="background:linear-gradient(135deg,#059669,#10b981)">Sertifikat (PDF)</a>
+                    {% endif %}
+                    <a href="{{ article.pdf_url }}" class="action-link secondary" target="_blank" rel="noopener noreferrer">{% t 'common.actions.read_full' %}</a>
+                </div>
+            </article>
+
+            <section id="full-read" class="article-card content-section">
+                <h3>{% t 'archive_article.annotation_title' %}</h3>
+                <p>{{ article.abstract }}</p>
+            </section>
+
+            <section class="article-card content-section">
+                <h3>{% t 'archive_article.references_title' %}</h3>
+                <ol class="reference-list">
+                    {% for reference in article.references %}
+                    <li>{{ reference }}</li>
+                    {% endfor %}
+                </ol>
+            </section>
+
+            <section class="article-card content-section">
+                <h3>{% t 'archive_article.keywords_title' %}</h3>
+                <div class="keyword-list">
+                    {% for keyword in article.keywords %}
+                    <span class="keyword-tag">{{ keyword }}</span>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <section class="article-card content-section">
+                <h3>{% t 'archive_article.citation_title' %}</h3>
+                <p style="margin-bottom: 0.85rem;"><strong>{% t 'archive_article.citation_style' %}</strong></p>
+                <div class="citation-box">{{ article.citation }}</div>
+            </section>
+        </div>
+
+        <aside class="article-sidebar">
+            <div class="article-side-card">
+                <h4>{% t 'archive_article.navigation_title' %}</h4>
+                <div class="side-list">
+                    <div class="side-item"><a href="{% url 'index' %}" class="back-link">{% t 'common.breadcrumb.home' %}</a></div>
+                    <div class="side-item"><a href="{% url 'arxiv' %}" class="back-link">{% t 'base.nav.archive' %}</a></div>
+                    <div class="side-item"><a href="{% url 'arxiv_detail' volume.slug %}" class="back-link">{% t 'archive_issue.title_prefix' %} {{ volume.volume }}, {% t 'archive_issue.issue_label' %} {{ volume.issue }}</a></div>
+                </div>
+            </div>
+
+            <div class="article-side-card">
+                <h4>{% t 'archive_article.article_info_title' %}</h4>
+                <div class="side-list">
+                    <div class="side-item"><strong>{% t 'common.labels.journal' %}:</strong> {{ volume.journal_name }}</div>
+                    <div class="side-item"><strong>{% t 'common.labels.publication' %}:</strong> {{ volume.year }} / {{ volume.issue }}</div>
+                    <div class="side-item"><strong>{% t 'common.labels.issue_volume' %}:</strong> {% t 'archive_article.issue_label' %} {{ volume.issue }}. {% t 'archive_article.volume_label' %} {{ volume.volume }}</div>
+                    <div class="side-item"><strong>{% t 'common.labels.date' %}:</strong> {{ article.date }}</div>
+                </div>
+            </div>
+
+        </aside>
+    </div>
+</div>
+{% endblock %}

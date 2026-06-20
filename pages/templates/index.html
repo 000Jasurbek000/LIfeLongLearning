@@ -1,0 +1,374 @@
+{% extends 'base.html' %}
+{% load static site_i18n %}
+
+{% block title %}{% t 'home.meta_title' %}{% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <section class="hero" data-header-style="default">
+        <div class="container">
+            <div class="hero-content">
+                <span class="hero-badge">{% t 'home.hero.badge' %}</span>
+                <h2 class="hero-title">{% t 'home.hero.title' %}</h2>
+                <p class="hero-description">
+                    {% t 'home.hero.description' %}
+                </p>
+                <div class="hero-buttons">
+                    <a href="{% url 'maqola_berish' %}" class="btn btn-large btn-primary">{% t 'base.nav.submit_article' %}</a>
+                    <a href="{% url 'arxiv' %}" class="btn btn-large btn-outline">{% t 'home.hero.archive_cta' %}</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">{{ hero_stats.articles|default:0 }}{% if hero_stats.articles %} +{% endif %}</div>
+                        <div class="stat-label">{% t 'home.hero.published_articles' %}</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">{{ hero_stats.authors|default:0 }}{% if hero_stats.authors %} +{% endif %}</div>
+                        <div class="stat-label">{% t 'home.hero.authors' %}</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">{{ hero_stats.issues|default:0 }}{% if hero_stats.issues %} +{% endif %}</div>
+                        <div class="stat-label">{% t 'home.hero.issues' %}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" data-header-style="accent">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">{% t 'home.features.title' %}</h2>
+                <p class="section-description">{% t 'home.features.description' %}</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">{% t 'home.features.items.fast_publish.title' %}</h3>
+                    <p class="feature-description">{% t 'home.features.items.fast_publish.description' %}</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">{% t 'home.features.items.open_access.title' %}</h3>
+                    <p class="feature-description">{% t 'home.features.items.open_access.description' %}</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">{% t 'home.features.items.editorial.title' %}</h3>
+                    <p class="feature-description">{% t 'home.features.items.editorial.description' %}</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                            <polyline points="2 17 12 22 22 17"></polyline>
+                            <polyline points="2 12 12 17 22 12"></polyline>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">{% t 'home.features.items.standards.title' %}</h3>
+                    <p class="feature-description">{% t 'home.features.items.standards.description' %}</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">{% t 'home.features.items.digital_archive.title' %}</h3>
+                    <p class="feature-description">{% t 'home.features.items.digital_archive.description' %}</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">{% t 'home.features.items.quality_control.title' %}</h3>
+                    <p class="feature-description">{% t 'home.features.items.quality_control.description' %}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Latest Articles Section -->
+    <section class="articles" data-header-style="accent">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">{% t 'home.latest_articles.title' %}</h2>
+                <a href="{% url 'arxiv' %}" class="section-link">{% t 'common.actions.view_all' %}</a>
+            </div>
+            <div class="articles-grid">
+                <article class="article-card">
+                    <div class="article-badge">{% t 'home.latest_articles.cards.physics.badge' %}</div>
+                    <h3 class="article-title">{% t 'home.latest_articles.cards.physics.title' %}</h3>
+                    <p class="article-excerpt">{% t 'home.latest_articles.cards.physics.excerpt' %}</p>
+                    <div class="article-meta">
+                        <span class="article-author">{% t 'home.latest_articles.cards.physics.author' %}</span>
+                        <span class="article-date">{% t 'home.latest_articles.cards.physics.date' %}</span>
+                    </div>
+                    <a href="{% url 'arxiv' %}" class="article-link">{% t 'common.actions.read_more' %} →</a>
+                </article>
+                <article class="article-card">
+                    <div class="article-badge">{% t 'home.latest_articles.cards.chemistry.badge' %}</div>
+                    <h3 class="article-title">{% t 'home.latest_articles.cards.chemistry.title' %}</h3>
+                    <p class="article-excerpt">{% t 'home.latest_articles.cards.chemistry.excerpt' %}</p>
+                    <div class="article-meta">
+                        <span class="article-author">{% t 'home.latest_articles.cards.chemistry.author' %}</span>
+                        <span class="article-date">{% t 'home.latest_articles.cards.chemistry.date' %}</span>
+                    </div>
+                    <a href="{% url 'arxiv' %}" class="article-link">{% t 'common.actions.read_more' %} →</a>
+                </article>
+                <article class="article-card">
+                    <div class="article-badge">{% t 'home.latest_articles.cards.biology.badge' %}</div>
+                    <h3 class="article-title">{% t 'home.latest_articles.cards.biology.title' %}</h3>
+                    <p class="article-excerpt">{% t 'home.latest_articles.cards.biology.excerpt' %}</p>
+                    <div class="article-meta">
+                        <span class="article-author">{% t 'home.latest_articles.cards.biology.author' %}</span>
+                        <span class="article-date">{% t 'home.latest_articles.cards.biology.date' %}</span>
+                    </div>
+                    <a href="{% url 'arxiv' %}" class="article-link">{% t 'common.actions.read_more' %} →</a>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Latest News & Announcements Section -->
+    <section class="news-announcements" data-header-style="accent">
+        <div class="container">
+            <div class="news-announcements-grid">
+                <!-- Latest News -->
+                <div class="news-section">
+                    <div class="section-header">
+                        <h2 class="section-title">{% t 'home.news.title' %}</h2>
+                        <a href="{% url 'yangiliklar' %}" class="section-link">{% t 'common.actions.view_all' %}</a>
+                    </div>
+                    <div class="news-list">
+                        {% for news in latest_news %}
+                        <article class="news-card">
+                            <div class="news-date">
+                                <span class="date-day">{{ news.date|date:"d" }}</span>
+                                <span class="date-month">{{ news.date|date:"M" }}</span>
+                            </div>
+                            <div class="news-content">
+                                <h3 class="news-title">{{ news.title }}</h3>
+                                <p class="news-excerpt">{{ news.excerpt|truncatewords:15 }}</p>
+                                <a href="{% url 'yangilik_detail' news.slug %}" class="news-link">
+                                    <span>{% t 'common.actions.details' %}</span>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        <polyline points="12 5 19 12 12 19"></polyline>
+                                    </svg>
+                                </a>
+                            </div>
+                        </article>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <!-- Important Announcement -->
+                <div class="announcement-section">
+                    <div class="section-header">
+                        <h2 class="section-title">{% t 'home.announcement.title' %}</h2>
+                        <a href="{% url 'elonlar' %}" class="section-link">{% t 'common.actions.view_all_announcements' %} →</a>
+                    </div>
+                    {% if featured_announcement %}
+                    <div class="announcement-card">
+                        <div class="announcement-icon">
+                            {% if featured_announcement.icon == 'warning' %}
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                <line x1="12" y1="9" x2="12" y2="13"></line>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                            {% elif featured_announcement.icon == 'info' %}
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="16" x2="12" y2="12"></line>
+                                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                            </svg>
+                            {% else %}
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                            </svg>
+                            {% endif %}
+                        </div>
+                        <h3 class="announcement-title">{{ featured_announcement.title }}</h3>
+                        {% if featured_announcement.start_date and featured_announcement.end_date %}
+                        <p class="announcement-date">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                            {{ featured_announcement.start_date }} - {{ featured_announcement.end_date }}
+                        </p>
+                        {% endif %}
+                        <p class="announcement-text">
+                            {{ featured_announcement.excerpt }}
+                        </p>
+                        <div class="announcement-footer">
+                            <a href="{% url 'elon_detail' featured_announcement.slug %}" class="btn btn-outline btn-small">{% t 'common.actions.more_info' %}</a>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Editorial Board Preview -->
+    <section class="editorial-preview" data-header-style="accent">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">{% t 'home.editorial.title' %}</h2>
+                <p class="section-description">{% t 'home.editorial.description' %}</p>
+            </div>
+            <div class="editorial-preview-grid">
+                {% for member in editorial_preview %}
+                <div class="editorial-preview-member">
+                    <div class="preview-member-image">
+                        {% if member.photo %}
+                        <img src="{{ member.photo.url }}" alt="{{ member.full_name }}">
+                        {% else %}
+                        <img src="{% static 'image/LOGO.png' %}" alt="{{ member.full_name }}">
+                        {% endif %}
+                    </div>
+                    <div class="preview-member-info">
+                        <h3 class="preview-member-name">{{ member.full_name }}</h3>
+                        <p class="preview-member-position">{{ member.get_position_display }}</p>
+                        <p class="preview-member-workplace">{{ member.workplace }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="editorial-preview-footer">
+                <a href="{% url 'tahrir_hayati' %}" class="btn btn-large btn-primary">
+                    {% t 'common.actions.view_all_members' %}
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics & Achievements -->
+    <section class="statistics-section" data-header-style="default">
+        <div class="container">
+            <div class="statistics-header">
+                <h2 class="statistics-title">{% t 'home.achievements.title' %}</h2>
+                <p class="statistics-description">{% t 'home.achievements.description' %}</p>
+            </div>
+            <div class="statistics-grid">
+                <div class="stat-box">
+                    <div class="stat-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value">{{ hero_stats.articles|default:0 }}{% if hero_stats.articles %}+{% endif %}</div>
+                        <div class="stat-label">{% t 'home.achievements.published_articles' %}</div>
+                    </div>
+                </div>
+                
+                <div class="stat-box">
+                    <div class="stat-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value">{{ hero_stats.authors|default:0 }}{% if hero_stats.authors %}+{% endif %}</div>
+                        <div class="stat-label">{% t 'home.achievements.active_authors' %}</div>
+                    </div>
+                </div>
+                
+                <div class="stat-box">
+                    <div class="stat-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                            <line x1="2" y1="12" x2="22" y2="12"></line>
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value">{{ hero_stats.issues|default:0 }}{% if hero_stats.issues %}+{% endif %}</div>
+                        <div class="stat-label">{% t 'home.achievements.international_cooperation' %}</div>
+                    </div>
+                </div>
+                
+                <div class="stat-box">
+                    <div class="stat-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                        </svg>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-value">98%</div>
+                        <div class="stat-label">{% t 'home.achievements.satisfaction' %}</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="newsletter-section">
+                <div class="newsletter-content">
+                    <div class="newsletter-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                    </div>
+                    <div class="newsletter-text">
+                        <h3>{% t 'common.newsletter.homepage_title' %}</h3>
+                        <p>{% t 'common.newsletter.homepage_description' %}</p>
+                    </div>
+                </div>
+                <form class="newsletter-form js-subscribe-form" data-url="{% url 'subscribe' %}">
+                    {% csrf_token %}
+                    <input type="text" name="full_name" placeholder="{% t 'common.placeholders.full_name' %}" class="newsletter-input" required>
+                    <input type="email" name="email" placeholder="{% t 'common.placeholders.email_full' %}" class="newsletter-input" required>
+                    <button type="submit" class="newsletter-btn">
+                        {% t 'common.actions.subscribe' %}
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </button>
+                    <div class="js-subscribe-msg" style="display:none;margin-top:10px;padding:10px 14px;border-radius:8px;font-size:13px;font-weight:500"></div>
+                </form>
+            </div>
+        </div>
+    </section>
+{% endblock %}

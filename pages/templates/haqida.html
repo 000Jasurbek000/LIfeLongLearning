@@ -1,0 +1,256 @@
+{% extends 'base.html' %}
+{% load static site_i18n %}
+
+{% block title %}{% t 'about.meta_title' %}{% endblock %}
+
+{% block content %}
+    <section class="page-hero" data-header-style="default">
+        <div class="container">
+            <h2 class="page-title">{% t 'about.hero.title' %}</h2>
+            <p class="page-subtitle">{% t 'about.hero.subtitle' %}</p>
+        </div>
+    </section>
+
+    <section class="page-content" data-header-style="accent">
+        <div class="container">
+            <div class="content-wrapper">
+                <div class="content-main">
+                    <article class="content-article">
+                        <h3>{% t 'about.sections.general.title' %}</h3>
+                        <p>{% t 'about.sections.general.text' %}</p>
+                        
+                        <h3>{% t 'about.sections.goals.title' %}</h3>
+                        <p>{% t 'about.sections.goals.lead' %}</p>
+                        <ul>
+                            <li>{% t 'about.sections.goals.item1' %}</li>
+                            <li>{% t 'about.sections.goals.item2' %}</li>
+                            <li>{% t 'about.sections.goals.item3' %}</li>
+                            <li>{% t 'about.sections.goals.item4' %}</li>
+                            <li>{% t 'about.sections.goals.item5' %}</li>
+                        </ul>
+
+                        <h3>{% t 'about.sections.policy.title' %}</h3>
+                        <p>{% t 'about.sections.policy.text' %}</p>
+
+                        <h3>{% t 'about.sections.review.title' %}</h3>
+                        <p>{% t 'about.sections.review.lead' %}</p>
+                        <ol>
+                            <li><strong>{% t 'about.sections.review.step1_title' %}</strong> {% t 'about.sections.review.step1_text' %}</li>
+                            <li><strong>{% t 'about.sections.review.step2_title' %}</strong> {% t 'about.sections.review.step2_text' %}</li>
+                        </ol>
+
+                        <h3>{% t 'about.sections.indexing.title' %}</h3>
+                        <p>{% t 'about.sections.indexing.lead' %}</p>
+                        <ul>
+                            <li>{% t 'about.sections.indexing.item1' %}</li>
+                            <li>{% t 'about.sections.indexing.item2' %}</li>
+                            <li>{% t 'about.sections.indexing.item3' %}</li>
+                            <li>{% t 'about.sections.indexing.item4' %}</li>
+                        </ul>
+
+                        <h3>{% t 'about.sections.ethics.title' %}</h3>
+                        <p>{% t 'about.sections.ethics.text' %}</p>
+
+                        <div class="info-boxes">
+                            <div class="info-box">
+                                <h4>{% t 'about.info.issn_title' %}</h4>
+                                <p>{% t 'about.info.issn_value'|safe %}</p>
+                            </div>
+                            <div class="info-box">
+                                <h4>{% t 'about.info.frequency_title' %}</h4>
+                                <p>{% t 'about.info.frequency_value'|safe %}</p>
+                            </div>
+                            <div class="info-box">
+                                <h4>{% t 'about.info.language_title' %}</h4>
+                                <p>{% t 'about.info.language_value'|safe %}</p>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <aside class="content-sidebar">
+                    <div class="sidebar-widget">
+                        <h4>{% t 'about.sidebar.quick_links_title' %}</h4>
+                        <ul>
+                            <li><a href="{% url 'jurnal_talablari' %}">{% t 'base.nav.journal_requirements' %}</a></li>
+                            <li><a href="{% url 'meyoriy_hujjatlar' %}">{% t 'base.nav.regulatory_docs' %}</a></li>
+                            <li><a href="{% url 'tahrir_hayati' %}">{% t 'base.nav.editorial_board' %}</a></li>
+                            <li><a href="{% url 'maqola_berish' %}">{% t 'base.nav.submit_article' %}</a></li>
+                            <li><a href="{% url 'arxiv' %}">{% t 'base.nav.archive' %}</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="sidebar-widget highlight">
+                        <h4>{% t 'about.sidebar.latest_issue_title' %}</h4>
+                        <p class="widget-number">№1 (45)</p>
+                        <p>{% t 'about.sidebar.latest_issue_month' %}</p>
+                        <a href="{% url 'arxiv' %}" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">{% t 'common.actions.view' %}</a>
+                    </div>
+
+                    <div class="sidebar-widget">
+                        <h4>{% t 'common.labels.contact' %}</h4>
+                        <p>
+                            <strong>{% t 'common.labels.email' %}:</strong><br>
+                            info@ilmiy-jurnal.uz
+                        </p>
+                        <p>
+                            <strong>{% t 'common.labels.phone' %}:</strong><br>
+                            +998 71 123 45 67
+                        </p>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .page-hero {
+        background: var(--gradient-primary);
+        padding: 4rem 0 3rem;
+        text-align: center;
+    }
+
+    .page-title {
+        color: var(--white);
+        font-size: var(--font-size-4xl);
+        margin-bottom: 1rem;
+    }
+
+    .page-subtitle {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: var(--font-size-lg);
+        margin: 0;
+    }
+
+    .page-content {
+        padding: var(--spacing-3xl) 0;
+    }
+
+    .content-wrapper {
+        display: grid;
+        grid-template-columns: 1fr 350px;
+        gap: var(--spacing-2xl);
+    }
+
+    .content-article {
+        background: var(--white);
+        padding: var(--spacing-2xl);
+        border-radius: var(--radius-2xl);
+        box-shadow: var(--shadow-md);
+    }
+
+    .content-article h3 {
+        color: var(--primary-color);
+        margin-top: var(--spacing-xl);
+        margin-bottom: var(--spacing-md);
+    }
+
+    .content-article h3:first-child {
+        margin-top: 0;
+    }
+
+    .content-article ul, .content-article ol {
+        margin: var(--spacing-md) 0;
+        padding-left: var(--spacing-xl);
+    }
+
+    .content-article li {
+        margin-bottom: var(--spacing-sm);
+        color: var(--text-light);
+    }
+
+    .info-boxes {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: var(--spacing-md);
+        margin-top: var(--spacing-xl);
+    }
+
+    .info-box {
+        background: var(--gradient-primary);
+        padding: var(--spacing-lg);
+        border-radius: var(--radius-xl);
+        text-align: center;
+    }
+
+    .info-box h4 {
+        color: var(--white);
+        font-size: var(--font-size-base);
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .info-box p {
+        color: rgba(255, 255, 255, 0.95);
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .content-sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-lg);
+    }
+
+    .sidebar-widget {
+        background: var(--white);
+        padding: var(--spacing-lg);
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow-md);
+    }
+
+    .sidebar-widget.highlight {
+        background: var(--gradient-primary);
+        color: var(--white);
+    }
+
+    .sidebar-widget h4 {
+        font-size: var(--font-size-lg);
+        margin-bottom: var(--spacing-md);
+    }
+
+    .sidebar-widget.highlight h4,
+    .sidebar-widget.highlight p {
+        color: var(--white);
+    }
+
+    .sidebar-widget ul {
+        list-style: none;
+    }
+
+    .sidebar-widget ul li {
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .sidebar-widget ul li a {
+        color: var(--text-light);
+        transition: var(--transition-base);
+        display: block;
+        padding: var(--spacing-xs);
+        border-radius: var(--radius-md);
+    }
+
+    .sidebar-widget ul li a:hover {
+        color: var(--primary-color);
+        background: var(--gray-100);
+        padding-left: var(--spacing-md);
+    }
+
+    .widget-number {
+        font-size: var(--font-size-3xl);
+        font-weight: 800;
+        margin: var(--spacing-md) 0;
+    }
+
+    @media (max-width: 1024px) {
+        .content-wrapper {
+            grid-template-columns: 1fr;
+        }
+
+        .info-boxes {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
