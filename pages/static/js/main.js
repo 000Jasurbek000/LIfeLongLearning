@@ -283,42 +283,22 @@ if (searchInput) {
 // ==========================================
 // Language Selector
 // ==========================================
-const langOptions = document.querySelectorAll('.lang-option');
-const currentLang = document.querySelector('.current-lang');
+const languageSelector = document.querySelector('.language-selector');
+const languageToggle = document.querySelector('.language-toggle');
 
-langOptions.forEach(option => {
-    option.addEventListener('click', () => {
-        // Remove active class from all options
-        langOptions.forEach(opt => opt.classList.remove('active'));
-        
-        // Add active class to clicked option
-        option.classList.add('active');
-        
-        // Update current language display
-        const langCode = option.dataset.lang.toUpperCase();
-        if (currentLang) {
-            currentLang.textContent = langCode;
-        }
-        
-        // Store language preference
-        localStorage.setItem('selectedLanguage', option.dataset.lang);
-        
-        console.log(`Til o'zgartirildi: ${option.dataset.lang}`);
-        // Here you can add actual language switching functionality
+if (languageSelector && languageToggle) {
+    languageToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = languageSelector.classList.toggle('open');
+        languageToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
     });
-});
 
-// Load saved language preference
-const savedLang = localStorage.getItem('selectedLanguage');
-if (savedLang) {
-    const savedOption = document.querySelector(`[data-lang="${savedLang}"]`);
-    if (savedOption) {
-        langOptions.forEach(opt => opt.classList.remove('active'));
-        savedOption.classList.add('active');
-        if (currentLang) {
-            currentLang.textContent = savedLang.toUpperCase();
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.language-selector')) {
+            languageSelector.classList.remove('open');
+            languageToggle.setAttribute('aria-expanded', 'false');
         }
-    }
+    });
 }
 
 console.log('Ilmiy Jurnal - Website Loaded Successfully!');

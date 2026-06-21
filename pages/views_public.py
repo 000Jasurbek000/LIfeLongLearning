@@ -293,6 +293,7 @@ def arxiv_article_download(request, volume_slug, article_slug):
 def set_language(request, lang_code):
     if lang_code in SUPPORTED_LANGUAGES:
         request.session[LANGUAGE_SESSION_KEY] = lang_code
+        request.session.modified = True
     next_url = request.GET.get('next')
     if next_url:
         return redirect(next_url)

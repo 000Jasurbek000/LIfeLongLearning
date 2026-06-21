@@ -26,7 +26,7 @@
                     <ul class="nav-menu">
                         <li><a href="{% url 'index' %}" {% if request.resolver_match.url_name == 'index' %}class="active"{% endif %}>{% t 'base.nav.home' %}</a></li>
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle{% if request.resolver_match.url_name == 'haqida' or request.resolver_match.url_name == 'tahrir_hayati' or request.resolver_match.url_name == 'jurnal_talablari' or request.resolver_match.url_name == 'meyoriy_hujjatlar' %} active{% endif %}">{% t 'base.nav.about' %} ▾</a>
+                            <a href="#" class="dropdown-toggle{% if request.resolver_match.url_name == 'haqida' or request.resolver_match.url_name == 'tahrir_hayati' or request.resolver_match.url_name == 'jurnal_talablari' or request.resolver_match.url_name == 'meyoriy_hujjatlar' %} active{% endif %}">{% t 'base.nav.about' %}<span class="nav-caret" aria-hidden="true">▾</span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="{% url 'haqida' %}">{% t 'base.nav.about_overview' %}</a></li>
                                 <li><a href="{% url 'tahrir_hayati' %}">{% t 'base.nav.editorial_board' %}</a></li>
@@ -36,7 +36,7 @@
                         </li>
                         <li><a href="{% url 'arxiv' %}" {% if request.resolver_match.url_name == 'arxiv' or request.resolver_match.url_name == 'arxiv_detail' or request.resolver_match.url_name == 'arxiv_article_detail' %}class="active"{% endif %}>{% t 'base.nav.archive' %}</a></li>
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle{% if request.resolver_match.url_name == 'yangiliklar' or request.resolver_match.url_name == 'yangilik_detail' or request.resolver_match.url_name == 'elonlar' or request.resolver_match.url_name == 'elon_detail' or request.resolver_match.url_name == 'aloqa' %} active{% endif %}">{% t 'base.nav.news' %} ▾</a>
+                            <a href="#" class="dropdown-toggle{% if request.resolver_match.url_name == 'yangiliklar' or request.resolver_match.url_name == 'yangilik_detail' or request.resolver_match.url_name == 'elonlar' or request.resolver_match.url_name == 'elon_detail' or request.resolver_match.url_name == 'aloqa' %} active{% endif %}">{% t 'base.nav.news' %}<span class="nav-caret" aria-hidden="true">▾</span></a>
                             <ul class="dropdown-menu">
                                 <li><a href="{% url 'yangiliklar' %}">{% t 'base.nav.all_news' %}</a></li>
                                 <li><a href="{% url 'elonlar' %}">{% t 'base.nav.announcements' %}</a></li>
@@ -120,7 +120,7 @@
                         
                         <!-- Language Selector -->
                         <div class="language-selector">
-                            <button class="language-toggle" aria-label="{% t 'base.language.aria' %}">
+                            <button type="button" class="language-toggle" aria-label="{% t 'base.language.aria' %}" aria-expanded="false" aria-haspopup="true">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <circle cx="12" cy="12" r="10"></circle>
                                     <line x1="2" y1="12" x2="22" y2="12"></line>

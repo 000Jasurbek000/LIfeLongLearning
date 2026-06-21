@@ -229,6 +229,12 @@ img {
     align-items: center;
     justify-content: space-between;
     gap: var(--spacing-sm);
+    flex-wrap: nowrap;
+}
+
+.header .container {
+    max-width: 1400px;
+    padding: 0 0.875rem;
 }
 
 .logo {
@@ -337,6 +343,7 @@ img {
 
 .nav-menu li {
     position: relative;
+    flex-shrink: 0;
 }
 
 .nav-menu a {
@@ -391,9 +398,18 @@ img {
 
 .dropdown-toggle {
     cursor: pointer;
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 0.25rem;
+    gap: 0.15rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.nav-caret {
+    font-size: 0.65em;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-left: 0.05em;
 }
 
 .dropdown-menu {
@@ -811,7 +827,7 @@ img {
 
 .language-dropdown {
     position: absolute;
-    top: calc(100% + 0.5rem);
+    top: 100%;
     right: 0;
     min-width: 200px;
     background: var(--white);
@@ -820,13 +836,25 @@ img {
     border-radius: var(--radius-xl);
     box-shadow: var(--shadow-2xl);
     padding: var(--spacing-xs);
+    padding-top: 0.5rem;
     opacity: 0;
     visibility: hidden;
     transform: translateY(-10px);
     transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    z-index: 1200;
 }
 
-.language-selector:hover .language-dropdown {
+.language-dropdown::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 0.5rem;
+}
+
+.language-selector:hover .language-dropdown,
+.language-selector.open .language-dropdown {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
@@ -844,6 +872,8 @@ img {
     cursor: pointer;
     transition: all 0.3s ease;
     text-align: left;
+    text-decoration: none;
+    color: var(--text-dark);
 }
 
 .lang-option:hover {
