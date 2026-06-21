@@ -19,11 +19,11 @@
         <nav class="navbar">
             <div class="container">
                 <div class="nav-wrapper">
-                    <div class="nav-left">
                     <a href="{% url 'index' %}" class="logo">
                         <img src="{% static 'image/LOGO 02.png' %}" alt="{% t 'base.brand.title' %}" class="logo-image logo-image-light">
                         <img src="{% static 'image/LOGO.png' %}" alt="{% t 'base.brand.title' %}" class="logo-image logo-image-green">
                     </a>
+
                     <ul class="nav-menu">
                         <li><a href="{% url 'index' %}" {% if request.resolver_match.url_name == 'index' %}class="active"{% endif %}>{% t 'base.nav.home' %}</a></li>
                         <li class="dropdown">
@@ -46,114 +46,110 @@
                         </li>
                         <li><a href="{{ publisher_url }}" target="_blank" rel="noopener noreferrer">{% t 'base.nav.publisher' %}</a></li>
                     </ul>
-                    </div>
 
-                    <div class="header-right">
-                    <!-- Search & Language Section -->
-                    <div class="header-actions">
-                        <!-- Advanced Search -->
-                        <div class="search-container">
-                            <button class="search-toggle" aria-label="{% t 'base.search.open_aria' %}">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="11" cy="11" r="8"></circle>
-                                    <path d="m21 21-4.35-4.35"></path>
-                                </svg>
-                            </button>
-                            
-                            <div class="search-panel">
-                                <div class="search-panel-content">
-                                    <div class="search-header">
-                                        <h3>{% t 'base.search.title' %}</h3>
-                                        <button class="search-close" aria-label="{% t 'base.search.close_aria' %}">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <line x1="18" y1="6" x2="6" y2="18"></line>
-                                                <line x1="6" y1="6" x2="18" y2="18"></line>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                    
-                                    <div class="search-body">
-                                        <div class="search-input-group">
-                                            <div class="search-filter-select">
-                                                <select id="searchFilter" class="filter-select">
-                                                    <option value="title" selected>{% t 'base.search.filter.title' %}</option>
-                                                    <option value="author">{% t 'base.search.filter.author' %}</option>
-                                                    <option value="keywords">{% t 'base.search.filter.keywords' %}</option>
-                                                    <option value="all">{% t 'base.search.filter.all' %}</option>
-                                                </select>
-                                                <svg class="select-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                    <polyline points="6 9 12 15 18 9"></polyline>
+                    <div class="nav-tools">
+                        <div class="header-actions">
+                            <div class="search-container">
+                                <button class="search-toggle" aria-label="{% t 'base.search.open_aria' %}">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="11" cy="11" r="8"></circle>
+                                        <path d="m21 21-4.35-4.35"></path>
+                                    </svg>
+                                </button>
+
+                                <div class="search-panel">
+                                    <div class="search-panel-content">
+                                        <div class="search-header">
+                                            <h3>{% t 'base.search.title' %}</h3>
+                                            <button class="search-close" aria-label="{% t 'base.search.close_aria' %}">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                                    <line x1="6" y1="6" x2="18" y2="18"></line>
                                                 </svg>
-                                            </div>
-                                            
-                                            <div class="search-input-wrapper">
-                                                <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                    <circle cx="11" cy="11" r="8"></circle>
-                                                    <path d="m21 21-4.35-4.35"></path>
-                                                </svg>
-                                                <input type="text" id="searchInput" class="search-input" placeholder="{% t 'base.search.placeholder' %}" autocomplete="off">
-                                                <button type="button" class="search-clear" aria-label="{% t 'base.search.clear' %}" style="display: none;">
-                                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                        <circle cx="12" cy="12" r="10"></circle>
-                                                        <line x1="15" y1="9" x2="9" y2="15"></line>
-                                                        <line x1="9" y1="9" x2="15" y2="15"></line>
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                            
-                                            <button type="button" class="search-submit-btn" data-search-url="{% url 'qidiruv' %}">
-                                                {% t 'base.search.submit' %}
                                             </button>
                                         </div>
-                                        
-                                        <div class="search-suggestions">
-                                            <div class="suggestion-title">{% t 'base.search.popular_title' %}</div>
-                                            <div class="suggestion-tags">
-                                                <button class="suggestion-tag">{% t 'base.search.suggestions.quantum' %}</button>
-                                                <button class="suggestion-tag">{% t 'base.search.suggestions.ai' %}</button>
-                                                <button class="suggestion-tag">{% t 'base.search.suggestions.chemistry' %}</button>
-                                                <button class="suggestion-tag">{% t 'base.search.suggestions.biology' %}</button>
+
+                                        <div class="search-body">
+                                            <div class="search-input-group">
+                                                <div class="search-filter-select">
+                                                    <select id="searchFilter" class="filter-select">
+                                                        <option value="title" selected>{% t 'base.search.filter.title' %}</option>
+                                                        <option value="author">{% t 'base.search.filter.author' %}</option>
+                                                        <option value="keywords">{% t 'base.search.filter.keywords' %}</option>
+                                                        <option value="all">{% t 'base.search.filter.all' %}</option>
+                                                    </select>
+                                                    <svg class="select-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                                    </svg>
+                                                </div>
+
+                                                <div class="search-input-wrapper">
+                                                    <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                        <circle cx="11" cy="11" r="8"></circle>
+                                                        <path d="m21 21-4.35-4.35"></path>
+                                                    </svg>
+                                                    <input type="text" id="searchInput" class="search-input" placeholder="{% t 'base.search.placeholder' %}" autocomplete="off">
+                                                    <button type="button" class="search-clear" aria-label="{% t 'base.search.clear' %}" style="display: none;">
+                                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <circle cx="12" cy="12" r="10"></circle>
+                                                            <line x1="15" y1="9" x2="9" y2="15"></line>
+                                                            <line x1="9" y1="9" x2="15" y2="15"></line>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+
+                                                <button type="button" class="search-submit-btn" data-search-url="{% url 'qidiruv' %}">
+                                                    {% t 'base.search.submit' %}
+                                                </button>
+                                            </div>
+
+                                            <div class="search-suggestions">
+                                                <div class="suggestion-title">{% t 'base.search.popular_title' %}</div>
+                                                <div class="suggestion-tags">
+                                                    <button class="suggestion-tag">{% t 'base.search.suggestions.quantum' %}</button>
+                                                    <button class="suggestion-tag">{% t 'base.search.suggestions.ai' %}</button>
+                                                    <button class="suggestion-tag">{% t 'base.search.suggestions.chemistry' %}</button>
+                                                    <button class="suggestion-tag">{% t 'base.search.suggestions.biology' %}</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="search-overlay"></div>
                                 </div>
-                                <div class="search-overlay"></div>
                             </div>
-                        </div>
-                        
-                        <!-- Language Selector -->
-                        <div class="language-selector">
-                            <button type="button" class="language-toggle" aria-label="{% t 'base.language.aria' %}" aria-expanded="false" aria-haspopup="true">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <line x1="2" y1="12" x2="22" y2="12"></line>
-                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-                                </svg>
-                                <span class="current-lang">{{ current_language.short }}</span>
-                                <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <polyline points="6 9 12 15 18 9"></polyline>
-                                </svg>
-                            </button>
-                            <div class="language-dropdown">
-                                {% for language in available_languages %}
-                                <a href="{% url 'set_language' language.code %}?next={{ request.get_full_path|urlencode }}" class="lang-option{% if current_language.code == language.code %} active{% endif %}" data-lang="{{ language.code }}">
-                                    <span class="lang-flag">{{ language.flag }}</span>
-                                    <span class="lang-name">{{ language.label }}</span>
-                                    <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <polyline points="20 6 9 17 4 12"></polyline>
+
+                            <div class="language-selector">
+                                <button type="button" class="language-toggle" aria-label="{% t 'base.language.aria' %}" aria-expanded="false" aria-haspopup="true">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
                                     </svg>
-                                </a>
-                                {% endfor %}
+                                    <span class="current-lang">{{ current_language.short }}</span>
+                                    <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>
+                                </button>
+                                <div class="language-dropdown">
+                                    {% for language in available_languages %}
+                                    <a href="{% url 'set_language' language.code %}?next={{ request.get_full_path|urlencode }}" class="lang-option{% if current_language.code == language.code %} active{% endif %}" data-lang="{{ language.code }}">
+                                        <span class="lang-flag">{{ language.flag }}</span>
+                                        <span class="lang-name">{{ language.label }}</span>
+                                        <svg class="check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                    </a>
+                                    {% endfor %}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <a href="{% url 'maqola_berish' %}" class="btn btn-primary{% if request.resolver_match.url_name == 'maqola_berish' %} active{% endif %}">{% t 'base.nav.submit_article' %}</a>
-                    <button class="mobile-menu-toggle">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </button>
+
+                        <a href="{% url 'maqola_berish' %}" class="btn btn-primary{% if request.resolver_match.url_name == 'maqola_berish' %} active{% endif %}">{% t 'base.nav.submit_article' %}</a>
+                        <button class="mobile-menu-toggle">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </button>
                     </div>
                 </div>
             </div>
