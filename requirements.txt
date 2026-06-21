@@ -7,3 +7,4 @@ asgiref==3.11.1
 sqlparse==0.5.3
 reportlab==4.4.1
 pypdf==5.9.0
+whitenoise==6.9.0

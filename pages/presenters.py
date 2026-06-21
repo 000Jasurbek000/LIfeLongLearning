@@ -169,7 +169,8 @@ def present_volume(volume):
 
     cover = _media_url(volume.cover_image)
     if not cover:
-        cover = '/static/image/LOGO.png'
+        from django.templatetags.static import static
+        cover = static('image/LOGO.png')
 
     has_volume_pdf = bool(volume.pdf_file)
 
