@@ -80,6 +80,11 @@
         📚 Tomlar
     </a>
 
+    <a href="{% url 'admin_obunachlar' %}"
+       class="{% if request.resolver_match.url_name == 'admin_obunachlar' %}active{% endif %}">
+        📬 Obunachilar
+    </a>
+
     <div class="nav-right">
         <div class="nav-sep"></div>
         <a href="{% url 'reviewer_login' %}" class="nav-ext" target="_blank">

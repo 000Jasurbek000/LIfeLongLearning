@@ -45,10 +45,6 @@ def can_confirm_payment(article) -> bool:
     )
 
 
-def can_assign_reviewer(article) -> bool:
-    return article.status == 'pending' and not article.volume_id
-
-
 def workflow_step_label(article) -> str:
     if article.status == 'published':
         return 'Nashr etilgan'

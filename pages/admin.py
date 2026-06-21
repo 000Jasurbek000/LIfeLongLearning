@@ -9,9 +9,6 @@ from .models import (
 )
 
 
-# Article va Author modellari admin paneldan olib tashlandi
-
-
 @admin.register(EditorialMember)
 class EditorialMemberAdmin(admin.ModelAdmin):
     """Tahririyat a'zolari admin paneli"""

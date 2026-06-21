@@ -44,10 +44,6 @@ def load_translations(language_code: str) -> dict:
         return json.load(file)
 
 
-def clear_translation_cache():
-    load_translations.cache_clear()
-
-
 def normalize_language(language_code: str | None) -> str:
     if language_code in SUPPORTED_LANGUAGES:
         return language_code

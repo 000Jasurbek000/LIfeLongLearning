@@ -20,10 +20,7 @@
         .badge .num { font-size: 22px; font-weight: 800; display: block; }
         .badge .lbl { font-size: 11px; opacity: 0.9; }
 
-        .nav-links { background: white; border-radius: 12px; padding: 14px 20px; margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-        .nav-link { padding: 8px 18px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 500; color: #555; border: 1.5px solid #e2e8f0; transition: all .2s; }
-        .nav-link:hover { background: #f1f5f9; }
-        .nav-link.active { background: linear-gradient(135deg,#02AB6F,#0288D1); color: white; border-color: transparent; }
+        .nav-links { display: none; }
 
         .toolbar { background: white; border-radius: 12px; padding: 14px 20px; margin-bottom: 20px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
         .search-form { flex: 1; min-width: 250px; display: flex; gap: 8px; }
@@ -72,14 +69,7 @@
         </div>
     </div>
 
-    <!-- Nav -->
-    <div class="nav-links">
-        <a href="/admin-panel/foydalanuvchilar/" class="nav-link">&#128100; Foydalanuvchilar</a>
-        <a href="/admin-panel/taqrizchilar/" class="nav-link">&#128203; Taqrizchilar</a>
-        <a href="/admin-panel/tomlar/" class="nav-link">&#128218; Tomlar</a>
-        <a href="/admin-panel/elonlar/" class="nav-link">&#128226; E'lonlar</a>
-        <a href="/admin-panel/obunachlar/" class="nav-link active">&#128236; Obunachlar</a>
-    </div>
+    {% include 'admin/includes/admin_nav.html' %}
 
     <!-- Messages -->
     {% for m in messages %}

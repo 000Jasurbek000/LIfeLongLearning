@@ -81,8 +81,15 @@ location /media/ {
 | Custom admin | `/admin-panel/foydalanuvchilar/` |
 | Taqrizchi | `/taqrizchi/login/` |
 
-## Sinov ma'lumotlari
+## Management buyruqlar
 
-```bash
-python manage.py seed_workflow_test --reset
-```
+| Buyruq | Vazifa |
+|--------|--------|
+| `seed_data` | Boshlang'ich yangiliklar, e'lonlar, tom ma'lumotlari |
+| `seed_workflow_test` | Sinov maqolalari va workflow (`--reset`) |
+
+## Tozalangan fayllar (tizim doirasi)
+
+- Bitta static manba: `pages/static/` (eski `static/` olib tashlangan)
+- Eski admin shablonlar (`admin/pages/*`) o'chirildi
+- Ishlatilmaydigan CSS, test skriptlar va bir martalik commandlar olib tashlandi

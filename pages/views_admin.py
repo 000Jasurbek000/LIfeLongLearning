@@ -15,7 +15,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.utils.text import slugify
 from .pdf.generator import publish_article_to_volume
-from .workflow import can_assign_reviewer, can_confirm_payment, can_send_payment, get_review, workflow_step_label
+from .workflow import can_confirm_payment, can_send_payment, workflow_step_label
 
 
 @staff_member_required
