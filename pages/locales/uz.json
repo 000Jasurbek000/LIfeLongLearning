@@ -16,7 +16,8 @@
       "all_news": "Barcha yangiliklar",
       "announcements": "E'lonlar",
       "contact": "Aloqa",
-      "submit_article": "Maqola berish"
+      "submit_article": "Maqola berish",
+      "publisher": "Nashriyot"
     },
     "search": {
       "open_aria": "Qidiruv",
@@ -181,29 +182,7 @@
     },
     "latest_articles": {
       "title": "So'nggi maqolalar",
-      "cards": {
-        "physics": {
-          "badge": "Fizika",
-          "title": "Kvant mexanikasining zamonaviy yo'nalishlari",
-          "excerpt": "Kvant fizikasidagi so'nggi tadqiqotlar va ularning amaliy qo'llanilishi haqida batafsil tahlil...",
-          "author": "Prof. A. Karimov",
-          "date": "15 Aprel, 2026"
-        },
-        "chemistry": {
-          "badge": "Kimyo",
-          "title": "Organik sintezda yangi katalizatorlar",
-          "excerpt": "Zamonaviy organik sintez jarayonlarida qo'llaniladigan yangi turdagi katalizatorlar va ularning samaradorligi...",
-          "author": "Dr. M. Toshmatova",
-          "date": "12 Aprel, 2026"
-        },
-        "biology": {
-          "badge": "Biologiya",
-          "title": "O'simliklar fiziologiyasida yangi yondashuvlar",
-          "excerpt": "O'simliklar metabolizmi va ularning atrof-muhitga moslashuv mexanizmlari bo'yicha ilmiy tadqiqot...",
-          "author": "Prof. S. Rahmonov",
-          "date": "8 Aprel, 2026"
-        }
-      }
+      "empty": "Hozircha nashr etilgan maqolalar yo'q. Yangi son chiqqach, ular shu yerda ko'rinadi."
     },
     "news": {
       "title": "So'nggi yangiliklar"

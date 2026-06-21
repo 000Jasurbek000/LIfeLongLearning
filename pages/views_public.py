@@ -15,6 +15,7 @@ from .i18n import LANGUAGE_SESSION_KEY, SUPPORTED_LANGUAGES
 from .presenters import (
     find_volume_article,
     get_archive_categories,
+    get_latest_home_articles,
     get_popular_articles,
     get_published_volumes,
     get_volume_by_slug,
@@ -45,6 +46,7 @@ def index(request):
         'latest_news': latest_news,
         'featured_announcement': featured_announcement,
         'editorial_preview': editorial_preview,
+        'latest_articles': get_latest_home_articles(3),
     })
 
 

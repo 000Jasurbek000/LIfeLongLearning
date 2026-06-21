@@ -1539,6 +1539,16 @@ img {
     gap: var(--spacing-xl);
 }
 
+.articles-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--text-muted);
+    padding: var(--spacing-2xl);
+    background: var(--white);
+    border-radius: var(--radius-2xl);
+    border: 1px dashed var(--border-color);
+}
+
 .article-card {
     background: var(--white);
     border-radius: var(--radius-2xl);

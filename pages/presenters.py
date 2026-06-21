@@ -6,6 +6,7 @@ from calendar import month_name
 from types import SimpleNamespace
 
 from django.conf import settings
+from django.urls import reverse
 from django.utils.text import slugify
 
 MONTHS_UZ = {
@@ -260,5 +261,34 @@ def get_site_stats():
     return {
         'published_articles': Article.objects.filter(status__in=['approved', 'published']).count(),
         'authors_count': Author.objects.count(),
-        'issues_count': Volume.objects.filter(status='published').count(),
+        'issues_count': Volume.objects.filter(status__in=['published', 'active']).count(),
     }
+
+
+def get_latest_home_articles(limit=3):
+    """Bosh sahifa uchun nashr etilgan maqolalar."""
+    from .models import Article
+
+    items = []
+    qs = (
+        Article.objects.filter(status='published', volume__isnull=False)
+        .select_related('volume')
+        .order_by('-published_at', '-approved_at')[:limit]
+    )
+    for art in qs:
+        vol_slug = art.volume.slug
+        art_slug = slugify(art.title) or f'maqola-{art.pk}'
+        excerpt = (art.abstract or '').strip()
+        if len(excerpt) > 160:
+            excerpt = excerpt[:160].rsplit(' ', 1)[0] + '…'
+        items.append(
+            SimpleNamespace(
+                title=art.title,
+                excerpt=excerpt,
+                author=art.author_name,
+                category=art.get_category_display(),
+                date=art.published_at or art.approved_at,
+                detail_url=reverse('arxiv_article_detail', args=[vol_slug, art_slug]),
+            )
+        )
+    return items

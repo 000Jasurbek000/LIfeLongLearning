@@ -16,7 +16,8 @@
       "all_news": "All news",
       "announcements": "Announcements",
       "contact": "Contact",
-      "submit_article": "Submit article"
+      "submit_article": "Submit article",
+      "publisher": "Publisher"
     },
     "search": {
       "open_aria": "Search",
@@ -163,11 +164,7 @@
     },
     "latest_articles": {
       "title": "Latest articles",
-      "cards": {
-        "physics": { "badge": "Physics", "title": "Modern directions in quantum mechanics", "excerpt": "A detailed analysis of recent research in quantum physics and its practical applications...", "author": "Prof. A. Karimov", "date": "15 April 2026" },
-        "chemistry": { "badge": "Chemistry", "title": "New catalysts in organic synthesis", "excerpt": "New types of catalysts used in modern organic synthesis processes and their efficiency...", "author": "Dr. M. Toshmatova", "date": "12 April 2026" },
-        "biology": { "badge": "Biology", "title": "New approaches in plant physiology", "excerpt": "A scientific study on plant metabolism and mechanisms of adaptation to the environment...", "author": "Prof. S. Rahmonov", "date": "8 April 2026" }
-      }
+      "empty": "No published articles yet. They will appear here once the next issue is released."
     },
     "news": { "title": "Latest news" },
     "announcement": { "title": "Important announcement" },

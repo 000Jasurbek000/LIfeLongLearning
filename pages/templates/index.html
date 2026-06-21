@@ -122,36 +122,24 @@
                 <a href="{% url 'arxiv' %}" class="section-link">{% t 'common.actions.view_all' %}</a>
             </div>
             <div class="articles-grid">
+                {% for article in latest_articles %}
                 <article class="article-card">
-                    <div class="article-badge">{% t 'home.latest_articles.cards.physics.badge' %}</div>
-                    <h3 class="article-title">{% t 'home.latest_articles.cards.physics.title' %}</h3>
-                    <p class="article-excerpt">{% t 'home.latest_articles.cards.physics.excerpt' %}</p>
+                    <div class="article-badge">{{ article.category }}</div>
+                    <h3 class="article-title">{{ article.title }}</h3>
+                    {% if article.excerpt %}
+                    <p class="article-excerpt">{{ article.excerpt }}</p>
+                    {% endif %}
                     <div class="article-meta">
-                        <span class="article-author">{% t 'home.latest_articles.cards.physics.author' %}</span>
-                        <span class="article-date">{% t 'home.latest_articles.cards.physics.date' %}</span>
+                        <span class="article-author">{{ article.author }}</span>
+                        {% if article.date %}
+                        <span class="article-date">{{ article.date|date:"d F Y" }}</span>
+                        {% endif %}
                     </div>
-                    <a href="{% url 'arxiv' %}" class="article-link">{% t 'common.actions.read_more' %} →</a>
+                    <a href="{{ article.detail_url }}" class="article-link">{% t 'common.actions.read_more' %} →</a>
                 </article>
-                <article class="article-card">
-                    <div class="article-badge">{% t 'home.latest_articles.cards.chemistry.badge' %}</div>
-                    <h3 class="article-title">{% t 'home.latest_articles.cards.chemistry.title' %}</h3>
-                    <p class="article-excerpt">{% t 'home.latest_articles.cards.chemistry.excerpt' %}</p>
-                    <div class="article-meta">
-                        <span class="article-author">{% t 'home.latest_articles.cards.chemistry.author' %}</span>
-                        <span class="article-date">{% t 'home.latest_articles.cards.chemistry.date' %}</span>
-                    </div>
-                    <a href="{% url 'arxiv' %}" class="article-link">{% t 'common.actions.read_more' %} →</a>
-                </article>
-                <article class="article-card">
-                    <div class="article-badge">{% t 'home.latest_articles.cards.biology.badge' %}</div>
-                    <h3 class="article-title">{% t 'home.latest_articles.cards.biology.title' %}</h3>
-                    <p class="article-excerpt">{% t 'home.latest_articles.cards.biology.excerpt' %}</p>
-                    <div class="article-meta">
-                        <span class="article-author">{% t 'home.latest_articles.cards.biology.author' %}</span>
-                        <span class="article-date">{% t 'home.latest_articles.cards.biology.date' %}</span>
-                    </div>
-                    <a href="{% url 'arxiv' %}" class="article-link">{% t 'common.actions.read_more' %} →</a>
-                </article>
+                {% empty %}
+                <p class="articles-empty">{% t 'home.latest_articles.empty' %}</p>
+                {% endfor %}
             </div>
         </div>
     </section>
@@ -326,18 +314,6 @@
                     <div class="stat-content">
                         <div class="stat-value">{{ hero_stats.issues|default:0 }}{% if hero_stats.issues %}+{% endif %}</div>
                         <div class="stat-label">{% t 'home.achievements.international_cooperation' %}</div>
-                    </div>
-                </div>
-                
-                <div class="stat-box">
-                    <div class="stat-icon">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                        </svg>
-                    </div>
-                    <div class="stat-content">
-                        <div class="stat-value">98%</div>
-                        <div class="stat-label">{% t 'home.achievements.satisfaction' %}</div>
                     </div>
                 </div>
             </div>

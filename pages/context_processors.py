@@ -11,6 +11,8 @@ def site_i18n(request):
 
 
 def site_stats(request):
+    from django.conf import settings
+
     stats = get_site_stats()
     return {
         'site_stats': stats,
@@ -19,4 +21,5 @@ def site_stats(request):
             'authors': stats['authors_count'],
             'issues': stats['issues_count'],
         },
+        'publisher_url': settings.PUBLISHER_URL,
     }
