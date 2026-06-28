@@ -131,11 +131,11 @@
     {% if review.status == 'pending' %}
     <div class="action-bar">
         <span class="action-bar-title">⚡ Qaror qabul qiling:</span>
-        <a href="{% url 'reviewer_article_approve' review.pk %}"
-           class="btn btn-approve"
-           onclick="return confirm('✅ Bu maqolani tasdiqlaysizmi?')">
-            ✅ Tasdiqlash
-        </a>
+        <form method="POST" action="{% url 'reviewer_article_approve' review.pk %}" style="display:inline"
+              onsubmit="return confirm('✅ Bu maqolani tasdiqlaysizmi?')">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-approve">✅ Tasdiqlash</button>
+        </form>
         <button class="btn btn-reject" onclick="document.getElementById('rejectModal').classList.add('active')">
             ❌ Rad etish
         </button>
@@ -171,6 +171,14 @@
         {% endif %}
     </div>
 
+    <!-- Qo'shimcha fayllar -->
+    {% if article.additional_files %}
+    <div class="section">
+        <h2>📎 Qo'shimcha fayllar</h2>
+        <a href="{{ article.additional_files.url }}" target="_blank" class="btn btn-pdf">⬇️ Yuklab olish</a>
+    </div>
+    {% endif %}
+
     <!-- PDF -->
     {% if article.pdf_file %}
     <div class="section">
@@ -202,10 +210,12 @@
     <div class="modal">
         <h2>❌ Maqolani rad etish</h2>
         <p style="font-size:13px;color:#64748b;margin-bottom:16px">Sababni yozing. Qaror admin sahifasida ko'rsatiladi.</p>
-        <form method="POST" action="{% url 'reviewer_article_reject' review.pk %}">
+        <form method="POST" action="{% url 'reviewer_article_reject' review.pk %}" enctype="multipart/form-data">
             {% csrf_token %}
             <label>Rad etish sababi (matn)</label>
             <textarea name="rejection_reason" placeholder="Sabab va tavsiyalarni batafsil yozing..."></textarea>
+            <label style="margin-top:12px;display:block">Qo'shimcha fayl (ixtiyoriy)</label>
+            <input type="file" name="rejection_file" accept=".pdf,.doc,.docx,.zip,.rar">
             <div class="modal-btns">
                 <button type="button" class="btn-cancel" onclick="document.getElementById('rejectModal').classList.remove('active')">Bekor qilish</button>
                 <button type="submit" class="btn-submit">❌ Rad etish</button>

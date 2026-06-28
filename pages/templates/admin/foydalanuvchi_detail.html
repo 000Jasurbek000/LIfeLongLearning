@@ -350,21 +350,22 @@
             <div class="card-actions">
                 {% if group.show_send_payment %}
                     <button class="btn btn-payment"
-                            onclick="sendPayment({{ latest.pk }}, '{{ latest.title|truncatechars:50|escapejs }}')">
+                            onclick="openPaymentModal({{ latest.pk }}, '{{ latest.title|truncatechars:50|escapejs }}', '{% if latest.payment_amount %}{{ latest.payment_amount|floatformat:0 }}{% else %}500000{% endif %}')">
                         💰 To'lov linki {% if latest.payment_link_sent %}qayta {% endif %}yuborish
                     </button>
                     {% if latest.payment_link_sent %}
                     <span class="payment-sent-info">
                         ✅ {{ latest.payment_link_sent_count }}x yuborildi
                         {% if latest.payment_link_sent_at %} · {{ latest.payment_link_sent_at|date:"d.m.Y" }}{% endif %}
+                        {% if group.payment_url %} · <a href="{{ group.payment_url }}" target="_blank" style="color:#3b82f6">Havola</a>{% endif %}
                     </span>
                     {% endif %}
                 {% endif %}
 
-                {% if group.show_confirm_payment %}
+                {% if group.show_assign_volume %}
                     <button class="btn btn-approve"
                             onclick="openApproveModal({{ latest.pk }}, '{{ latest.title|truncatechars:60|escapejs }}')">
-                        ✅ To'lovni tasdiqlash va tomga qo'shish
+                        📚 Tomga qo'shish
                     </button>
                 {% endif %}
 
@@ -559,18 +560,34 @@
     </div>
 </div>
 
-<!-- To'lov linki yuborish uchun yashirin forma -->
-<form method="POST" id="paymentForm" style="display:none">
-    {% csrf_token %}
-</form>
+<!-- To'lov linki yuborish modali -->
+<div class="modal-overlay" id="paymentModal">
+    <div class="modal">
+        <h2>💰 To'lov havolasini yuborish</h2>
+        <div class="modal-article-name" id="paymentArticleTitle"></div>
+        <p style="font-size:12px;color:#64748b;margin-bottom:14px">
+            Muallifga Click to'lov sahifasiga havola yuboriladi. To'lov tasdiqlangach maqola "to'langan" holatiga o'tadi.
+        </p>
+        <form method="POST" id="paymentForm">
+            {% csrf_token %}
+            <label>To'lov summasi (so'm)</label>
+            <input type="number" name="payment_amount" id="paymentAmount" min="1000" step="1000"
+                   style="width:100%;padding:10px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:14px;margin-bottom:18px">
+            <div class="modal-btns">
+                <button type="button" class="btn-cancel" onclick="closePaymentModal()">Bekor qilish</button>
+                <button type="submit" class="btn-submit-reject" style="background:linear-gradient(135deg,#3b82f6,#2563eb)">📧 Email yuborish</button>
+            </div>
+        </form>
+    </div>
+</div>
 
 <!-- TO'LOV TASDIQLASH VA TOMGA QO'SHISH MODALI -->
 <div class="modal-overlay" id="approveModal">
     <div class="modal">
-        <h2>✅ To'lovni tasdiqlash va tomga qo'shish</h2>
+        <h2>📚 Tomga qo'shish</h2>
         <div class="modal-article-name" id="approveArticleTitle"></div>
         <p style="font-size:12px;color:#64748b;margin-bottom:14px">
-            To'lov tasdiqlangach maqola tomga qo'shiladi va PDF hamda sertifikat avtomatik yaratiladi.
+            To'lov qilingan. Tom tanlang — PDF va sertifikat avtomatik yaratiladi.
         </p>
         <form method="POST" id="approveForm">
             {% csrf_token %}
@@ -597,6 +614,25 @@
 </div>
 
 <script>
+    function closeRejectModal() {
+        document.getElementById('rejectModal').classList.remove('active');
+    }
+
+    function openPaymentModal(articleId, title, amount) {
+        document.getElementById('paymentArticleTitle').textContent = '📄 ' + title;
+        document.getElementById('paymentForm').action = '/admin-panel/article/' + articleId + '/send-payment/';
+        document.getElementById('paymentAmount').value = amount || '500000';
+        document.getElementById('paymentModal').classList.add('active');
+    }
+
+    function closePaymentModal() {
+        document.getElementById('paymentModal').classList.remove('active');
+    }
+
+    document.getElementById('paymentModal').addEventListener('click', function(e) {
+        if (e.target === this) closePaymentModal();
+    });
+
     function toggleCard(cardId) {
         document.getElementById(cardId).classList.toggle('open');
     }
@@ -658,7 +694,7 @@
     });
 
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') { closeRejectModal(); closeAssignModal(); closeApproveModal(); }
+        if (e.key === 'Escape') { closeRejectModal(); closeAssignModal(); closeApproveModal(); closePaymentModal(); }
     });
 
     function openApproveModal(articleId, title) {
@@ -669,13 +705,6 @@
 
     function closeApproveModal() {
         document.getElementById('approveModal').classList.remove('active');
-    }
-
-    function sendPayment(articleId, title) {
-        if (!confirm('💰 Muallifga to\'lov ko\'rsatmalari emaili yuborilsinmi?\n\n📄 ' + title)) return;
-        const form = document.getElementById('paymentForm');
-        form.action = '/admin-panel/article/' + articleId + '/send-payment/';
-        form.submit();
     }
 
     // Messages 4 sekunddan keyin yashiriladi

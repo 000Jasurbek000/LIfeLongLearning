@@ -1,4 +1,5 @@
 from django.urls import path
+from django.views.generic import RedirectView
 from . import views
 
 urlpatterns = [
@@ -25,8 +26,16 @@ urlpatterns = [
     path('robots.txt', views.robots_txt, name='robots_txt'),
     path('sitemap.xml', views.sitemap_xml, name='sitemap_xml'),
     path('feed/rss/', views.articles_rss, name='articles_rss'),
+
+    # To'lov (Click demo)
+    path('tolov/<str:token>/', views.payment_checkout, name='payment_checkout'),
+    path('tolov/<str:token>/click/', views.payment_click_demo, name='payment_click_demo'),
+    path('tolov/<str:token>/tolash/', views.payment_click_pay, name='payment_click_pay'),
+    path('tolov/<str:token>/muvaffaqiyat/', views.payment_success, name='payment_success'),
+    path('tolov/callback/click/', views.payment_click_callback, name='payment_click_callback'),
     
     # Admin sahifalar
+    path('admin-panel/', RedirectView.as_view(pattern_name='admin_foydalanuvchilar', permanent=False)),
     path('admin-panel/foydalanuvchilar/', views.admin_foydalanuvchilar, name='admin_foydalanuvchilar'),
     path('admin-panel/foydalanuvchi/<int:author_id>/', views.admin_foydalanuvchi_detail, name='admin_foydalanuvchi_detail'),
     path('admin-panel/article/<int:article_id>/approve/', views.admin_article_approve, name='admin_article_approve'),

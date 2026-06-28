@@ -1,0 +1,90 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To'lov — {{ article.title|truncatechars:50 }}</title>
+    <link rel="stylesheet" href="{% static 'css/payment.css' %}">
+</head>
+<body class="payment-page">
+<div class="payment-wrap">
+    <div class="payment-logo">
+        <a href="{% url 'index' %}">{{ site_name }}</a>
+    </div>
+
+    <div class="payment-card">
+        <div class="payment-card-header">
+            <h1>To'lov buyurtmasi</h1>
+            <p>Maqola nashr uchun to'lov</p>
+        </div>
+        <div class="payment-card-body">
+            {% if click_demo %}
+            <span class="payment-demo-badge">DEMO — Click shartnomasi kutilmoqda</span>
+            {% endif %}
+
+            <div class="payment-amount">
+                <div class="label">To'lov summasi</div>
+                <div class="sum">{{ session.amount|floatformat:0 }} so'm</div>
+            </div>
+
+            <div class="payment-row">
+                <span class="lbl">Maqola ID</span>
+                <span class="val">#{{ article.pk }}</span>
+            </div>
+            <div class="payment-row">
+                <span class="lbl">Sarlavha</span>
+                <span class="val">{{ article.title }}</span>
+            </div>
+            <div class="payment-row">
+                <span class="lbl">Yo'nalish</span>
+                <span class="val">{{ article.get_category_display }}</span>
+            </div>
+            {% if article.keywords %}
+            <div class="payment-row">
+                <span class="lbl">Kalit so'zlar</span>
+                <span class="val">{{ article.keywords }}</span>
+            </div>
+            {% endif %}
+
+            <hr style="border:none;border-top:1px dashed #e2e8f0;margin:16px 0">
+
+            <div class="payment-row">
+                <span class="lbl">Muallif</span>
+                <span class="val">{{ article.author_name }}</span>
+            </div>
+            <div class="payment-row">
+                <span class="lbl">Email</span>
+                <span class="val">{{ article.author_email }}</span>
+            </div>
+            <div class="payment-row">
+                <span class="lbl">Telefon</span>
+                <span class="val">{{ article.author_phone }}</span>
+            </div>
+            {% if article.author_workplace %}
+            <div class="payment-row">
+                <span class="lbl">Ish joyi</span>
+                <span class="val">{{ article.author_workplace }}</span>
+            </div>
+            {% endif %}
+            {% if article.co_authors %}
+            <div class="payment-row">
+                <span class="lbl">Ham mualliflar</span>
+                <span class="val">{{ article.co_authors }}</span>
+            </div>
+            {% endif %}
+
+            <div style="margin-top:24px">
+                <a href="{% url 'payment_click_demo' token=session.token %}" class="payment-btn payment-btn-click">
+                    Click orqali to'lash
+                </a>
+            </div>
+
+            <p class="payment-note">
+                To'lov Click tizimi orqali amalga oshiriladi. To'lov tasdiqlangach tahririyat maqolani tomga biriktiradi.
+            </p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

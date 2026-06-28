@@ -227,11 +227,11 @@
             </div>
             <div class="ac-actions">
                 <a href="{% url 'reviewer_article_detail' review.pk %}" class="btn btn-view">👁 Batafsil ko'rish</a>
-                <a href="{% url 'reviewer_article_approve' review.pk %}"
-                   class="btn btn-approve"
-                   onclick="return confirm('✅ Bu maqolani tasdiqlashni tasdiqlaysizmi?')">
-                    ✅ Tasdiqlash
-                </a>
+                <form method="POST" action="{% url 'reviewer_article_approve' review.pk %}" style="display:inline"
+                      onsubmit="return confirm('✅ Bu maqolani tasdiqlashni tasdiqlaysizmi?')">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-approve">✅ Tasdiqlash</button>
+                </form>
                 <button class="btn btn-reject"
                         onclick="openRejectModal({{ review.pk }}, '{{ review.article.title|truncatechars:50|escapejs }}')">
                     ❌ Rad etish
@@ -293,10 +293,12 @@
     <div class="modal">
         <h2>❌ Maqolani rad etish</h2>
         <div class="modal-sub" id="modalTitle"></div>
-        <form method="POST" id="rejectForm">
+        <form method="POST" id="rejectForm" enctype="multipart/form-data">
             {% csrf_token %}
             <label>Rad etish sababi (matn)</label>
             <textarea name="rejection_reason" placeholder="Sabab va tavsiyalarni yozing..."></textarea>
+            <label style="margin-top:12px">Qo'shimcha fayl (ixtiyoriy)</label>
+            <input type="file" name="rejection_file" accept=".pdf,.doc,.docx,.zip,.rar">
             <div class="modal-btns">
                 <button type="button" class="btn-cancel" onclick="closeModal()">Bekor qilish</button>
                 <button type="submit" class="btn-submit">❌ Rad etish</button>

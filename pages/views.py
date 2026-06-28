@@ -2,3 +2,4 @@
 
 from .views_public import *  # noqa: F401,F403
 from .views_admin import *  # noqa: F401,F403
+from .views_payment import *  # noqa: F401,F403

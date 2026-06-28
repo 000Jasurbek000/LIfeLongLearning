@@ -1,7 +1,6 @@
 """Admin va taqrizchi viewlari."""
 
 import datetime
-import os
 import uuid
 from functools import wraps
 
@@ -10,12 +9,15 @@ from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.models import User
 from django.core.mail import EmailMultiAlternatives
+from django.db import transaction
 from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.utils.text import slugify
+from django.views.decorators.http import require_POST
+from .payment import create_payment_session, payment_page_url, send_payment_link_email
 from .pdf.generator import publish_article_to_volume
-from .workflow import can_confirm_payment, can_send_payment, workflow_step_label
+from .workflow import can_assign_to_volume, can_confirm_payment, can_send_payment, workflow_step_label
 
 
 @staff_member_required
@@ -24,7 +26,7 @@ def admin_foydalanuvchilar(request):
 
     authors = Author.objects.annotate(
         total=Count('articles'),
-        tasdiqlangan=Count('articles', filter=Q(articles__status='approved')),
+        tasdiqlangan=Count('articles', filter=Q(articles__status__in=('approved', 'published'))),
         rad_etilgan=Count('articles', filter=Q(articles__status='rejected')),
         kutilmoqda=Count('articles', filter=Q(articles__status='pending')),
     ).order_by('-kutilmoqda', '-last_submission')
@@ -58,7 +60,9 @@ def admin_foydalanuvchi_detail(request, author_id):
     from .models import Article, Author, Reviewer, Volume
 
     author = get_object_or_404(Author, pk=author_id)
-    all_articles = Article.objects.filter(author=author).order_by('title', '-submitted_at')
+    all_articles = Article.objects.filter(author=author).prefetch_related(
+        'reviews__reviewer', 'payment_sessions',
+    ).order_by('title', '-submitted_at')
 
     grouped = {}
     for article in all_articles:
@@ -68,13 +72,15 @@ def admin_foydalanuvchi_detail(request, author_id):
     article_groups = []
     for articles in grouped.values():
         latest = articles[0]
+        pending_session = latest.payment_sessions.filter(status='pending').order_by('-created_at').first()
         article_groups.append({
             'latest': latest,
             'history': articles[1:],
             'count': len(articles),
             'step': workflow_step_label(latest),
             'show_send_payment': can_send_payment(latest),
-            'show_confirm_payment': can_confirm_payment(latest),
+            'show_assign_volume': can_assign_to_volume(latest),
+            'payment_url': payment_page_url(pending_session, request=request) if pending_session else '',
             'download_slug': slugify(latest.title) or f'maqola-{latest.pk}',
         })
 
@@ -101,18 +107,15 @@ def admin_article_approve(request, article_id):
 
 @staff_member_required
 def admin_article_confirm_payment(request, article_id):
-    """To'lovni tasdiqlash, tomga qo'shish va PDF generatsiya."""
+    """To'lov o'tgan maqolani admin tanlagan tomga qo'shish va nashr qilish."""
     from .models import Article, Volume
 
     article = get_object_or_404(Article, pk=article_id)
     if request.method != 'POST':
         return redirect(request.META.get('HTTP_REFERER', f'/admin-panel/foydalanuvchi/{article.author_id}/'))
 
-    if not can_confirm_payment(article):
-        messages.error(
-            request,
-            'Avval taqrizchi tasdiqlashi va to\'lov linki yuborilishi kerak.',
-        )
+    if not can_assign_to_volume(article):
+        messages.error(request, 'Bu amal faqat to\'lov qilingan, lekin hali tomga qo\'shilmagan maqolalar uchun.')
         return redirect(request.META.get('HTTP_REFERER', f'/admin-panel/foydalanuvchi/{article.author_id}/'))
 
     volume = None
@@ -123,40 +126,21 @@ def admin_article_confirm_payment(request, article_id):
         except Volume.DoesNotExist:
             pass
 
-    article.payment_status = 'paid'
-    article.payment_date = timezone.now()
-    article.save(update_fields=['payment_status', 'payment_date'])
-
     try:
-        publish_article_to_volume(article, volume=volume)
+        with transaction.atomic():
+            publish_article_to_volume(article, volume=volume)
     except ValueError as exc:
         messages.error(request, str(exc))
         return redirect(request.META.get('HTTP_REFERER', f'/admin-panel/foydalanuvchi/{article.author_id}/'))
 
+    from .payment import send_published_email
     try:
-        html = f"""
-        <html><body style="font-family:Arial,sans-serif">
-        <p>Hurmatli <strong>{article.author_name}</strong>,</p>
-        <p>"{article.title}" maqolangiz to'lov tasdiqlandi va jurnal tomiga qo'shildi.</p>
-        <p>Maqola va sertifikatni arxiv bo'limidan yuklab olishingiz mumkin.</p>
-        <p>{settings.CONTACT_EMAIL}</p>
-        </body></html>"""
-        email = EmailMultiAlternatives(
-            subject=f"Maqolangiz nashr etildi - {article.title}",
-            body=f"Maqolangiz nashr etildi: {article.title}",
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            to=[article.author_email],
-        )
-        email.attach_alternative(html, 'text/html')
-        email.send()
+        send_published_email(article)
     except Exception as exc:
         print(f'Email xatolik: {exc}')
 
     vol_title = article.volume.title if article.volume else ''
-    messages.success(
-        request,
-        f'✅ To\'lov tasdiqlandi, "{vol_title}" tomiga qo\'shildi. PDF va sertifikat yaratildi!',
-    )
+    messages.success(request, f'✅ "{vol_title}" tomiga qo\'shildi. PDF va sertifikat yaratildi!')
     return redirect(request.META.get('HTTP_REFERER', f'/admin-panel/foydalanuvchi/{article.author_id}/'))
 
 
@@ -169,7 +153,6 @@ def admin_article_reject(request, article_id):
         return redirect(request.META.get('HTTP_REFERER', f'/admin-panel/foydalanuvchi/{article.author_id}/'))
 
     reason = request.POST.get('rejection_reason', '').strip()
-    reviewer_file_path = request.POST.get('reviewer_file_path', '').strip()
 
     article.status = 'rejected'
     article.rejection_reason = reason
@@ -196,10 +179,9 @@ def admin_article_reject(request, article_id):
         email.attach_alternative(html, 'text/html')
         if article.pdf_file:
             email.attach_file(article.pdf_file.path)
-        if reviewer_file_path:
-            full_path = os.path.join(settings.MEDIA_ROOT, reviewer_file_path)
-            if os.path.exists(full_path):
-                email.attach_file(full_path)
+        review = article.reviews.filter(status='rejected').first()
+        if review and review.rejection_file:
+            email.attach_file(review.rejection_file.path)
         email.send()
     except Exception as exc:
         print(f'Email xatolik: {exc}')
@@ -210,6 +192,8 @@ def admin_article_reject(request, article_id):
 
 @staff_member_required
 def admin_article_send_payment(request, article_id):
+    from decimal import Decimal, InvalidOperation
+
     from .models import Article
 
     if request.method != 'POST':
@@ -221,33 +205,33 @@ def admin_article_send_payment(request, article_id):
         messages.error(request, 'To\'lov linki faqat taqrizchi tasdiqlagandan keyin yuboriladi.')
         return redirect(request.META.get('HTTP_REFERER', f'/admin-panel/foydalanuvchi/{article.author_id}/'))
 
+    amount = None
+    raw_amount = request.POST.get('payment_amount', '').strip().replace(' ', '').replace(',', '')
+    if raw_amount:
+        try:
+            amount = Decimal(raw_amount)
+        except InvalidOperation:
+            messages.error(request, 'To\'lov summasi noto\'g\'ri.')
+            return redirect(request.META.get('HTTP_REFERER', f'/admin-panel/foydalanuvchi/{article.author_id}/'))
+
     article.payment_link_sent = True
     article.payment_link_sent_at = timezone.now()
     article.payment_link_sent_count = (article.payment_link_sent_count or 0) + 1
-    article.save()
+    article.save(update_fields=['payment_link_sent', 'payment_link_sent_at', 'payment_link_sent_count'])
+
+    session = create_payment_session(article, amount=amount)
+    pay_url = payment_page_url(session, request=request)
 
     try:
-        html = f"""
-        <html><body style="font-family:Arial,sans-serif">
-        <p>Hurmatli <strong>{article.author_name}</strong>,</p>
-        <p>"{article.title}" maqolangiz nashr uchun to'lov talab qiladi.</p>
-        <p>Telegram: @XURSHID_HAMD11 | Tel: +998 97 736 20 11</p>
-        <p>Email: {settings.CONTACT_EMAIL}</p>
-        </body></html>"""
-        email = EmailMultiAlternatives(
-            subject=f"To'lov haqida ma'lumot - {article.title}",
-            body=f"To'lov haqida: {article.title}",
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            to=[article.author_email],
-        )
-        email.attach_alternative(html, 'text/html')
-        email.send()
+        send_payment_link_email(article, pay_url)
     except Exception as exc:
         print(f'Email xatolik: {exc}')
+        messages.warning(request, f'Email yuborilmadi: {exc}. Havola: {pay_url}')
+        return redirect(request.META.get('HTTP_REFERER', f'/admin-panel/foydalanuvchi/{article.author_id}/'))
 
     messages.success(
         request,
-        f"💰 To'lov ko'rsatmalari yuborildi! (Jami: {article.payment_link_sent_count} marta)",
+        f"💰 To'lov havolasi yuborildi! ({article.payment_link_sent_count} marta) — {pay_url}",
     )
     return redirect(request.META.get('HTTP_REFERER', f'/admin-panel/foydalanuvchi/{article.author_id}/'))
 
@@ -401,28 +385,35 @@ def reviewer_article_detail(request, review_id):
 
 
 @_reviewer_required
+@require_POST
 def reviewer_article_approve(request, review_id):
     from .models import ArticleReview
+    from .payment import notify_reviewer_decision
 
     review = get_object_or_404(ArticleReview, pk=review_id, reviewer=request.user.reviewer_profile)
     if review.status == 'pending':
         review.status = 'approved'
         review.reviewed_at = timezone.now()
         review.save()
-        messages.success(request, '✅ Maqola tasdiqlandi! Admin xabardor bo\'ldi.')
+        notify_reviewer_decision(review, 'approved')
+        messages.success(request, '✅ Maqola tasdiqlandi! Admin xabardor qilindi.')
     return redirect('reviewer_profil')
 
 
 @_reviewer_required
 def reviewer_article_reject(request, review_id):
     from .models import ArticleReview
+    from .payment import notify_reviewer_decision
 
     review = get_object_or_404(ArticleReview, pk=review_id, reviewer=request.user.reviewer_profile)
     if request.method == 'POST' and review.status == 'pending':
         review.status = 'rejected'
         review.rejection_reason = request.POST.get('rejection_reason', '').strip()
         review.reviewed_at = timezone.now()
+        if request.FILES.get('rejection_file'):
+            review.rejection_file = request.FILES['rejection_file']
         review.save()
+        notify_reviewer_decision(review, 'rejected')
         messages.success(request, '❌ Maqola rad etildi. Admin sahifada ko\'rsatiladi.')
     return redirect('reviewer_profil')
 

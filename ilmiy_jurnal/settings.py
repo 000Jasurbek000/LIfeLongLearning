@@ -58,16 +58,28 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ilmiy_jurnal.wsgi.application'
 
-DATABASES = {
-    'default': {
-        'ENGINE': os.getenv('DB_ENGINE', 'django.db.backends.postgresql'),
-        'NAME': os.getenv('DB_NAME', 'ilmiy_jurnal'),
-        'USER': os.getenv('DB_USER', 'postgres'),
-        'PASSWORD': os.getenv('DB_PASSWORD', ''),
-        'HOST': os.getenv('DB_HOST', 'localhost'),
-        'PORT': os.getenv('DB_PORT', '5432'),
+_db_engine = os.getenv('DB_ENGINE', 'django.db.backends.postgresql')
+_db_password = os.getenv('DB_PASSWORD', '')
+
+if DEBUG and _db_engine == 'django.db.backends.postgresql' and not _db_password:
+    # Lokal test: PostgreSQL paroli bo'lmasa SQLite
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': _db_engine,
+            'NAME': os.getenv('DB_NAME', 'ilmiy_jurnal'),
+            'USER': os.getenv('DB_USER', 'postgres'),
+            'PASSWORD': _db_password,
+            'HOST': os.getenv('DB_HOST', 'localhost'),
+            'PORT': os.getenv('DB_PORT', '5432'),
+        }
+    }
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -107,6 +119,17 @@ DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER)
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
 CONTACT_EMAIL = os.getenv('CONTACT_EMAIL', 'lifelong1learning@gmail.com')
 PUBLISHER_URL = os.getenv('PUBLISHER_URL', 'http://bukharahamdprint.uz/')
+SITE_URL = os.getenv('SITE_URL', 'http://127.0.0.1:8000')
+DEFAULT_PAYMENT_AMOUNT = os.getenv('DEFAULT_PAYMENT_AMOUNT', '500000')
+ADMIN_NOTIFICATION_EMAILS = [
+    e.strip() for e in os.getenv('ADMIN_NOTIFICATION_EMAILS', CONTACT_EMAIL).split(',') if e.strip()
+]
+
+# Click to'lov (demo — shartnoma keyin haqiqiy qiymatlar)
+CLICK_DEMO_MODE = os.getenv('CLICK_DEMO_MODE', 'True').lower() in ('1', 'true', 'yes')
+CLICK_MERCHANT_ID = os.getenv('CLICK_MERCHANT_ID', '')
+CLICK_SERVICE_ID = os.getenv('CLICK_SERVICE_ID', '')
+CLICK_SECRET_KEY = os.getenv('CLICK_SECRET_KEY', '')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

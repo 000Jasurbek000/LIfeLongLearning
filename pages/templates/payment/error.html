@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To'lov xatolik</title>
+    <link rel="stylesheet" href="{% static 'css/payment.css' %}">
+</head>
+<body class="payment-page">
+<div class="payment-wrap">
+    <div class="payment-card">
+        <div class="payment-card-body" style="text-align:center;padding:40px 24px">
+            <div class="payment-success-icon">⚠️</div>
+            <h1 style="font-size:20px;color:#991b1b;margin-bottom:8px">To'lov amalga oshmadi</h1>
+            <p style="color:#64748b;font-size:14px;margin-bottom:24px">{{ message }}</p>
+            <p style="font-size:13px;color:#94a3b8">Savollar: <a href="{% url 'aloqa' %}">Aloqa</a></p>
+            <a href="{% url 'index' %}" class="payment-btn payment-btn-primary" style="max-width:280px;margin:20px auto 0">
+                Bosh sahifa
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

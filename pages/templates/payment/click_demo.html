@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Click — To'lov</title>
+    <link rel="stylesheet" href="{% static 'css/payment.css' %}">
+</head>
+<body class="click-page">
+<div class="click-wrap">
+    <div class="click-header">
+        <div class="click-logo">click</div>
+        <span class="payment-demo-badge">DEMO SAHIFA</span>
+    </div>
+
+    {% if messages %}
+    {% for message in messages %}
+    <div class="payment-msg payment-msg-error">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
+
+    <div class="click-card">
+        <div class="click-merchant">{{ merchant_name }}</div>
+        <div class="click-amount">{{ session.amount|floatformat:0 }} so'm</div>
+
+        <p style="font-size:13px;color:#64748b;margin-bottom:16px;line-height:1.5">
+            <strong>{{ article.title|truncatechars:60 }}</strong><br>
+            Muallif: {{ article.author_name }} · Maqola #{{ article.pk }}
+        </p>
+
+        <form method="POST" action="{% url 'payment_click_pay' token=session.token %}">
+            {% csrf_token %}
+            <div class="click-field">
+                <label>Karta raqami (demo)</label>
+                <input type="text" value="8600 0000 0000 0000" readonly>
+            </div>
+            <div class="click-field">
+                <label>Amal qilish muddati</label>
+                <input type="text" value="12/28" readonly>
+            </div>
+            <div class="click-field">
+                <label>SMS kod (demo: 0000)</label>
+                <input type="text" name="demo_sms" placeholder="0000" maxlength="4" pattern="[0-9]{4}">
+            </div>
+            <button type="submit" class="click-pay-btn" onclick="return confirmDemoPay(event)">
+                {{ session.amount|floatformat:0 }} so'm to'lash
+            </button>
+        </form>
+
+        <a href="{% url 'payment_checkout' token=session.token %}" class="click-cancel">← Orqaga</a>
+    </div>
+
+    <p class="payment-note" style="margin-top:20px">
+        Bu demo sahifa. Haqiqiy Click integratsiyasi shartnoma imzolangach ulanadi.
+        Merchant ID: {{ click_merchant_id }}
+    </p>
+</div>
+
+<script>
+function confirmDemoPay(e) {
+    var sms = document.querySelector('input[name="demo_sms"]');
+    if (sms && sms.value !== '0000') {
+        e.preventDefault();
+        alert('Demo uchun SMS kod: 0000');
+        return false;
+    }
+    return confirm("Demo to'lovni tasdiqlaysizmi? To'lov 'to'langan' deb belgilanadi.");
+}
+</script>
+</body>
+</html>

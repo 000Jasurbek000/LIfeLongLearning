@@ -588,6 +588,48 @@ class ArticleReview(models.Model):
         return f"{self.reviewer.full_name} → {self.article.title[:40]}"
 
 
+# ===================== TO'LOV SESSIYALARI =====================
+
+class ArticlePaymentSession(models.Model):
+    """Click to'lov uchun xavfsiz sessiya (har bir yuborilgan link)."""
+
+    STATUS_CHOICES = [
+        ('pending', 'Kutilmoqda'),
+        ('paid', "To'langan"),
+        ('expired', 'Muddati tugagan'),
+        ('cancelled', 'Bekor qilindi'),
+    ]
+
+    article = models.ForeignKey(
+        Article, on_delete=models.CASCADE,
+        related_name='payment_sessions',
+        verbose_name='Maqola',
+    )
+    token = models.CharField('Token', max_length=64, unique=True, db_index=True)
+    amount = models.DecimalField("To'lov miqdori", max_digits=10, decimal_places=2)
+    status = models.CharField('Holat', max_length=20, choices=STATUS_CHOICES, default='pending')
+    created_at = models.DateTimeField('Yaratilgan', auto_now_add=True)
+    paid_at = models.DateTimeField("To'langan vaqt", null=True, blank=True)
+    transaction_id = models.CharField('Tranzaksiya ID', max_length=200, blank=True)
+    click_payment_id = models.CharField('Click payment ID', max_length=200, blank=True)
+
+    class Meta:
+        verbose_name = "To'lov sessiyasi"
+        verbose_name_plural = "To'lov sessiyalari"
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.article_id} — {self.amount} ({self.get_status_display()})"
+
+    @property
+    def is_payable(self):
+        return (
+            self.status == 'pending'
+            and self.article.payment_status != 'paid'
+            and self.article.status != 'published'
+        )
+
+
 # ===================== OBUNACHLAR =====================
 
 class Subscriber(models.Model):

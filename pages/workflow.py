@@ -36,13 +36,26 @@ def can_send_payment(article) -> bool:
 
 
 def can_confirm_payment(article) -> bool:
-    """To'lov tasdiqlash va tomga qo'shish."""
+    """Click to'lovi uchun maqola tayyorligi."""
     return (
         review_is_approved(article)
         and article.payment_link_sent
         and article.payment_status != 'paid'
         and article.status != 'published'
     )
+
+
+def can_assign_to_volume(article) -> bool:
+    """To'lov o'tgan — admin tomga biriktirishi kerak."""
+    return (
+        article.payment_status == 'paid'
+        and article.status != 'published'
+        and review_is_approved(article)
+    )
+
+
+# Eski nom bilan moslik
+can_manual_publish = can_assign_to_volume
 
 
 def workflow_step_label(article) -> str:
@@ -59,7 +72,7 @@ def workflow_step_label(article) -> str:
     if review_is_approved(article) and not article.payment_link_sent:
         return '3. To\'lov linki yuborish'
     if review_is_approved(article) and article.payment_link_sent and article.payment_status != 'paid':
-        return '4. To\'lovni tasdiqlash va tomga qo\'shish'
-    if article.payment_status == 'paid' and not article.volume_id:
-        return 'Tomga biriktirish kutilmoqda'
+        return '4. To\'lov kutilmoqda (Click)'
+    if can_assign_to_volume(article):
+        return '5. Tomga biriktirish'
     return 'Jarayonda'
