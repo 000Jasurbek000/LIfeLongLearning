@@ -19,6 +19,10 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+from pages.views_public import page_not_found
+
+handler404 = 'pages.views_public.page_not_found'
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('pages.urls')),  # Pages ilova URLlarini qo'shish

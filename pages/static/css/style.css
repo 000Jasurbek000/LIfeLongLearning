@@ -169,6 +169,44 @@ img {
     text-align: center;
 }
 
+.page-hero.page-hero-compact {
+    padding: 1.5rem 0 1.25rem;
+    text-align: left;
+}
+
+.page-hero.page-hero-compact .page-title {
+    font-size: clamp(1.4rem, 2.8vw, 1.85rem);
+    margin: 0.65rem 0 0.35rem;
+}
+
+.page-hero.page-hero-compact .page-subtitle {
+    font-size: 0.95rem;
+}
+
+.page-hero .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    font-size: 0.875rem;
+    color: var(--white);
+}
+
+.page-hero .breadcrumb a {
+    color: var(--white);
+    text-decoration: none;
+    font-weight: 500;
+    transition: opacity 0.2s ease;
+}
+
+.page-hero .breadcrumb a:hover {
+    opacity: 0.85;
+}
+
+.page-hero .breadcrumb span {
+    opacity: 0.65;
+}
+
 .page-title {
     color: var(--white);
     font-size: var(--font-size-5xl);
@@ -3074,4 +3112,41 @@ main {
 .read-more-link:hover {
     transform: translateX(4px);
     box-shadow: 0 4px 12px rgba(2, 171, 111, 0.3);
+}
+
+/* Indexing logos — homepage */
+.indexing-section {
+    padding: var(--spacing-3xl) 0;
+    background: var(--gray-50);
+}
+
+.indexing-logos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.indexing-logo-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 72px;
+    padding: 1rem;
+    background: #fff;
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: all 0.2s ease;
+}
+
+.indexing-logo-card:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(2, 171, 111, 0.12);
 }

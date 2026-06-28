@@ -119,7 +119,7 @@
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">{% t 'home.latest_articles.title' %}</h2>
-                <a href="{% url 'arxiv' %}" class="section-link">{% t 'common.actions.view_all' %}</a>
+                <a href="{% url 'maqolalar' %}" class="section-link">{% t 'common.actions.view_all' %}</a>
             </div>
             <div class="articles-grid">
                 {% for article in latest_articles %}
@@ -140,6 +140,26 @@
                 {% empty %}
                 <p class="articles-empty">{% t 'home.latest_articles.empty' %}</p>
                 {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Indexing Section -->
+    <section class="indexing-section" data-header-style="accent">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">{% t 'home.indexing.title' %}</h2>
+                <p class="section-description">{% t 'home.indexing.subtitle' %}</p>
+            </div>
+            <div class="indexing-logos">
+                <div class="indexing-logo-card">Google Scholar</div>
+                <div class="indexing-logo-card">Crossref</div>
+                <div class="indexing-logo-card">DOAJ</div>
+                <div class="indexing-logo-card">ResearchGate</div>
+                <div class="indexing-logo-card">ORCID</div>
+                <div class="indexing-logo-card">Mendeley</div>
+                <div class="indexing-logo-card">CyberLeninka</div>
+                <div class="indexing-logo-card">Scribd</div>
             </div>
         </div>
     </section>

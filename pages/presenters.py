@@ -15,6 +15,7 @@ MONTHS_UZ = {
 }
 
 from pages.pdf.volume_template import JOURNAL
+from pages.pdf.generator import volume_has_certificates
 
 SUBJECT_LABELS = {
     'chemistry': 'Kimyo va texnologiya',
@@ -144,9 +145,11 @@ def present_volume_article(volume, article, *, source='manual'):
         pages = ''
         views_count = article.views_count or 0
         downloads_count = article.downloads_count or 0
-        doi = ''
+        doi = getattr(article, 'doi', '') or ''
 
     detail_url = reverse('arxiv_article_detail', args=[volume.slug, slug])
+    doi_clean = (doi or '').strip().removeprefix('https://doi.org/').removeprefix('http://doi.org/')
+    doi_url = f'https://doi.org/{doi_clean}' if doi_clean else ''
 
     return SimpleNamespace(
         title=title,
@@ -172,6 +175,7 @@ def present_volume_article(volume, article, *, source='manual'):
         views_count=views_count,
         downloads_count=downloads_count,
         doi=doi,
+        doi_url=doi_url,
         detail_url=detail_url,
         obj=article,
     )
@@ -215,6 +219,7 @@ def present_volume(volume):
         description=volume.description or volume.title,
         articles=articles,
         has_volume_pdf=has_volume_pdf,
+        has_certificates=volume_has_certificates(volume),
         status=volume.status,
         issn=JOURNAL['issn'],
         obj=volume,
@@ -295,30 +300,51 @@ def get_site_stats():
     }
 
 
-def get_latest_home_articles(limit=3):
-    """Bosh sahifa uchun nashr etilgan maqolalar."""
-    from .models import Article
-
+def get_all_published_articles():
+    """Barcha nashr etilgan maqolalar — sana bo'yicha (eng yangisi birinchi)."""
     items = []
-    qs = (
-        Article.objects.filter(status='published', volume__isnull=False)
-        .select_related('volume')
-        .order_by('-published_at', '-approved_at')[:limit]
-    )
-    for art in qs:
-        vol_slug = art.volume.slug
-        art_slug = slugify(art.title) or f'maqola-{art.pk}'
+    for volume in _public_volume_queryset():
+        pv = present_volume(volume)
+        for art in pv.articles:
+            sort_date = art.date or pv.published_date or ''
+            items.append(
+                SimpleNamespace(
+                    title=art.title,
+                    authors=art.authors,
+                    display_authors=art.display_authors,
+                    abstract=art.abstract,
+                    date=art.date,
+                    pages_display=art.pages_display,
+                    category=art.category,
+                    detail_url=art.detail_url,
+                    doi=art.doi,
+                    doi_url=art.doi_url,
+                    public_id=art.obj.pk,
+                    volume_label=pv.issue_label,
+                    volume_slug=pv.slug,
+                    sort_date=sort_date,
+                )
+            )
+    items.sort(key=lambda item: item.sort_date or '', reverse=True)
+    return items
+
+
+def get_latest_home_articles(limit=3):
+    """Bosh sahifa uchun nashr etilgan maqolalar (VolumeArticle + Article)."""
+    items = []
+    for art in get_all_published_articles()[:limit]:
         excerpt = (art.abstract or '').strip()
         if len(excerpt) > 160:
             excerpt = excerpt[:160].rsplit(' ', 1)[0] + '…'
+        author = (art.display_authors or '').split(',')[0].strip()
         items.append(
             SimpleNamespace(
                 title=art.title,
                 excerpt=excerpt,
-                author=art.author_name,
-                category=art.get_category_display(),
-                date=art.published_at or art.approved_at,
-                detail_url=reverse('arxiv_article_detail', args=[vol_slug, art_slug]),
+                author=author,
+                category=art.category,
+                date=art.sort_date,
+                detail_url=art.detail_url,
             )
         )
     return items

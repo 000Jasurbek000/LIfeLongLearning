@@ -4,12 +4,21 @@
 {% block title %}{% t 'submit.meta_title' %} — Muvaffaqiyat{% endblock %}
 
 {% block content %}
-<section class="page-hero" data-header-style="default">
-    <div class="container">
-        <h2 class="page-title">✅ Maqola muvaffaqiyatli yuborildi!</h2>
-        <p class="page-subtitle">Hurmatli {{ article.author_name }}, maqolangiz qabul qilindi.</p>
-    </div>
-</section>
+<div data-header-style="accent">
+    <section class="page-hero page-hero-compact">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="{% url 'index' %}">{% t 'common.breadcrumb.home' %}</a>
+                <span>/</span>
+                <a href="{% url 'maqola_berish' %}">{% t 'submit.hero.title' %}</a>
+                <span>/</span>
+                <span>Muvaffaqiyat</span>
+            </div>
+            <h1 class="page-title">✅ Maqola muvaffaqiyatli yuborildi!</h1>
+            <p class="page-subtitle">Hurmatli {{ article.author_name }}, maqolangiz qabul qilindi.</p>
+        </div>
+    </section>
+</div>
 
 <section class="submit-section" data-header-style="accent">
     <div class="container">

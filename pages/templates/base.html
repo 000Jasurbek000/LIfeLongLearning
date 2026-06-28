@@ -8,6 +8,7 @@
     <link rel="icon" type="image/png" href="{% static 'image/LOGO.png' %}">
     <title>{% block title %}{% t 'base.brand.title' %}{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="alternate" type="application/rss+xml" title="{% t 'base.brand.title' %} RSS" href="{% url 'articles_rss' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -36,6 +37,7 @@
                             </ul>
                         </li>
                         <li><a href="{% url 'arxiv' %}" {% if request.resolver_match.url_name == 'arxiv' or request.resolver_match.url_name == 'arxiv_detail' or request.resolver_match.url_name == 'arxiv_article_detail' %}class="active"{% endif %}>{% t 'base.nav.archive' %}</a></li>
+                        <li><a href="{% url 'maqolalar' %}" {% if request.resolver_match.url_name == 'maqolalar' %}class="active"{% endif %}>{% t 'base.nav.articles' %}</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle{% if request.resolver_match.url_name == 'yangiliklar' or request.resolver_match.url_name == 'yangilik_detail' or request.resolver_match.url_name == 'elonlar' or request.resolver_match.url_name == 'elon_detail' or request.resolver_match.url_name == 'aloqa' %} active{% endif %}">{% t 'base.nav.news' %}<span class="nav-caret" aria-hidden="true">▾</span></a>
                             <ul class="dropdown-menu">
@@ -185,6 +187,7 @@
                         <li><a href="{% url 'tahrir_hayati' %}">{% t 'base.nav.editorial_board' %}</a></li>
                         <li><a href="{% url 'jurnal_talablari' %}">{% t 'base.nav.journal_requirements' %}</a></li>
                         <li><a href="{% url 'arxiv' %}">{% t 'base.nav.archive' %}</a></li>
+                        <li><a href="{% url 'maqolalar' %}">{% t 'base.nav.articles' %}</a></li>
                         <li><a href="{{ publisher_url }}" target="_blank" rel="noopener noreferrer">{% t 'base.nav.publisher' %}</a></li>
                     </ul>
                 </div>

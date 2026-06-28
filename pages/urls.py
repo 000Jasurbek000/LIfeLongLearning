@@ -11,7 +11,9 @@ urlpatterns = [
     path('jurnal-talablari/', views.jurnal_talablari, name='jurnal_talablari'),
     path('meyoriy-hujjatlar/', views.meyoriy_hujjatlar, name='meyoriy_hujjatlar'),
     path('arxiv/', views.arxiv, name='arxiv'),
+    path('maqolalar/', views.maqolalar, name='maqolalar'),
     path('arxiv/<slug:slug>/', views.arxiv_detail, name='arxiv_detail'),
+    path('arxiv/<slug:slug>/sertifikatlar/', views.volume_certificates_download, name='volume_certificates_download'),
     path('arxiv/<slug:volume_slug>/maqola/<slug:article_slug>/', views.arxiv_article_detail, name='arxiv_article_detail'),
     path('arxiv/<slug:volume_slug>/maqola/<slug:article_slug>/yuklab-olish/', views.arxiv_article_download, name='arxiv_article_download'),
     path('arxiv/<slug:volume_slug>/maqola/<slug:article_slug>/oqish/', views.arxiv_article_pdf_redirect, name='arxiv_article_pdf_redirect'),
@@ -22,6 +24,7 @@ urlpatterns = [
     path('qidiruv/', views.qidiruv, name='qidiruv'),
     path('robots.txt', views.robots_txt, name='robots_txt'),
     path('sitemap.xml', views.sitemap_xml, name='sitemap_xml'),
+    path('feed/rss/', views.articles_rss, name='articles_rss'),
     
     # Admin sahifalar
     path('admin-panel/foydalanuvchilar/', views.admin_foydalanuvchilar, name='admin_foydalanuvchilar'),
@@ -48,3 +51,10 @@ urlpatterns = [
     path('taqrizchi/maqola/<int:review_id>/tasdiqlash/', views.reviewer_article_approve, name='reviewer_article_approve'),
     path('taqrizchi/maqola/<int:review_id>/rad-etish/', views.reviewer_article_reject, name='reviewer_article_reject'),
 ]
+
+from django.conf import settings
+
+if settings.DEBUG:
+    urlpatterns += [
+        path('404-preview/', views.page_not_found_preview, name='error404_preview'),
+    ]

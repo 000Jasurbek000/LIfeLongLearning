@@ -8,72 +8,86 @@
 {% endblock %}
 
 {% block content %}
-<div class="pub-page" data-header-style="accent">
-    <nav class="pub-breadcrumb">
-        <a href="{% url 'index' %}">{% t 'common.breadcrumb.home' %}</a>
-        <span>/</span>
-        <a href="{% url 'arxiv' %}">{% t 'base.nav.archive' %}</a>
-        <span>/</span>
-        <a href="{% url 'arxiv_detail' volume.slug %}">{% t 'archive_issue.title_prefix' %} {{ volume.volume }}, {% t 'archive_issue.issue_label' %} {{ volume.issue }}</a>
-    </nav>
-
-    <header class="pub-article-hero">
-        <div class="pub-article-top">
-            <div class="pub-badges">
-                <span class="pub-badge category">{{ article.category }}</span>
-                <span class="pub-badge lang">{{ current_language.label }}</span>
+<div data-header-style="accent">
+    <div class="page-hero page-hero-compact">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="{% url 'index' %}">{% t 'common.breadcrumb.home' %}</a>
+                <span>/</span>
+                <a href="{% url 'arxiv' %}">{% t 'base.nav.archive' %}</a>
+                <span>/</span>
+                <a href="{% url 'arxiv_detail' volume.slug %}">{% t 'archive_issue.title_prefix' %} {{ volume.volume }}, {% t 'archive_issue.issue_label' %} {{ volume.issue }}</a>
+                <span>/</span>
+                <span>{{ article.title|truncatechars:60 }}</span>
             </div>
-            <div class="pub-actions">
+        </div>
+    </div>
+</div>
+
+<div class="pub-page" data-header-style="accent">
+    <header class="pub-volume-hero">
+        <div class="pub-hero-top">
+            <div class="pub-hero-badges">
+                <span class="pub-volume-chip">{{ article.category|upper }}</span>
+                <span class="pub-volume-chip">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                    {{ current_language.label|upper }}
+                </span>
+            </div>
+            <div class="pub-hero-actions">
                 {% if article.pdf_url != '#' %}
-                <a href="{{ article.pdf_url }}" class="pub-btn outline" target="_blank" rel="noopener noreferrer">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                <a href="{{ article.pdf_url }}" class="pub-btn primary" target="_blank" rel="noopener noreferrer">
                     {% t 'archive_article.view_btn' %}
                 </a>
-                {% endif %}
-                <a href="{% url 'arxiv_article_download' volume.slug article.slug %}" class="pub-btn primary">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                <a href="{% url 'arxiv_article_download' volume.slug article.slug %}" class="pub-btn outline">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                     {% t 'common.actions.download' %}
                 </a>
+                {% endif %}
                 {% if article.source == 'submitted' and article.has_certificate_pdf %}
                 <a href="{% url 'article_certificate_download' volume.slug article.article_id %}" class="pub-btn certificate">
                     {% t 'archive_article.certificate_btn' %}
                 </a>
                 {% endif %}
+                {% include 'partials/pub-share.html' with share_id='article' share_text=article.title %}
             </div>
         </div>
 
-        <h1 class="pub-article-title">{{ article.title }}</h1>
+        <h1 class="pub-volume-title pub-volume-title--compact">{{ article.title }}</h1>
 
-        <div class="pub-meta-grid">
-            <div class="pub-meta-item">
-                <span class="label">{% t 'common.labels.journal' %}</span>
-                <span class="value highlight">{{ volume.journal_name }}</span>
+        <div class="pub-hero-meta">
+            <div class="pub-hero-meta-item">
+                <span class="pub-hero-meta-label">{% t 'common.labels.journal' %}</span>
+                <span class="pub-hero-meta-value">{{ volume.journal_name }}</span>
             </div>
-            <div class="pub-meta-item">
-                <span class="label">{% t 'archive_article.issue_info' %}</span>
-                <span class="value">{{ volume.issue_label }}</span>
+            <div class="pub-hero-meta-item">
+                <span class="pub-hero-meta-label">{% t 'archive_article.issue_info' %}</span>
+                <span class="pub-hero-meta-value">{{ volume.issue_label|upper }}</span>
             </div>
             {% if article.pages_display %}
-            <div class="pub-meta-item">
-                <span class="label">{% t 'archive_article.pages_label' %}</span>
-                <span class="value">{{ article.pages_display }}</span>
+            <div class="pub-hero-meta-item">
+                <span class="pub-hero-meta-label">{% t 'archive_article.pages_label' %}</span>
+                <span class="pub-hero-meta-value">{{ article.pages_display }}</span>
             </div>
             {% endif %}
-            <div class="pub-meta-item">
-                <span class="label">{% t 'archive_article.views_label' %}</span>
-                <span class="value">{{ article.views_count }} {% t 'archive_article.views_suffix' %}</span>
+            <div class="pub-hero-meta-item">
+                <span class="pub-hero-meta-label">{% t 'archive_article.views_label' %}</span>
+                <span class="pub-hero-meta-value pub-hero-meta-highlight">{{ article.views_count }} {% t 'archive_article.views_suffix' %}</span>
             </div>
-            <div class="pub-meta-item">
-                <span class="label">{% t 'archive_article.published_label' %}</span>
-                <span class="value">{{ article.date }}</span>
-            </div>
-            {% if volume.issn %}
-            <div class="pub-meta-item">
-                <span class="label">ISSN</span>
-                <span class="value">{{ volume.issn }}</span>
+            {% if article.doi %}
+            <div class="pub-hero-meta-item">
+                <span class="pub-hero-meta-label">DOI</span>
+                <a href="{{ article.doi_url }}" class="pub-hero-meta-value pub-doi-link" target="_blank" rel="noopener noreferrer">{{ article.doi }}</a>
             </div>
             {% endif %}
         </div>
+
+        {% if article.date %}
+        <div class="pub-hero-footer">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            {% t 'archive_article.published_label' %}: {{ article.date }}
+        </div>
+        {% endif %}
     </header>
 
     <div class="pub-layout">
@@ -88,14 +102,14 @@
                     {% endfor %}
                 </div>
                 {% endif %}
-                <div class="pub-authors-inline">{{ article.display_authors }}</div>
+                <p class="pub-authors-inline"><strong>{% t 'archive_article.authors_title' %}:</strong> {{ article.display_authors }}</p>
             </section>
 
             {% if article.pdf_url != '#' %}
             <section class="pub-card">
                 <h2>{% t 'archive_article.content_title' %}</h2>
                 <div class="pub-pdf-note">
-                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#0288D1" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#02AB6F" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
                     <p>{% t 'archive_article.content_note' %}</p>
                     <a href="{{ article.pdf_url }}" class="pub-btn primary" target="_blank" rel="noopener noreferrer">{% t 'common.actions.read_full' %}</a>
                 </div>
@@ -112,54 +126,55 @@
                 </ol>
             </section>
             {% endif %}
-
-            <section class="pub-card">
-                <h2>{% t 'archive_article.citation_title' %}</h2>
-                <p style="margin-bottom:0.75rem;font-size:0.85rem;color:#64748b"><strong>{% t 'archive_article.citation_style' %}</strong></p>
-                <div class="pub-citation-box" id="citation-text">{{ article.citation }}</div>
-            </section>
         </main>
 
         <aside class="pub-sidebar">
             <div class="pub-side-card">
                 <h3>{% t 'archive_article.authors_title' %}</h3>
                 <div class="pub-author-card">
-                    <div class="pub-author-avatar">{{ article.display_authors|slice:":2"|upper }}</div>
+                    <div class="pub-author-avatar">{{ article.display_authors|slice:":3"|upper }}</div>
                     <div>
-                        <div class="pub-author-name">{{ article.display_authors }}</div>
+                        <div class="pub-author-name">{{ article.display_authors|upper }}</div>
+                        {% if article.category %}
+                        <p class="pub-side-text">{{ article.category }}</p>
+                        {% endif %}
                     </div>
                 </div>
+            </div>
+
+            <div class="pub-cite-card">
+                <h3>{% t 'archive_article.citation_title' %}</h3>
+                <p class="pub-cite-style">{% t 'archive_article.citation_style' %}</p>
+                <div class="pub-cite-text" id="citation-text">{{ article.citation }}</div>
+                <button type="button" class="pub-btn primary pub-cite-copy" id="copy-citation-btn">
+                    {% t 'archive_article.copy_citation' %}
+                </button>
             </div>
 
             <div class="pub-side-card">
                 <h3>{% t 'archive_article.navigation_title' %}</h3>
                 <div class="pub-side-links">
-                    <a href="{% url 'index' %}">{% t 'common.breadcrumb.home' %}</a>
+                    <a href="{% url 'arxiv_detail' volume.slug %}">← {% t 'archive_issue.title_prefix' %} {{ volume.volume }}, {% t 'archive_issue.issue_label' %} {{ volume.issue }}</a>
                     <a href="{% url 'arxiv' %}">{% t 'base.nav.archive' %}</a>
-                    <a href="{% url 'arxiv_detail' volume.slug %}">{% t 'archive_issue.title_prefix' %} {{ volume.volume }}, {% t 'archive_issue.issue_label' %} {{ volume.issue }}</a>
-                </div>
-            </div>
-
-            <div class="pub-side-card">
-                <h3>{% t 'archive_article.article_info_title' %}</h3>
-                <div class="pub-meta-grid" style="grid-template-columns:1fr;gap:0.65rem;padding-top:0;border-top:none">
-                    <div class="pub-meta-item">
-                        <span class="label">{% t 'archive_article.subject_label' %}</span>
-                        <span class="value">{{ article.category }}</span>
-                    </div>
-                    {% if article.pages_display %}
-                    <div class="pub-meta-item">
-                        <span class="label">{% t 'archive_article.pages_label' %}</span>
-                        <span class="value">{{ article.pages_display }}</span>
-                    </div>
-                    {% endif %}
-                    <div class="pub-meta-item">
-                        <span class="label">{% t 'archive_article.views_label' %}</span>
-                        <span class="value">{{ article.views_count }}</span>
-                    </div>
                 </div>
             </div>
         </aside>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+{% include 'partials/pub-share-script.html' %}
+<script>
+document.getElementById('copy-citation-btn')?.addEventListener('click', function () {
+    var text = document.getElementById('citation-text')?.textContent?.trim();
+    if (!text) return;
+    navigator.clipboard.writeText(text).then(function () {
+        var btn = document.getElementById('copy-citation-btn');
+        var orig = btn.textContent;
+        btn.textContent = '{% t "archive_article.copied" %}';
+        setTimeout(function () { btn.textContent = orig; }, 2000);
+    });
+});
+</script>
 {% endblock %}

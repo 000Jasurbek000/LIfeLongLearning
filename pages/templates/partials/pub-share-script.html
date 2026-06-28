@@ -1,0 +1,38 @@
+{% load site_i18n %}
+<script>
+document.querySelectorAll('.pub-share-wrap').forEach(function (wrap) {
+    var shareBtn = wrap.querySelector('.pub-share-btn');
+    var shareMenu = wrap.querySelector('.pub-share-menu');
+    var copyLinkBtn = wrap.querySelector('.pub-copy-link-btn');
+    var pageUrl = wrap.dataset.shareUrl || window.location.href;
+
+    shareBtn?.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var open = !shareMenu.hidden;
+        shareMenu.hidden = open;
+        shareBtn.setAttribute('aria-expanded', String(!open));
+    });
+
+    shareMenu?.addEventListener('click', function (e) {
+        e.stopPropagation();
+    });
+
+    copyLinkBtn?.addEventListener('click', function () {
+        navigator.clipboard.writeText(pageUrl).then(function () {
+            var orig = copyLinkBtn.innerHTML;
+            copyLinkBtn.textContent = '{% t "archive_article.link_copied" "Havola nusxalandi!" %}';
+            setTimeout(function () { copyLinkBtn.innerHTML = orig; }, 2000);
+        });
+        shareMenu.hidden = true;
+        shareBtn?.setAttribute('aria-expanded', 'false');
+    });
+});
+
+document.addEventListener('click', function () {
+    document.querySelectorAll('.pub-share-menu:not([hidden])').forEach(function (menu) {
+        menu.hidden = true;
+        var btn = menu.parentElement?.querySelector('.pub-share-btn');
+        btn?.setAttribute('aria-expanded', 'false');
+    });
+});
+</script>

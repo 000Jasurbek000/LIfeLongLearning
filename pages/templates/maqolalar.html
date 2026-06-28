@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static site_i18n %}
+
+{% block title %}{% t 'articles.meta_title' %}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/archive-modern.css' %}">
+{% endblock %}
+
+{% block content %}
+<div data-header-style="accent">
+    <section class="page-hero page-hero-compact">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="{% url 'index' %}">{% t 'common.breadcrumb.home' %}</a>
+                <span>/</span>
+                <span>{% t 'articles.hero.title' %}</span>
+            </div>
+            <h1 class="page-title">{% t 'articles.hero.title' %}</h1>
+            <p class="page-subtitle">{% t 'articles.hero.subtitle' %} — {{ articles_total }} {% t 'articles.count_suffix' %}</p>
+        </div>
+    </section>
+</div>
+
+<div class="pub-page" data-header-style="accent">
+    <section class="pub-card pub-articles-list">
+        {% for article in page_obj %}
+        <article class="pub-article-row pub-article-row--list">
+            <div class="pub-article-list-meta">
+                <span class="pub-badge category">{{ article.category }}</span>
+                {% if article.date %}
+                <span class="pub-article-list-date">{{ article.date }}</span>
+                {% endif %}
+                <span class="pub-article-list-id">ID: #{{ article.public_id }}</span>
+            </div>
+            <h3><a href="{{ article.detail_url }}">{{ article.title }}</a></h3>
+            <div class="authors">{{ article.authors }}</div>
+            <div class="pub-article-row-footer">
+                <div>
+                    <span class="pages">{{ article.volume_label }}</span>
+                    {% if article.pages_display %}
+                    <span class="pages" style="margin-left:1rem">{% t 'archive_article.pages_label' %}: {{ article.pages_display }}</span>
+                    {% endif %}
+                    {% if article.doi %}
+                    <span class="pages pub-doi-inline" style="margin-left:1rem">DOI: {{ article.doi }}</span>
+                    {% endif %}
+                </div>
+                <div class="pub-article-row-links">
+                    <a href="{{ article.detail_url }}" class="pub-detail-link">{% t 'archive_issue.read_detail' %} →</a>
+                </div>
+            </div>
+        </article>
+        {% empty %}
+        <p>{% t 'articles.empty' %}</p>
+        {% endfor %}
+    </section>
+
+    {% if page_obj.has_other_pages %}
+    <nav class="pub-pagination" aria-label="Pagination">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}" class="pub-btn outline">← {% t 'articles.prev_page' %}</a>
+        {% endif %}
+        <span class="pub-pagination-info">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="pub-btn outline">{% t 'articles.next_page' %} →</a>
+        {% endif %}
+    </nav>
+    {% endif %}
+</div>
+{% endblock %}

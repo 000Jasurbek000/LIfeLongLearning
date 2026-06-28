@@ -4,12 +4,19 @@
 {% block title %}{% t 'submit.meta_title' %}{% endblock %}
 
 {% block content %}
-    <section class="page-hero" data-header-style="default">
-        <div class="container">
-            <h2 class="page-title">{% t 'submit.hero.title' %}</h2>
-            <p class="page-subtitle">{% t 'submit.hero.subtitle' %}</p>
-        </div>
-    </section>
+    <div data-header-style="accent">
+        <section class="page-hero page-hero-compact">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="{% url 'index' %}">{% t 'common.breadcrumb.home' %}</a>
+                    <span>/</span>
+                    <span>{% t 'submit.hero.title' %}</span>
+                </div>
+                <h1 class="page-title">{% t 'submit.hero.title' %}</h1>
+                <p class="page-subtitle">{% t 'submit.hero.subtitle' %}</p>
+            </div>
+        </section>
+    </div>
 
     <section class="submit-section" data-header-style="accent">
         <div class="container">

@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load static site_i18n %}
+
+{% block title %}{% t 'error404.meta_title' %}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .error-page-wrap {
+        max-width: 640px;
+        margin: 0 auto 4rem;
+        padding: 0 1.25rem;
+        text-align: center;
+    }
+
+    .error-card {
+        background: #fff;
+        border: 1px solid #e8edf3;
+        border-radius: 20px;
+        padding: 2.5rem 2rem;
+        box-shadow: 0 8px 32px rgba(15, 23, 42, 0.06);
+    }
+
+    .error-code {
+        font-size: clamp(4rem, 12vw, 6.5rem);
+        font-weight: 800;
+        line-height: 1;
+        background: linear-gradient(135deg, #02AB6F 0%, #86DAF1 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.5rem;
+    }
+
+    .error-card h2 {
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0 0 0.75rem;
+    }
+
+    .error-card p {
+        color: #64748b;
+        font-size: 1rem;
+        line-height: 1.7;
+        margin: 0 0 1.75rem;
+    }
+
+    .error-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        justify-content: center;
+    }
+
+    .error-actions .btn {
+        min-width: 140px;
+    }
+
+    .error-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px dashed #e2e8f0;
+    }
+
+    .error-links a {
+        color: #02885d;
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .error-links a:hover {
+        color: #02AB6F;
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div data-header-style="accent">
+    <section class="page-hero page-hero-compact">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="{% url 'index' %}">{% t 'common.breadcrumb.home' %}</a>
+                <span>/</span>
+                <span>{% t 'error404.breadcrumb' %}</span>
+            </div>
+            <h1 class="page-title">{% t 'error404.hero_title' %}</h1>
+            <p class="page-subtitle">{% t 'error404.hero_subtitle' %}</p>
+        </div>
+    </section>
+</div>
+
+<section class="error-page-wrap" data-header-style="accent">
+    <div class="error-card">
+        <div class="error-code" aria-hidden="true">404</div>
+        <h2>{% t 'error404.title' %}</h2>
+        <p>{% t 'error404.description' %}</p>
+        <div class="error-actions">
+            <a href="{% url 'index' %}" class="btn btn-primary btn-large">{% t 'error404.back_home' %}</a>
+            <a href="{% url 'arxiv' %}" class="btn btn-outline btn-large">{% t 'base.nav.archive' %}</a>
+        </div>
+        <div class="error-links">
+            <a href="{% url 'maqolalar' %}">{% t 'base.nav.articles' %}</a>
+            <a href="{% url 'qidiruv' %}">{% t 'base.search.title' %}</a>
+            <a href="{% url 'maqola_berish' %}">{% t 'base.nav.submit_article' %}</a>
+            <a href="{% url 'aloqa' %}">{% t 'base.nav.contact' %}</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

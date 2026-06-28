@@ -4,12 +4,19 @@
 {% block title %}{% t 'about.meta_title' %}{% endblock %}
 
 {% block content %}
-    <section class="page-hero" data-header-style="default">
-        <div class="container">
-            <h2 class="page-title">{% t 'about.hero.title' %}</h2>
-            <p class="page-subtitle">{% t 'about.hero.subtitle' %}</p>
-        </div>
-    </section>
+    <div data-header-style="accent">
+        <section class="page-hero page-hero-compact">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="{% url 'index' %}">{% t 'common.breadcrumb.home' %}</a>
+                    <span>/</span>
+                    <span>{% t 'about.hero.title' %}</span>
+                </div>
+                <h1 class="page-title">{% t 'about.hero.title' %}</h1>
+                <p class="page-subtitle">{% t 'about.hero.subtitle' %}</p>
+            </div>
+        </section>
+    </div>
 
     <section class="page-content" data-header-style="accent">
         <div class="container">
@@ -106,24 +113,6 @@
 
 {% block extra_css %}
 <style>
-    .page-hero {
-        background: var(--gradient-primary);
-        padding: 4rem 0 3rem;
-        text-align: center;
-    }
-
-    .page-title {
-        color: var(--white);
-        font-size: var(--font-size-4xl);
-        margin-bottom: 1rem;
-    }
-
-    .page-subtitle {
-        color: rgba(255, 255, 255, 0.9);
-        font-size: var(--font-size-lg);
-        margin: 0;
-    }
-
     .page-content {
         padding: var(--spacing-3xl) 0;
     }

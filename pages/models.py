@@ -129,6 +129,7 @@ class Article(models.Model):
         blank=True, null=True, editable=False,
     )
     certificate_number = models.CharField('Sertifikat raqami', max_length=50, blank=True)
+    doi = models.CharField('DOI', max_length=200, blank=True, help_text='Masalan: 10.1234/example')
     
     # Holat va to'lov
     status = models.CharField('Holat', max_length=20, choices=STATUS_CHOICES, default='pending')

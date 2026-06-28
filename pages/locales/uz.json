@@ -12,6 +12,7 @@
       "journal_requirements": "Jurnal talablari",
       "regulatory_docs": "Meyoriy hujjatlar",
       "archive": "Arxiv",
+      "articles": "Maqolalar",
       "news": "Yangiliklar",
       "all_news": "Barcha yangiliklar",
       "announcements": "E'lonlar",
@@ -183,6 +184,10 @@
     "latest_articles": {
       "title": "So'nggi maqolalar",
       "empty": "Hozircha nashr etilgan maqolalar yo'q. Yangi son chiqqach, ular shu yerda ko'rinadi."
+    },
+    "indexing": {
+      "title": "Indeksatsiya va arxivlash",
+      "subtitle": "Jurnal mazmuni quyidagi xalqaro bazalarda indekslash va arxivlash rejalashtirilgan"
     },
     "news": {
       "title": "So'nggi yangiliklar"
@@ -545,7 +550,28 @@
     "back_to_archive": "Arxivga qaytish",
     "read_detail": "Batafsil",
     "about_volume": "Tom haqida",
-    "no_articles": "Hozircha ushbu tomga maqolalar qo'shilmagan."
+    "no_articles": "Hozircha ushbu tomga maqolalar qo'shilmagan.",
+    "certificates_btn": "Sertifikatlar"
+  },
+  "articles": {
+    "meta_title": "Barcha maqolalar — Ilmiy Jurnal",
+    "hero": {
+      "title": "Barcha maqolalar",
+      "subtitle": "Nashr etilgan maqolalar ro'yxati"
+    },
+    "count_suffix": "ta maqola",
+    "empty": "Hozircha nashr etilgan maqolalar yo'q.",
+    "prev_page": "Oldingi",
+    "next_page": "Keyingi"
+  },
+  "error404": {
+    "meta_title": "Sahifa topilmadi (404) — Ilmiy Jurnal",
+    "breadcrumb": "404",
+    "hero_title": "Sahifa topilmadi",
+    "hero_subtitle": "So'ralgan sahifa mavjud emas yoki ko'chirilgan",
+    "title": "Kechirasiz, bu sahifa topilmadi",
+    "description": "Havola noto'g'ri bo'lishi, sahifa o'chirilgani yoki manzili o'zgargan bo'lishi mumkin. Quyidagi tugmalar orqali davom eting.",
+    "back_home": "Bosh sahifaga"
   },
   "archive_article": {
     "hero_subtitle": "maqolalari",
@@ -570,7 +596,12 @@
     "views_suffix": "ko'rish",
     "published_label": "Nashr etildi",
     "issue_info": "Nashr",
-    "subject_label": "Yo'nalish"
+    "subject_label": "Yo'nalish",
+    "copy_citation": "Iqtibosdan nusxa olish",
+    "copied": "Nusxa olindi!",
+    "share_btn": "Ulashish",
+    "share_copy": "Havola nusxalash",
+    "link_copied": "Havola nusxalandi!"
   },
   "news": {
     "meta_title": "Yangiliklar - Ilmiy Jurnal",

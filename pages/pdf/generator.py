@@ -82,6 +82,77 @@ def _article_pdf_path(article) -> Path | None:
     return None
 
 
+def _safe_author_filename(name: str) -> str:
+    safe = re.sub(r'[<>:"/\\|?*]', '', name or '')
+    safe = re.sub(r'\s+', '_', safe.strip())
+    return safe or 'Muallif'
+
+
+def _unique_pdf_name(author_name: str, used: set[str]) -> str:
+    base = _safe_author_filename(author_name)
+    fname = f'{base}.pdf'
+    counter = 2
+    while fname in used:
+        fname = f'{base}_{counter}.pdf'
+        counter += 1
+    used.add(fname)
+    return fname
+
+
+def build_volume_certificates_zip(volume) -> bytes | None:
+    """Tomdagi barcha mualliflar uchun alohida sertifikat PDF larni ZIP qiladi."""
+    import zipfile
+
+    from pages.models import Article
+
+    buf = io.BytesIO()
+    used_names: set[str] = set()
+    entries_count = 0
+
+    with zipfile.ZipFile(buf, 'w', zipfile.ZIP_DEFLATED) as zf:
+        articles = Article.objects.filter(
+            volume=volume, status='published',
+        ).order_by('approved_at', 'pk')
+
+        for article in articles:
+            authors = parse_authors(article.author_name, article.co_authors)
+            issue_date = (article.published_at or article.approved_at or timezone.now()).date()
+            for idx, name in enumerate(authors):
+                cert_num = next_certificate_number(article.pk, idx, len(authors))
+                pdf_bytes = build_certificate_pdf([(name, cert_num)], issue_date)
+                zf.writestr(_unique_pdf_name(name, used_names), pdf_bytes)
+                entries_count += 1
+
+        for manual in volume.manual_articles.all().order_by('published_date', 'title'):
+            authors = parse_authors(manual.authors, '')
+            if manual.published_date:
+                issue_date = manual.published_date
+            elif volume.published_at:
+                issue_date = volume.published_at.date()
+            else:
+                issue_date = timezone.now().date()
+            for idx, name in enumerate(authors):
+                cert_num = f"{CERTIFICATE['number_prefix']}-{volume.year}-M{manual.pk:05d}-{idx + 1:02d}"
+                pdf_bytes = build_certificate_pdf([(name, cert_num)], issue_date)
+                zf.writestr(_unique_pdf_name(name, used_names), pdf_bytes)
+                entries_count += 1
+
+    if entries_count == 0:
+        return None
+
+    buf.seek(0)
+    return buf.read()
+
+
+def volume_has_certificates(volume) -> bool:
+    """Tomda sertifikat yaratish mumkin bo'lgan mualliflar bormi."""
+    from pages.models import Article
+
+    if Article.objects.filter(volume=volume, status='published').exists():
+        return True
+    return volume.manual_articles.exists()
+
+
 def _volume_articles_ordered(volume):
     """Tomdagi maqolalar — tasdiqlangan vaqti bo'yicha."""
     from pages.models import Article

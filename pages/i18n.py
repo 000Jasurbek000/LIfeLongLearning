@@ -1,5 +1,4 @@
 import json
-from functools import lru_cache
 from pathlib import Path
 
 from django.conf import settings
@@ -32,16 +31,22 @@ SUPPORTED_LANGUAGES = {
 }
 
 LOCALES_DIR = Path(settings.BASE_DIR) / 'pages' / 'locales'
+_translation_cache: dict[str, tuple[float, dict]] = {}
 
 
-@lru_cache(maxsize=None)
 def load_translations(language_code: str) -> dict:
     language_code = normalize_language(language_code)
     file_path = LOCALES_DIR / f'{language_code}.json'
     if not file_path.exists():
         return {}
+    mtime = file_path.stat().st_mtime
+    cached = _translation_cache.get(language_code)
+    if cached and cached[0] == mtime:
+        return cached[1]
     with file_path.open('r', encoding='utf-8') as file:
-        return json.load(file)
+        data = json.load(file)
+    _translation_cache[language_code] = (mtime, data)
+    return data
 
 
 def normalize_language(language_code: str | None) -> str:

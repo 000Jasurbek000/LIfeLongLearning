@@ -14,6 +14,7 @@ from django.views.decorators.http import require_POST
 from .i18n import LANGUAGE_SESSION_KEY, SUPPORTED_LANGUAGES
 from .presenters import (
     find_volume_article,
+    get_all_published_articles,
     get_archive_categories,
     get_latest_home_articles,
     get_popular_articles,
@@ -22,6 +23,15 @@ from .presenters import (
     present_announcement,
     present_news,
 )
+
+
+def page_not_found(request, exception=None):
+    return render(request, '404.html', status=404)
+
+
+def page_not_found_preview(request):
+    """DEBUG rejimida 404 sahifasini ko'rish uchun."""
+    return page_not_found(request)
 
 
 def index(request):
@@ -230,6 +240,18 @@ def meyoriy_hujjatlar(request):
 def arxiv(request):
     return render(request, 'arxiv.html', {
         'archive_volumes': get_published_volumes(),
+    })
+
+
+def maqolalar(request):
+    from django.core.paginator import Paginator
+
+    all_articles = get_all_published_articles()
+    paginator = Paginator(all_articles, 25)
+    page_obj = paginator.get_page(request.GET.get('page'))
+    return render(request, 'maqolalar.html', {
+        'page_obj': page_obj,
+        'articles_total': len(all_articles),
     })
 
 
@@ -445,27 +467,95 @@ def robots_txt(request):
     lines = [
         'User-agent: *',
         'Allow: /',
+        'Disallow: /admin/',
+        'Disallow: /admin-panel/',
+        'Disallow: /taqrizchi/',
         f'Sitemap: {request.build_absolute_uri("/sitemap.xml")}',
     ]
-    return HttpResponse('\n'.join(lines), content_type='text/plain')
+    return HttpResponse('\n'.join(lines), content_type='text/plain; charset=utf-8')
 
 
 def sitemap_xml(request):
+    from django.utils import timezone
     from .models import Announcement, News, Volume
 
-    urls = [request.build_absolute_uri(reverse('index'))]
+    today = timezone.now().date().isoformat()
+    urls = [
+        (request.build_absolute_uri(reverse('index')), today),
+        (request.build_absolute_uri(reverse('haqida')), today),
+        (request.build_absolute_uri(reverse('arxiv')), today),
+        (request.build_absolute_uri(reverse('maqolalar')), today),
+        (request.build_absolute_uri(reverse('yangiliklar')), today),
+        (request.build_absolute_uri(reverse('elonlar')), today),
+        (request.build_absolute_uri(reverse('qidiruv')), today),
+        (request.build_absolute_uri(reverse('maqola_berish')), today),
+    ]
     for item in News.objects.filter(is_active=True):
-        urls.append(request.build_absolute_uri(reverse('yangilik_detail', args=[item.slug])))
+        urls.append((
+            request.build_absolute_uri(reverse('yangilik_detail', args=[item.slug])),
+            _format_date(item.published_date) or today,
+        ))
     for item in Announcement.objects.filter(is_active=True):
-        urls.append(request.build_absolute_uri(reverse('elon_detail', args=[item.slug])))
-    for item in Volume.objects.filter(status='published'):
-        urls.append(request.build_absolute_uri(reverse('arxiv_detail', args=[item.slug])))
+        urls.append((
+            request.build_absolute_uri(reverse('elon_detail', args=[item.slug])),
+            _format_date(item.published_date) or today,
+        ))
+    for item in Volume.objects.filter(status__in=['published', 'active']):
+        urls.append((
+            request.build_absolute_uri(reverse('arxiv_detail', args=[item.slug])),
+            _format_date(item.published_at or item.created_at) or today,
+        ))
+    for art in get_all_published_articles():
+        urls.append((request.build_absolute_uri(art.detail_url), art.sort_date or today))
 
     body = ['<?xml version="1.0" encoding="UTF-8"?>', '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
-    for url in urls:
-        body.append(f'  <url><loc>{url}</loc></url>')
+    for loc, lastmod in urls:
+        body.append('  <url>')
+        body.append(f'    <loc>{loc}</loc>')
+        if lastmod:
+            body.append(f'    <lastmod>{lastmod}</lastmod>')
+        body.append('  </url>')
     body.append('</urlset>')
-    return HttpResponse('\n'.join(body), content_type='application/xml')
+    return HttpResponse('\n'.join(body), content_type='application/xml; charset=utf-8')
+
+
+def articles_rss(request):
+    from django.utils import timezone
+    from django.utils.feedgenerator import Rss201rev2Feed
+
+    feed = Rss201rev2Feed(
+        title=settings.SITE_NAME,
+        link=request.build_absolute_uri(reverse('index')),
+        description=f'{settings.SITE_NAME} — ilmiy maqolalar RSS feed',
+        language='uz',
+    )
+    for art in get_all_published_articles()[:50]:
+        link = request.build_absolute_uri(art.detail_url)
+        description = (art.abstract or '')[:500]
+        pubdate = None
+        if art.sort_date:
+            try:
+                from datetime import datetime
+                pubdate = datetime.strptime(art.sort_date, '%Y-%m-%d').replace(tzinfo=timezone.get_current_timezone())
+            except ValueError:
+                pubdate = None
+        feed.add_item(
+            title=art.title,
+            link=link,
+            description=description,
+            author_name=art.authors,
+            pubdate=pubdate,
+            unique_id=link,
+        )
+    return HttpResponse(feed.writeString('utf-8'), content_type='application/rss+xml; charset=utf-8')
+
+
+def _format_date(value):
+    if not value:
+        return ''
+    if hasattr(value, 'strftime'):
+        return value.strftime('%Y-%m-%d')
+    return str(value)[:10]
 
 
 @require_POST
@@ -511,6 +601,19 @@ def volume_pdf_download(request, slug):
     if not volume.pdf_file:
         raise Http404('Tom PDF hali tayyor emas')
     return _file_download_response(volume.pdf_file, f'tom_{volume.slug}.pdf')
+
+
+def volume_certificates_download(request, slug):
+    from .models import Volume
+    from .pdf.generator import build_volume_certificates_zip
+
+    volume = get_object_or_404(Volume, slug=slug)
+    zip_bytes = build_volume_certificates_zip(volume)
+    if not zip_bytes:
+        raise Http404('Sertifikatlar topilmadi')
+    response = HttpResponse(zip_bytes, content_type='application/zip')
+    response['Content-Disposition'] = f'attachment; filename="sertifikatlar_{volume.slug}.zip"'
+    return response
 
 
 def article_certificate_download(request, slug, article_id):

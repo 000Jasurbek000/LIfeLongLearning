@@ -4,12 +4,19 @@
 {% block title %}{% t 'contact.meta_title' %}{% endblock %}
 
 {% block content %}
-    <section class="page-hero" data-header-style="default">
-        <div class="container">
-            <h2 class="page-title">{% t 'contact.hero.title' %}</h2>
-            <p class="page-subtitle">{% t 'contact.hero.subtitle' %}</p>
-        </div>
-    </section>
+    <div data-header-style="accent">
+        <section class="page-hero page-hero-compact">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="{% url 'index' %}">{% t 'common.breadcrumb.home' %}</a>
+                    <span>/</span>
+                    <span>{% t 'contact.hero.title' %}</span>
+                </div>
+                <h1 class="page-title">{% t 'contact.hero.title' %}</h1>
+                <p class="page-subtitle">{% t 'contact.hero.subtitle' %}</p>
+            </div>
+        </section>
+    </div>
 
     <section class="contact-section" data-header-style="accent">
         <div class="container">

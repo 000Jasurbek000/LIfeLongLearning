@@ -15,12 +15,19 @@
 {% endblock %}
 
 {% block content %}
-    <section class="page-hero" data-header-style="default">
-        <div class="container">
-            <h2 class="page-title">{% t 'docs.hero.title' %}</h2>
-            <p class="page-subtitle">{% t 'docs.hero.subtitle' %}</p>
-        </div>
-    </section>
+    <div data-header-style="accent">
+        <section class="page-hero page-hero-compact">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="{% url 'index' %}">{% t 'common.breadcrumb.home' %}</a>
+                    <span>/</span>
+                    <span>{% t 'docs.hero.title' %}</span>
+                </div>
+                <h1 class="page-title">{% t 'docs.hero.title' %}</h1>
+                <p class="page-subtitle">{% t 'docs.hero.subtitle' %}</p>
+            </div>
+        </section>
+    </div>
 
     <div class="docs-page" data-header-style="accent">
         {% if documents %}

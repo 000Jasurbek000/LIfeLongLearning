@@ -4,12 +4,19 @@
 {% block title %}Qidiruv — {% t 'base.brand.title' %}{% endblock %}
 
 {% block content %}
-<section class="page-hero" data-header-style="default">
-    <div class="container">
-        <h2 class="page-title">{% t 'base.search.title' %}</h2>
-        <p class="page-subtitle">{% if query %}"{{ query }}" bo'yicha {{ results_total }} ta natija{% else %}Maqola, muallif yoki kalit so'z bo'yicha qidiring{% endif %}</p>
-    </div>
-</section>
+<div data-header-style="accent">
+    <section class="page-hero page-hero-compact">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="{% url 'index' %}">{% t 'common.breadcrumb.home' %}</a>
+                <span>/</span>
+                <span>{% t 'base.search.title' %}</span>
+            </div>
+            <h1 class="page-title">{% t 'base.search.title' %}</h1>
+            <p class="page-subtitle">{% if query %}"{{ query }}" bo'yicha {{ results_total }} ta natija{% else %}Maqola, muallif yoki kalit so'z bo'yicha qidiring{% endif %}</p>
+        </div>
+    </section>
+</div>
 
 <section class="content-section" data-header-style="accent">
     <div class="container" style="max-width:960px;margin:0 auto 60px;">
