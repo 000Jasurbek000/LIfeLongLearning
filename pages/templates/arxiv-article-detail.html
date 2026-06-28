@@ -1,311 +1,164 @@
 {% extends 'base.html' %}
 {% load static site_i18n %}
 
-{% block title %}{{ article.title }} - {{ volume.journal_name }}{% endblock %}
+{% block title %}{{ article.title }} — {{ volume.journal_name }}{% endblock %}
 
 {% block extra_css %}
-<style>
-    .article-page {
-        max-width: 1180px;
-        margin: 0 auto 60px;
-        padding: 0 2rem;
-    }
-
-    .article-layout {
-        display: grid;
-        grid-template-columns: minmax(0, 1.8fr) 320px;
-        gap: 2rem;
-        align-items: start;
-    }
-
-    .article-content {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-    }
-
-    .article-card,
-    .article-side-card {
-        background: #fff;
-        border: 1px solid rgba(148, 163, 184, 0.18);
-        box-shadow: 0 18px 36px rgba(15, 23, 42, 0.08);
-        border-radius: 24px;
-        padding: 1.6rem;
-    }
-
-    .article-meta-line {
-        display: inline-flex;
-        flex-wrap: wrap;
-        gap: 0.6rem;
-        align-items: center;
-        color: #0288D1;
-        background: rgba(2, 136, 209, 0.08);
-        padding: 0.5rem 0.9rem;
-        border-radius: 999px;
-        font-weight: 700;
-        font-size: 0.92rem;
-    }
-
-    .article-heading {
-        font-size: 2.15rem;
-        line-height: 1.25;
-        color: #0f172a;
-        margin: 1rem 0 0.9rem;
-    }
-
-    .article-authors {
-        font-size: 1.04rem;
-        color: #334155;
-        line-height: 1.8;
-        margin-bottom: 1.25rem;
-    }
-
-    .article-actions {
-        display: flex;
-        align-items: center;
-        gap: 0.85rem;
-        flex-wrap: wrap;
-        padding-top: 1rem;
-        border-top: 1px solid #e2e8f0;
-    }
-
-    .article-date {
-        font-size: 0.92rem;
-        color: #64748b;
-        font-weight: 600;
-        margin-right: auto;
-    }
-
-    .action-link {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.45rem;
-        border-radius: 999px;
-        text-decoration: none;
-        font-size: 0.9rem;
-        font-weight: 700;
-        transition: all 0.25s ease;
-    }
-
-    .action-link.primary {
-        background: var(--gradient-primary);
-        color: #fff;
-        padding: 0.72rem 1.15rem;
-        box-shadow: 0 12px 24px rgba(2, 171, 111, 0.2);
-    }
-
-    .action-link.primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 16px 28px rgba(2, 171, 111, 0.26);
-    }
-
-    .action-link.secondary {
-        color: #0288D1;
-        background: rgba(2, 136, 209, 0.09);
-        padding: 0.72rem 1.1rem;
-    }
-
-    .action-link.secondary:hover {
-        background: #0288D1;
-        color: #fff;
-    }
-
-    .content-section h3 {
-        font-size: 1.28rem;
-        color: #0f172a;
-        margin-bottom: 1rem;
-    }
-
-    .content-section p,
-    .reference-list li,
-    .citation-box {
-        color: #334155;
-        line-height: 1.9;
-        font-size: 1rem;
-    }
-
-    .reference-list {
-        margin: 0;
-        padding-left: 1.2rem;
-    }
-
-    .reference-list li + li {
-        margin-top: 0.9rem;
-    }
-
-    .keyword-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.65rem;
-    }
-
-    .keyword-tag {
-        display: inline-flex;
-        align-items: center;
-        padding: 0.55rem 0.9rem;
-        border-radius: 999px;
-        background: rgba(2, 171, 111, 0.08);
-        color: #02885d;
-        font-size: 0.9rem;
-        font-weight: 700;
-    }
-
-    .citation-box {
-        background: #f8fafc;
-        border: 1px solid #e2e8f0;
-        border-radius: 18px;
-        padding: 1rem;
-    }
-
-    .article-sidebar {
-        display: flex;
-        flex-direction: column;
-        gap: 1.2rem;
-        position: sticky;
-        top: 95px;
-    }
-
-    .article-side-card h4 {
-        font-size: 1.08rem;
-        color: #0f172a;
-        margin-bottom: 0.9rem;
-    }
-
-    .side-list {
-        display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
-    }
-
-    .side-item {
-        color: #475569;
-        line-height: 1.7;
-        font-size: 0.95rem;
-    }
-
-    .side-item strong {
-        color: #0f172a;
-    }
-
-    .back-link {
-        color: #0288D1;
-        text-decoration: none;
-        font-weight: 700;
-        transition: color 0.2s ease;
-    }
-
-    .back-link:hover {
-        color: #02AB6F;
-    }
-
-    @media (max-width: 1024px) {
-        .article-layout {
-            grid-template-columns: 1fr;
-        }
-
-        .article-sidebar {
-            position: static;
-        }
-    }
-
-    @media (max-width: 768px) {
-        .article-page {
-            padding: 0 1rem;
-        }
-
-        .article-heading {
-            font-size: 1.65rem;
-        }
-
-        .article-actions {
-            align-items: flex-start;
-        }
-
-        .article-date {
-            margin-right: 0;
-            width: 100%;
-        }
-    }
-</style>
+<link rel="stylesheet" href="{% static 'css/archive-modern.css' %}">
 {% endblock %}
 
 {% block content %}
-<section class="page-hero" data-header-style="default">
-    <div class="container">
-        <h2 class="page-title">{{ volume.journal_name }}</h2>
-        <p class="page-subtitle">{% t 'archive_issue.title_prefix' %} {{ volume.volume }}, {% t 'archive_issue.issue_label' %} {{ volume.issue }} {% t 'archive_article.hero_subtitle' %}</p>
-    </div>
-</section>
+<div class="pub-page" data-header-style="accent">
+    <nav class="pub-breadcrumb">
+        <a href="{% url 'index' %}">{% t 'common.breadcrumb.home' %}</a>
+        <span>/</span>
+        <a href="{% url 'arxiv' %}">{% t 'base.nav.archive' %}</a>
+        <span>/</span>
+        <a href="{% url 'arxiv_detail' volume.slug %}">{% t 'archive_issue.title_prefix' %} {{ volume.volume }}, {% t 'archive_issue.issue_label' %} {{ volume.issue }}</a>
+    </nav>
 
-<div class="article-page" data-header-style="accent">
-    <div class="article-layout">
-        <div class="article-content">
-            <article class="article-card">
-                <div class="article-meta-line">{% t 'archive_article.meta_line_prefix' %} {{ volume.year }} / {{ volume.issue }} &nbsp; • &nbsp; {% t 'archive_article.issue_label' %} {{ volume.issue }}. {% t 'archive_article.volume_label' %} {{ volume.volume }}.</div>
-                <h1 class="article-heading">{{ article.title }}</h1>
-                <div class="article-authors">{{ article.display_authors }}</div>
+    <header class="pub-article-hero">
+        <div class="pub-article-top">
+            <div class="pub-badges">
+                <span class="pub-badge category">{{ article.category }}</span>
+                <span class="pub-badge lang">{{ current_language.label }}</span>
+            </div>
+            <div class="pub-actions">
+                {% if article.pdf_url != '#' %}
+                <a href="{{ article.pdf_url }}" class="pub-btn outline" target="_blank" rel="noopener noreferrer">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    {% t 'archive_article.view_btn' %}
+                </a>
+                {% endif %}
+                <a href="{% url 'arxiv_article_download' volume.slug article.slug %}" class="pub-btn primary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    {% t 'common.actions.download' %}
+                </a>
+                {% if article.source == 'submitted' and article.has_certificate_pdf %}
+                <a href="{% url 'article_certificate_download' volume.slug article.article_id %}" class="pub-btn certificate">
+                    {% t 'archive_article.certificate_btn' %}
+                </a>
+                {% endif %}
+            </div>
+        </div>
 
-                <div class="article-actions">
-                    <span class="article-date">{{ article.date }}</span>
-                    <a href="{% url 'arxiv_article_download' volume.slug article.slug %}" class="action-link primary">{% t 'common.actions.download' %}</a>
-                    {% if article.source == 'submitted' and article.has_certificate_pdf %}
-                    <a href="{% url 'article_certificate_download' volume.slug article.article_id %}" class="action-link primary" style="background:linear-gradient(135deg,#059669,#10b981)">Sertifikat (PDF)</a>
-                    {% endif %}
-                    <a href="{{ article.pdf_url }}" class="action-link secondary" target="_blank" rel="noopener noreferrer">{% t 'common.actions.read_full' %}</a>
-                </div>
-            </article>
+        <h1 class="pub-article-title">{{ article.title }}</h1>
 
-            <section id="full-read" class="article-card content-section">
-                <h3>{% t 'archive_article.annotation_title' %}</h3>
+        <div class="pub-meta-grid">
+            <div class="pub-meta-item">
+                <span class="label">{% t 'common.labels.journal' %}</span>
+                <span class="value highlight">{{ volume.journal_name }}</span>
+            </div>
+            <div class="pub-meta-item">
+                <span class="label">{% t 'archive_article.issue_info' %}</span>
+                <span class="value">{{ volume.issue_label }}</span>
+            </div>
+            {% if article.pages_display %}
+            <div class="pub-meta-item">
+                <span class="label">{% t 'archive_article.pages_label' %}</span>
+                <span class="value">{{ article.pages_display }}</span>
+            </div>
+            {% endif %}
+            <div class="pub-meta-item">
+                <span class="label">{% t 'archive_article.views_label' %}</span>
+                <span class="value">{{ article.views_count }} {% t 'archive_article.views_suffix' %}</span>
+            </div>
+            <div class="pub-meta-item">
+                <span class="label">{% t 'archive_article.published_label' %}</span>
+                <span class="value">{{ article.date }}</span>
+            </div>
+            {% if volume.issn %}
+            <div class="pub-meta-item">
+                <span class="label">ISSN</span>
+                <span class="value">{{ volume.issn }}</span>
+            </div>
+            {% endif %}
+        </div>
+    </header>
+
+    <div class="pub-layout">
+        <main class="pub-main">
+            <section class="pub-card">
+                <h2>{% t 'archive_article.annotation_heading' %}</h2>
                 <p>{{ article.abstract }}</p>
+                {% if article.keywords %}
+                <div class="pub-keywords">
+                    {% for keyword in article.keywords %}
+                    <span class="pub-keyword">{{ keyword }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <div class="pub-authors-inline">{{ article.display_authors }}</div>
             </section>
 
-            <section class="article-card content-section">
-                <h3>{% t 'archive_article.references_title' %}</h3>
-                <ol class="reference-list">
+            {% if article.pdf_url != '#' %}
+            <section class="pub-card">
+                <h2>{% t 'archive_article.content_title' %}</h2>
+                <div class="pub-pdf-note">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#0288D1" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    <p>{% t 'archive_article.content_note' %}</p>
+                    <a href="{{ article.pdf_url }}" class="pub-btn primary" target="_blank" rel="noopener noreferrer">{% t 'common.actions.read_full' %}</a>
+                </div>
+            </section>
+            {% endif %}
+
+            {% if article.references %}
+            <section class="pub-card">
+                <h2>{% t 'archive_article.references_title' %}</h2>
+                <ol class="pub-ref-list">
                     {% for reference in article.references %}
                     <li>{{ reference }}</li>
                     {% endfor %}
                 </ol>
             </section>
+            {% endif %}
 
-            <section class="article-card content-section">
-                <h3>{% t 'archive_article.keywords_title' %}</h3>
-                <div class="keyword-list">
-                    {% for keyword in article.keywords %}
-                    <span class="keyword-tag">{{ keyword }}</span>
-                    {% endfor %}
-                </div>
+            <section class="pub-card">
+                <h2>{% t 'archive_article.citation_title' %}</h2>
+                <p style="margin-bottom:0.75rem;font-size:0.85rem;color:#64748b"><strong>{% t 'archive_article.citation_style' %}</strong></p>
+                <div class="pub-citation-box" id="citation-text">{{ article.citation }}</div>
             </section>
+        </main>
 
-            <section class="article-card content-section">
-                <h3>{% t 'archive_article.citation_title' %}</h3>
-                <p style="margin-bottom: 0.85rem;"><strong>{% t 'archive_article.citation_style' %}</strong></p>
-                <div class="citation-box">{{ article.citation }}</div>
-            </section>
-        </div>
-
-        <aside class="article-sidebar">
-            <div class="article-side-card">
-                <h4>{% t 'archive_article.navigation_title' %}</h4>
-                <div class="side-list">
-                    <div class="side-item"><a href="{% url 'index' %}" class="back-link">{% t 'common.breadcrumb.home' %}</a></div>
-                    <div class="side-item"><a href="{% url 'arxiv' %}" class="back-link">{% t 'base.nav.archive' %}</a></div>
-                    <div class="side-item"><a href="{% url 'arxiv_detail' volume.slug %}" class="back-link">{% t 'archive_issue.title_prefix' %} {{ volume.volume }}, {% t 'archive_issue.issue_label' %} {{ volume.issue }}</a></div>
+        <aside class="pub-sidebar">
+            <div class="pub-side-card">
+                <h3>{% t 'archive_article.authors_title' %}</h3>
+                <div class="pub-author-card">
+                    <div class="pub-author-avatar">{{ article.display_authors|slice:":2"|upper }}</div>
+                    <div>
+                        <div class="pub-author-name">{{ article.display_authors }}</div>
+                    </div>
                 </div>
             </div>
 
-            <div class="article-side-card">
-                <h4>{% t 'archive_article.article_info_title' %}</h4>
-                <div class="side-list">
-                    <div class="side-item"><strong>{% t 'common.labels.journal' %}:</strong> {{ volume.journal_name }}</div>
-                    <div class="side-item"><strong>{% t 'common.labels.publication' %}:</strong> {{ volume.year }} / {{ volume.issue }}</div>
-                    <div class="side-item"><strong>{% t 'common.labels.issue_volume' %}:</strong> {% t 'archive_article.issue_label' %} {{ volume.issue }}. {% t 'archive_article.volume_label' %} {{ volume.volume }}</div>
-                    <div class="side-item"><strong>{% t 'common.labels.date' %}:</strong> {{ article.date }}</div>
+            <div class="pub-side-card">
+                <h3>{% t 'archive_article.navigation_title' %}</h3>
+                <div class="pub-side-links">
+                    <a href="{% url 'index' %}">{% t 'common.breadcrumb.home' %}</a>
+                    <a href="{% url 'arxiv' %}">{% t 'base.nav.archive' %}</a>
+                    <a href="{% url 'arxiv_detail' volume.slug %}">{% t 'archive_issue.title_prefix' %} {{ volume.volume }}, {% t 'archive_issue.issue_label' %} {{ volume.issue }}</a>
                 </div>
             </div>
 
+            <div class="pub-side-card">
+                <h3>{% t 'archive_article.article_info_title' %}</h3>
+                <div class="pub-meta-grid" style="grid-template-columns:1fr;gap:0.65rem;padding-top:0;border-top:none">
+                    <div class="pub-meta-item">
+                        <span class="label">{% t 'archive_article.subject_label' %}</span>
+                        <span class="value">{{ article.category }}</span>
+                    </div>
+                    {% if article.pages_display %}
+                    <div class="pub-meta-item">
+                        <span class="label">{% t 'archive_article.pages_label' %}</span>
+                        <span class="value">{{ article.pages_display }}</span>
+                    </div>
+                    {% endif %}
+                    <div class="pub-meta-item">
+                        <span class="label">{% t 'archive_article.views_label' %}</span>
+                        <span class="value">{{ article.views_count }}</span>
+                    </div>
+                </div>
+            </div>
         </aside>
     </div>
 </div>

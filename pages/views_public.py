@@ -250,9 +250,8 @@ def arxiv_article_detail(request, volume_slug, article_slug):
     volume, article = find_volume_article(volume_slug, article_slug)
     if not volume or not article:
         raise Http404('Maqola topilmadi')
-    if article.source == 'manual':
-        article.obj.views_count = (article.obj.views_count or 0) + 1
-        article.obj.save(update_fields=['views_count'])
+    article.obj.views_count = (article.obj.views_count or 0) + 1
+    article.obj.save(update_fields=['views_count'])
     return render(request, 'arxiv-article-detail.html', {
         'volume': volume,
         'article': article,

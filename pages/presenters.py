@@ -14,6 +14,8 @@ MONTHS_UZ = {
     7: 'Iyul', 8: 'Avgust', 9: 'Sentyabr', 10: 'Oktyabr', 11: 'Noyabr', 12: 'Dekabr',
 }
 
+from pages.pdf.volume_template import JOURNAL
+
 SUBJECT_LABELS = {
     'chemistry': 'Kimyo va texnologiya',
     'technology': 'Texnologiya fanlari',
@@ -117,13 +119,18 @@ def present_volume_article(volume, article, *, source='manual'):
         article_id = None
         has_personal_pdf = False
         has_certificate_pdf = False
+        category = article.get_category_display()
+        pages = article.pages or ''
+        views_count = article.views_count or 0
+        downloads_count = 0
+        doi = article.doi or ''
     else:
         authors = article.author_name
         if article.co_authors:
             authors = f'{authors}, {article.co_authors}'
         title = article.title
         slug = slugify(title) or f'maqola-{article.pk}'
-        date = _format_date(article.approved_at or article.submitted_at)
+        date = _format_date(article.published_at or article.approved_at)
         abstract = article.abstract or (
             f"Mazkur maqolada {title.lower()} mavzusi nazariy va amaliy jihatdan tahlil qilinadi."
         )
@@ -133,6 +140,13 @@ def present_volume_article(volume, article, *, source='manual'):
         article_id = article.pk
         has_personal_pdf = bool(article.personal_pdf)
         has_certificate_pdf = bool(article.certificate_pdf)
+        category = article.get_category_display()
+        pages = ''
+        views_count = article.views_count or 0
+        downloads_count = article.downloads_count or 0
+        doi = ''
+
+    detail_url = reverse('arxiv_article_detail', args=[volume.slug, slug])
 
     return SimpleNamespace(
         title=title,
@@ -152,6 +166,13 @@ def present_volume_article(volume, article, *, source='manual'):
         article_id=article_id,
         has_personal_pdf=has_personal_pdf,
         has_certificate_pdf=has_certificate_pdf,
+        category=category,
+        pages=pages,
+        pages_display=pages.replace('-', ' — ') if pages else '',
+        views_count=views_count,
+        downloads_count=downloads_count,
+        doi=doi,
+        detail_url=detail_url,
         obj=article,
     )
 
@@ -174,22 +195,28 @@ def present_volume(volume):
         cover = static('image/LOGO.png')
 
     has_volume_pdf = bool(volume.pdf_file)
+    month = _month_label(published)
+    issue_label = f"{volume.issue_number}-son ({volume.year}-yil{f', {month}' if month else ''})"
 
     return SimpleNamespace(
         slug=volume.slug,
-        journal_name=SUBJECT_LABELS.get(volume.subject, volume.title),
+        journal_name=JOURNAL['name'],
+        subject_label=SUBJECT_LABELS.get(volume.subject, volume.title),
         volume=volume.volume_number,
         issue=volume.issue_number,
         year=volume.year,
         month=_month_label(published),
+        issue_label=issue_label,
         published_date=_format_date(published),
         article_count=len(articles),
         views=f'{volume.views_count:,}'.replace(',', ' '),
+        views_count=volume.views_count or 0,
         cover=cover,
         description=volume.description or volume.title,
         articles=articles,
         has_volume_pdf=has_volume_pdf,
         status=volume.status,
+        issn=JOURNAL['issn'],
         obj=volume,
     )
 
@@ -245,11 +272,14 @@ def get_popular_articles(limit=10):
 
     items = []
     for article in VolumeArticle.objects.select_related('volume').order_by('-views_count')[:limit]:
+        vol = article.volume
+        slug = article.slug or slugify(article.title) or f'maqola-{article.pk}'
         items.append(
             SimpleNamespace(
                 title=article.title,
                 authors=article.authors,
                 date=_format_date(article.published_date),
+                url=reverse('arxiv_article_detail', args=[vol.slug, slug]),
             )
         )
     return items
